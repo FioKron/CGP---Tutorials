@@ -1,0 +1,19 @@
+﻿Build started 11/11/2016 10:23:16.
+     1>Project "U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\James Moran Tutorial 03 Exercise 03\James Moran Tutorial 03 Exercise 03.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp Input.cpp main.cpp
+         main.cpp
+         Input.cpp
+         Game.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\Debug\James Moran Tutorial 03 Exercise 03.exe" /INCREMENTAL /NOLOGO /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\lib" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\atlmfc\lib" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.10150.0\ucrt\x86" /LIBPATH:"C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86" /LIBPATH:"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Lib\um\x86" SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\Debug\James Moran Tutorial 03 Exercise 03.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\Debug\James Moran Tutorial 03 Exercise 03.lib" /MACHINE:X86 Debug\Game.obj
+         Debug\Input.obj
+         Debug\main.obj
+         LINK : U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\Debug\James Moran Tutorial 03 Exercise 03.exe not found or not built by the last incremental link; performing full link
+         James Moran Tutorial 03 Exercise 03.vcxproj -> U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\Debug\James Moran Tutorial 03 Exercise 03.exe
+     1>Done Building Project "U:\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03\James Moran Tutorial 03 Exercise 03\James Moran Tutorial 03 Exercise 03.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:13.81
