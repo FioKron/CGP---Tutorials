@@ -9,6 +9,9 @@ enum PressedKeys
 	KEY_R, 
 	KEY_G,
 	KEY_B,
+	KEY_T,
+	KEY_H,
+	KEY_N,
 	PRESSED_KEYS_SIZE // Interesting...
 };
 

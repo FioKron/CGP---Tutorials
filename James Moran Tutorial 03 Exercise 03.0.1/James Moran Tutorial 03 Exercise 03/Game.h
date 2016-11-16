@@ -16,11 +16,16 @@ class Game
 {
 
 private:
+
+	// Properties:
+
 	/** 
 		For SDL to use
 	*/
 	SDL_Window*		M_Window;
 	SDL_Renderer*	M_Renderer;
+
+	// Functions:
 
 	/**
 		Clear and present the renderer as required:
@@ -53,5 +58,11 @@ public:
 		Uint8 Alpha: Alpha component for the transparency level of the RGB components
 	*/
 	void SetDisplayColour(Uint8 Red, Uint8 Blue, Uint8 Green, Uint8 Alpha);
+
+	/**
+		For updating the game:
+	*/
+
+	void Update();
 };
 

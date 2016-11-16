@@ -102,6 +102,12 @@ void Game::SetDisplayColour(Uint8 Red, Uint8 Blue, Uint8 Green, Uint8 Alpha)
 		PresentRenderer();
 
 		// Allow a 5 second delay for the user to see the result:
-		Delay(5000); // As per Sleep(), parse the time in milliseconds
+		//Delay(5000); // As per Sleep(), parse the time in milliseconds
 	}
+}
+
+// Blank for now:
+void Game::Update()
+{
+	
 }
