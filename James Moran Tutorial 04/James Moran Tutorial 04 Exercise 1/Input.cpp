@@ -21,11 +21,14 @@ void Input::Update()
 {
 	while (SDL_PollEvent(&M_Event) != NULL)
 	{
+		/**
+			Interpret which key was pressed or released,
+			by changing the flags in bKeysPressed[] accordingly:
+		*/
 		if (M_Event.type == SDL_KEYDOWN)
 		{
 			SDL_Keycode KeyPressed = M_Event.key.keysym.sym;
 
-			// Determine which key was pressed:
 			switch (KeyPressed)
 			{
 			case SDLK_ESCAPE:
@@ -48,6 +51,18 @@ void Input::Update()
 				break;
 			case SDLK_n:
 				bKeysPressed[KEY_N] = true;
+				break;
+			case SDLK_w:
+				bKeysPressed[KEY_W] = true;
+				break;
+			case SDLK_a:
+				bKeysPressed[KEY_A] = true;
+				break;
+			case SDLK_s:
+				bKeysPressed[KEY_S] = true;
+				break;
+			case SDLK_d:
+				bKeysPressed[KEY_D] = true;
 				break;
 			}
 		}
@@ -78,6 +93,18 @@ void Input::Update()
 				break;
 			case SDLK_n:
 				bKeysPressed[KEY_N] = false;
+				break;
+			case SDLK_w:
+				bKeysPressed[KEY_W] = false;
+				break;
+			case SDLK_a:
+				bKeysPressed[KEY_A] = false;
+				break;
+			case SDLK_s:
+				bKeysPressed[KEY_S] = false;
+				break;
+			case SDLK_d:
+				bKeysPressed[KEY_D] = false;
 				break;
 			}
 		}

@@ -47,9 +47,10 @@ Game::Game()
 	}
 
 	// Initilise the respective bitmaps:
-	M_Monster = new Bitmap(M_Renderer, "assets/monster.bmp", 100, 100); // '04-01'
-	M_MonsterWithTransparency = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 200, 100); // '04-01'
+	//M_Monster = new Bitmap(M_Renderer, "assets/monster.bmp", 100, 100); // '04-01'
+	//M_MonsterWithTransparency = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 200, 100); // '04-01'
 	M_MonsterWithTransparencyThatHasKey = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 300, 100, true);
+	
 }
 
 // Clean up:
@@ -134,7 +135,7 @@ void Game::SetDisplayColour(Uint8 Red, Uint8 Blue, Uint8 Green, Uint8 Alpha)
 }
 
 // Blank for now:
-void Game::Update()
+void Game::Update(int NewPositionX, int NewPositionY)
 {
 	CheckEvents();
 
@@ -142,9 +143,9 @@ void Game::Update()
 	SDL_RenderClear(M_Renderer);
 
 	// Display the game's bitmaps:
-	M_Monster->Draw();
-	M_MonsterWithTransparency->Draw();
-	M_MonsterWithTransparencyThatHasKey->Draw();
+	//M_Monster->Draw();
+	//M_MonsterWithTransparency->Draw();
+	M_MonsterWithTransparencyThatHasKey->Draw(NewPositionX, NewPositionY);
 
 	// Present this:
 	PresentRenderer();

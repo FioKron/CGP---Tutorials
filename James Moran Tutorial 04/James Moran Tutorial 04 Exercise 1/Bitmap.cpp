@@ -2,7 +2,7 @@
 #include "SDL.h"
 #include "SDL_render.h"
 
-Bitmap::Bitmap(SDL_Renderer * RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
+Bitmap::Bitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
 {
 	// Have Bitmap keep onto the renderer to use:
 	M_PRenderer = RendererToUse;
@@ -59,8 +59,12 @@ Bitmap::~Bitmap()
 	}
 }
 
-void Bitmap::Draw()
+void Bitmap::Draw(int NewPositionX, int NewPositionY)
 {
+	// Update this bitmap's current position:
+	M_PositionX = NewPositionX;
+	M_PositionY = NewPositionY;
+
 	// Render the Bitmap at the respective co-ordinates:
 	if (M_PBitmapTexture)
 	{

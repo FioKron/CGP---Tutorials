@@ -1,13 +1,8 @@
-﻿Build started 18/11/2016 10:45:28.
+﻿Build started 23/11/2016 12:33:48.
      1>Project "C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 04\James Moran Tutorial 04 Exercise 1\James Moran Tutorial 04 Exercise 1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Bitmap.cpp Game.cpp main.cpp
-         Game.cpp
-         Bitmap.cpp
-         Generating Code...
-         Compiling...
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 04\Debug\James Moran Tutorial 04 Exercise 1.exe" /INCREMENTAL /NOLOGO /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\lib" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\atlmfc\lib" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.10150.0\ucrt\x86" /LIBPATH:"C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86" /LIBPATH:"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Lib\um\x86" SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 04\Debug\James Moran Tutorial 04 Exercise 1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 04\Debug\James Moran Tutorial 04 Exercise 1.lib" /MACHINE:X86 Debug\Bitmap.obj
          Debug\Game.obj
@@ -18,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.58
+Time Elapsed 00:00:02.72

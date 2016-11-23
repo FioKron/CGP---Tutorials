@@ -4,8 +4,13 @@
 
 int main(int argc, char* argv[])
 {
+	// For handling game and input logic:
 	Game* GameReference = new Game();
 	Input* InputReference = new Input();
+
+	// For Tutorial 4, Exercise 1: To move the bitmap with a transparency key:
+	int CurrentMonsterPositionX = 0;
+	int CurrentMonsterPositionY = 0; 
 
 	// Only use this pointer if the respective object is valid:
 	if (GameReference && InputReference)
@@ -74,16 +79,37 @@ int main(int argc, char* argv[])
 				}
 			}
 
+			// For handling movement on the sprite:
+			if (InputReference->KeyIsPressed(KEY_W))
+			{
+				CurrentMonsterPositionY--;
+			}
+
+			if (InputReference->KeyIsPressed(KEY_A))
+			{
+				CurrentMonsterPositionX--;
+			}
+
+			if (InputReference->KeyIsPressed(KEY_S))
+			{
+				CurrentMonsterPositionY++;
+			}
+
+			if (InputReference->KeyIsPressed(KEY_D))
+			{
+				CurrentMonsterPositionX++;
+			}
+
 			GameReference->SetDisplayColour(R, G, B, A);
-			GameReference->Update();
+			GameReference->Update(CurrentMonsterPositionX, CurrentMonsterPositionY);
 		}
+
+		delete InputReference;
+		InputReference = nullptr;
 
 		// Clean up pointers:
 		delete GameReference;
-		GameReference = nullptr;
-
-		delete GameReference;
-		GameReference = nullptr;
+		GameReference = nullptr;	
 	}
 
 	// (A) Standard return value:

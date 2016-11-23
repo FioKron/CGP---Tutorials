@@ -63,7 +63,7 @@ public:
 	~Game();
 	
 	/**
-		Set the colour of the display
+		Description: Set the colour of the display
 
 		@Params:
 
@@ -75,8 +75,13 @@ public:
 	void SetDisplayColour(Uint8 Red, Uint8 Blue, Uint8 Green, Uint8 Alpha);
 
 	/**
-		For updating the game:
+		Description: For updating the game
+
+		@Params:
+
+		int NewPositionX: The new X-Position for the M_MonsterTransparency Bitmap. (Tutorial 4, Exercise 1)
+		int NewPositionY: The new Y-Position for the M_MonsterTransparency Bitmap. (Tutorial 4, Exercise 1)
 	*/
-	void Update();
+	void Update(int NewPositionX, int NewPositionY);
 };
 
