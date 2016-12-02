@@ -1,22 +1,26 @@
 #pragma once
 #include "Bitmap.h"
 
-class Monster
+class Monster : Bitmap
 {
 public:
 
 	// Functions:
 
-	Monster(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency = false);
+	Monster(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName = "assets/monsterTrans.bmp", bool UsesTransparency = true);
 	~Monster();
 	
 	/** For drawing the Bitmap of the monster */
-	Bitmap* GetMonsterRepresenation();
+	//Bitmap* GetMonsterRepresenation();
+	//int GetMonsterXPosition();
+	//int GetMonsterYPosition();
 
 protected:
 
 	// Properties:
 
-	Bitmap* MonsterRepresentation;
+	//Bitmap* MonsterRepresentation;
+	//int MonsterXPosition;
+	//int MonsterYPosition;
 };
 

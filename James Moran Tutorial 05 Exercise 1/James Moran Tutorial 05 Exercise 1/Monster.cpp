@@ -1,28 +1,17 @@
 #include "Monster.h"
 
 // Standard constructor:
-Monster::Monster(SDL_Renderer * RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
+/**Monster::Monster(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, bool UsesTransparency)
 {
-	if (!MonsterRepresentation)
-	{
-		MonsterRepresentation = new Bitmap(RendererToUse, FileName, XPosition, YPosition, UsesTransparency);
-	}
+	__super::Bitmap(RendererToUse, FileName, XPosition, YPosition, UsesTransparency);
 }
+*/
 
+Monster::Monster(SDL_Renderer * RendererToUse, int XPosition, int YPosition, std::string FileName, bool UsesTransparency)
+{
+}
 // Standard Destructor:
 Monster::~Monster()
 {
-	if (MonsterRepresentation)
-	{
-		delete MonsterRepresentation;
-		MonsterRepresentation = nullptr; 
-	}
-}
-
-Bitmap* Monster::GetMonsterRepresenation()
-{
-	if (MonsterRepresentation)
-	{
-		return MonsterRepresentation;
-	}
+	delete this;
 }

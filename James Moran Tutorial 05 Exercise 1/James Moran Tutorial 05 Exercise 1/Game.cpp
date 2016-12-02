@@ -14,11 +14,11 @@ Game::Game()
 
 	// Initilise the window:
 	M_Window = SDL_CreateWindow(
-		"First SDL Window", // Title
+		"Monster Rampage", // Title
 		250, // Initial x position
 		50, // Initial y position
-		640, // Width, in pixels
-		480, // Height, in pixels
+		1920, // Width, in pixels
+		1080, // Height, in pixels
 		0 // Windows behavior flags go here (when required) 
 		);
 
@@ -50,7 +50,9 @@ Game::Game()
 	//M_Monster = new Bitmap(M_Renderer, "assets/monster.bmp", 100, 100); // '04-01'
 	//M_MonsterWithTransparency = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 200, 100); // '04-01'
 	//M_MonsterWithTransparencyThatHasKey = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 300, 100, true);
-	
+	MonsterCollection.resize(2);
+	MonsterCollection.push_back(new Monster(M_Renderer, , 100, 100, true));
+	MonsterCollection.push_back(new Monster(M_Renderer, "assets/monsterTrans.bmp", 1000, 1000, true));
 }
 
 // Clean up:
@@ -146,7 +148,7 @@ void Game::SetDisplayColour(Uint8 Red, Uint8 Blue, Uint8 Green, Uint8 Alpha)
 }
 
 // Blank for now:
-void Game::Update(int NewPositionX, int NewPositionY)
+void Game::Update()
 {
 	CheckEvents();
 
@@ -156,7 +158,15 @@ void Game::Update(int NewPositionX, int NewPositionY)
 	// Display the game's bitmaps:
 	//M_Monster->Draw();
 	//M_MonsterWithTransparency->Draw();
-	M_MonsterWithTransparencyThatHasKey->Draw(NewPositionX, NewPositionY);
+	//M_MonsterWithTransparencyThatHasKey->Draw(NewPositionX, NewPositionY);
+	// Drawing each monster:
+	for each (Monster* MonsterToUpdate in MonsterCollection)
+	{
+		if (MonsterToUpdate)
+		{
+			MonsterToUpdate->GetMonsterRepresenation()->Draw(MonsterToUpdate->GetMonsterXPosition(), MonsterToUpdate->GetMonsterYPosition());
+		}		
+	}
 
 	// Present this:
 	PresentRenderer();

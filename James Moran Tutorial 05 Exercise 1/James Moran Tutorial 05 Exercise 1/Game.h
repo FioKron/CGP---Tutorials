@@ -86,12 +86,7 @@ public:
 
 	/**
 		Description: For updating the game
-
-		@Params:
-
-		int NewPositionX: The new X-Position for the M_MonsterTransparency Bitmap. (Tutorial 4, Exercise 1)
-		int NewPositionY: The new Y-Position for the M_MonsterTransparency Bitmap. (Tutorial 4, Exercise 1)
 	*/
-	void Update(int NewPositionX, int NewPositionY);
+	void Update();
 };
 

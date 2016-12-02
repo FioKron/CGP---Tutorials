@@ -10,14 +10,14 @@ struct SDL_Renderer;
 class Bitmap
 {
 
-private:
+protected:
 
 	// Keep in mind that; 'M_', could receive usage to identify a class member:
 	SDL_Surface*	M_PBitmapSurface;
 	SDL_Texture*	M_PBitmapTexture;
 	SDL_Renderer*	M_PRenderer;
 
-	// I presume that these are for the position of the Bitmap:
+	// These are for the position of the Bitmap:
 	int M_PositionX;
 	int M_PositionY;
 
