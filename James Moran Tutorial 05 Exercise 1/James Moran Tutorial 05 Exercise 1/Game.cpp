@@ -50,9 +50,14 @@ Game::Game()
 	//M_Monster = new Bitmap(M_Renderer, "assets/monster.bmp", 100, 100); // '04-01'
 	//M_MonsterWithTransparency = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 200, 100); // '04-01'
 	//M_MonsterWithTransparencyThatHasKey = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 300, 100, true);
+	
+	// Set up the monster collection:
+	Monster* FirstMonster = new Monster(M_Renderer, 100, 100);
+	Monster* SecondMonster = new Monster(M_Renderer, 1000, 1000);
+	
 	MonsterCollection.resize(2);
-	MonsterCollection.push_back(new Monster(M_Renderer, , 100, 100, true));
-	MonsterCollection.push_back(new Monster(M_Renderer, "assets/monsterTrans.bmp", 1000, 1000, true));
+	MonsterCollection.push_back(FirstMonster);
+	MonsterCollection.push_back(SecondMonster);
 }
 
 // Clean up:
@@ -156,15 +161,13 @@ void Game::Update()
 	SDL_RenderClear(M_Renderer);
 
 	// Display the game's bitmaps:
-	//M_Monster->Draw();
-	//M_MonsterWithTransparency->Draw();
-	//M_MonsterWithTransparencyThatHasKey->Draw(NewPositionX, NewPositionY);
+
 	// Drawing each monster:
 	for each (Monster* MonsterToUpdate in MonsterCollection)
 	{
 		if (MonsterToUpdate)
 		{
-			MonsterToUpdate->GetMonsterRepresenation()->Draw(MonsterToUpdate->GetMonsterXPosition(), MonsterToUpdate->GetMonsterYPosition());
+			MonsterToUpdate->Draw(MonsterToUpdate->GetMonsterXPosition(), MonsterToUpdate->GetMonsterYPosition());
 		}		
 	}
 

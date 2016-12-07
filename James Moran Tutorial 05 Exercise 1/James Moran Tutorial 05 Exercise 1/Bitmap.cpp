@@ -45,6 +45,11 @@ Bitmap::Bitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition,
 	M_PositionY = YPosition;
 }
 
+Bitmap::Bitmap()
+{
+
+}
+
 Bitmap::~Bitmap()
 {
 	// Apparently; 'good practice is to destroy in the reverse order in which it was created.':

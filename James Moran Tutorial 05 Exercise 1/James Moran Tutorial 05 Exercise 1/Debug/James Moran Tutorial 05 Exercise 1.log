@@ -1,17 +1,19 @@
-﻿Build started 02/12/2016 10:29:54.
-     1>Project "C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 07/12/2016 12:05:45.
+     1>Project "C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
-         Game.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Monster.cpp
+         Monster.cpp
+     1>c:\users\2moraj05.w65166\desktop\cgp---tutorials-master\james moran tutorial 05 exercise 1\james moran tutorial 05 exercise 1\monster.cpp(39): warning C4715: 'Monster::GetMonsterXPosition': not all control paths return a value
+     1>c:\users\2moraj05.w65166\desktop\cgp---tutorials-master\james moran tutorial 05 exercise 1\james moran tutorial 05 exercise 1\monster.cpp(47): warning C4715: 'Monster::GetMonsterYPosition': not all control paths return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.exe" /INCREMENTAL /NOLOGO /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.lib" /MACHINE:X86 Debug\Bitmap.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.exe" /INCREMENTAL /NOLOGO /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.lib" /MACHINE:X86 Debug\Bitmap.obj
          Debug\Game.obj
          Debug\Input.obj
          Debug\main.obj
          Debug\Monster.obj
-         James Moran Tutorial 05 Exercise 1.vcxproj -> C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.exe
-     1>Done Building Project "C:\Users\2moraj05\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" (Build target(s)).
+         James Moran Tutorial 05 Exercise 1.vcxproj -> C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\Debug\James Moran Tutorial 05 Exercise 1.exe
+     1>Done Building Project "C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.60
+Time Elapsed 00:00:00.81

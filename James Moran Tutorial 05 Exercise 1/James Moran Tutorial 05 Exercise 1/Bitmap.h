@@ -23,6 +23,7 @@ protected:
 
 public:
 	Bitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency = false);
+	Bitmap();
 	~Bitmap();
 
 	/**
@@ -33,6 +34,6 @@ public:
 		int NewPositionX: The new X-Position for this Bitmap. (Tutorial 4, Exercise 1)
 		int NewPositionY: The new Y-Position for this Bitmap. (Tutorial 4, Exercise 1)
 	*/
-	void Draw(int NewPositionX, int NewPositionY);
+	virtual void Draw(int NewPositionX, int NewPositionY);
 };
 
