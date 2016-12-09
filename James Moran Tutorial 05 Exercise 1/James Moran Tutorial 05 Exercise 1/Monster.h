@@ -1,7 +1,7 @@
 #pragma once
 #include "Bitmap.h"
 
-class Monster : Bitmap
+class Monster : public Bitmap
 {
 public:
 

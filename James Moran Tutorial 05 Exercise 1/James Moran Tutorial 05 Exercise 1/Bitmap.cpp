@@ -64,7 +64,7 @@ Bitmap::~Bitmap()
 	}
 }
 
-void Bitmap::Draw(int NewPositionX, int NewPositionY)
+void Bitmap::Draw(int NewPositionX, int NewPositionY) 
 {
 	// Update this bitmap's current position:
 	M_PositionX = NewPositionX;
