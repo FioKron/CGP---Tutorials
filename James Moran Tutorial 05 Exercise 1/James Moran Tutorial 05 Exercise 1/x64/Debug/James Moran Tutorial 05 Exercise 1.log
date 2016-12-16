@@ -1,0 +1,46 @@
+﻿Build started 16/12/2016 09:05:38.
+     1>Project "C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"U:\Computer Games Programming\SDL\include" /ZI /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt Bitmap.cpp Game.cpp Input.cpp main.cpp Monster.cpp
+         Monster.cpp
+         main.cpp
+         Input.cpp
+         Game.cpp
+         Bitmap.cpp
+         Generating Code...
+     1>c:\users\2moraj05.w65166\desktop\cgp---tutorials-master\james moran tutorial 05 exercise 1\james moran tutorial 05 exercise 1\monster.cpp(39): warning C4715: 'Monster::GetMonsterXPosition': not all control paths return a value
+     1>c:\users\2moraj05.w65166\desktop\cgp---tutorials-master\james moran tutorial 05 exercise 1\james moran tutorial 05 exercise 1\monster.cpp(47): warning C4715: 'Monster::GetMonsterYPosition': not all control paths return a value
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\x64\Debug\James Moran Tutorial 05 Exercise 1.exe" /INCREMENTAL /NOLOGO /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"U:\Computer Games Programming\SDL\lib\x86" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\lib\amd64" /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\atlmfc\lib\amd64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.10150.0\ucrt\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\Lib\um\x64" SDL2.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\x64\Debug\James Moran Tutorial 05 Exercise 1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\x64\Debug\James Moran Tutorial 05 Exercise 1.lib" /MACHINE:X64 x64\Debug\Bitmap.obj
+         x64\Debug\Game.obj
+         x64\Debug\Input.obj
+         x64\Debug\main.obj
+         x64\Debug\Monster.obj
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_GetError referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Game.obj : error LNK2001: unresolved external symbol SDL_GetError
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_RWFromFile referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_MapRGB referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_FreeSurface referenced in function "public: __cdecl Bitmap::~Bitmap(void)" (??1Bitmap@@QEAA@XZ)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_LoadBMP_RW referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_SetColorKey referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_CreateTextureFromSurface referenced in function "public: __cdecl Bitmap::Bitmap(struct SDL_Renderer *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int,int,bool)" (??0Bitmap@@QEAA@PEAUSDL_Renderer@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH_N@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_RenderCopy referenced in function "public: virtual void __cdecl Bitmap::Draw(int,int)" (?Draw@Bitmap@@UEAAXHH@Z)
+     1>Bitmap.obj : error LNK2019: unresolved external symbol SDL_DestroyTexture referenced in function "public: __cdecl Bitmap::~Bitmap(void)" (??1Bitmap@@QEAA@XZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_CreateWindow referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_DestroyWindow referenced in function "public: __cdecl Game::~Game(void)" (??1Game@@QEAA@XZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_CreateRenderer referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_SetRenderDrawColor referenced in function "public: void __cdecl Game::SetDisplayColour(unsigned char,unsigned char,unsigned char,unsigned char)" (?SetDisplayColour@Game@@QEAAXEEEE@Z)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_RenderClear referenced in function "private: void __cdecl Game::ClearRenderer(void)" (?ClearRenderer@Game@@AEAAXXZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_RenderPresent referenced in function "private: void __cdecl Game::PresentRenderer(void)" (?PresentRenderer@Game@@AEAAXXZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_DestroyRenderer referenced in function "public: __cdecl Game::~Game(void)" (??1Game@@QEAA@XZ)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_Delay referenced in function "private: void __cdecl Game::Delay(unsigned int)" (?Delay@Game@@AEAAXI@Z)
+     1>Game.obj : error LNK2019: unresolved external symbol SDL_Init referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+     1>Input.obj : error LNK2019: unresolved external symbol SDL_PollEvent referenced in function "public: void __cdecl Input::Update(void)" (?Update@Input@@QEAAXXZ)
+     1>MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+     1>U:\Computer Games Programming\SDL\lib\x86\SDL2.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+     1>C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\x64\Debug\James Moran Tutorial 05 Exercise 1.exe : fatal error LNK1120: 20 unresolved externals
+     1>Done Building Project "C:\Users\2moraj05.W65166\Desktop\CGP---Tutorials-master\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1\James Moran Tutorial 05 Exercise 1.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:09.06

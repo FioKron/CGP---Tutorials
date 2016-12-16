@@ -44,7 +44,7 @@ private:
 	//Bitmap*			M_MonsterWithTransparencyThatHasKey; // '04-01'
 	
 	/** To contain all monsters in the game */
-	std::vector<Bitmap*> MonsterCollection;
+	std::vector<Monster*> MonsterCollection;
 
 
 	// Functions:

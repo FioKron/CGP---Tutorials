@@ -52,9 +52,10 @@ Game::Game()
 	//M_MonsterWithTransparencyThatHasKey = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 300, 100, true);
 	
 	// Set up the monster collection:
-	Bitmap* FirstMonster = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 100, 100, true);
-	Bitmap* SecondMonster = new Bitmap(M_Renderer, "assets/monsterTrans.bmp", 1000, 1000, true);
-	
+	Monster* FirstMonster = new Monster(M_Renderer, 100, 100);
+	Monster* SecondMonster = new Monster(M_Renderer, 1000, 1000);
+	//GameEntity* Hero = new GameEntity(M_Renderer, 500, 500,)
+
 	MonsterCollection.push_back(FirstMonster);
 	MonsterCollection.push_back(SecondMonster);
 }
@@ -83,7 +84,7 @@ Game::~Game()
 	*/
 
 	// For cleaning up all Monsters in MonsterCollection:
-	for each (Bitmap* ThisMonster in MonsterCollection)
+	for each (Monster* ThisMonster in MonsterCollection)
 	{
 		if (ThisMonster)
 		{
@@ -166,7 +167,7 @@ void Game::Update()
 	{
 		if (MonsterToUpdate)
 		{
-			MonsterToUpdate->Draw(MonsterToUpdate->GetMonsterXPosition(), MonsterToUpdate->GetMonsterYPosition());
+			MonsterToUpdate->Draw(MonsterToUpdate->GetEntityXPosition(), MonsterToUpdate->GetEntityYPosition());
 		}		
 	}
 
