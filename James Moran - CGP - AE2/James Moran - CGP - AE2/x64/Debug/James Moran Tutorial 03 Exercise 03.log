@@ -1,0 +1,15 @@
+﻿Game.obj : error LNK2019: unresolved external symbol SDL_GetError referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_CreateWindow referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_DestroyWindow referenced in function "public: __cdecl Game::~Game(void)" (??1Game@@QEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_CreateRenderer referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_SetRenderDrawColor referenced in function "public: void __cdecl Game::SetDisplayColour(unsigned char,unsigned char,unsigned char,unsigned char)" (?SetDisplayColour@Game@@QEAAXEEEE@Z)
+Game.obj : error LNK2019: unresolved external symbol SDL_RenderClear referenced in function "private: void __cdecl Game::ClearRenderer(void)" (?ClearRenderer@Game@@AEAAXXZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_RenderPresent referenced in function "private: void __cdecl Game::PresentRenderer(void)" (?PresentRenderer@Game@@AEAAXXZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_DestroyRenderer referenced in function "public: __cdecl Game::~Game(void)" (??1Game@@QEAA@XZ)
+Game.obj : error LNK2019: unresolved external symbol SDL_Delay referenced in function "private: void __cdecl Game::Delay(unsigned int)" (?Delay@Game@@AEAAXI@Z)
+Game.obj : error LNK2019: unresolved external symbol SDL_Init referenced in function "public: __cdecl Game::Game(void)" (??0Game@@QEAA@XZ)
+Input.obj : error LNK2019: unresolved external symbol SDL_PollEvent referenced in function "public: void __cdecl Input::Update(void)" (?Update@Input@@QEAAXXZ)
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\Users\James Moran\Documents\Current U Drive Backup\Computer Games Programming\SDL\lib\x86\SDL2.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+C:\Users\James Moran\Documents\Current U Drive Backup\Computer Games Programming\SDL\lib\x86\SDL2main.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+C:\Users\James Moran\Documents\Current U Drive Backup\Computer Games Programming\SDL 2.0 Projects\James Moran Tutorial 03 Exercise 03.0.1\x64\Debug\James Moran Tutorial 03 Exercise 03.exe : fatal error LNK1120: 12 unresolved externals
