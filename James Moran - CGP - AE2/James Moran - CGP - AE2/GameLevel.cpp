@@ -101,11 +101,11 @@ void GameLevel::Render()
 		{
 			if (LevelGrid[OuterCounter][InnerCounter] == 'W')
 			{
-				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, "Wall");				
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, WallBlock);				
 			}
 			else
 			{
-				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, "Blank");
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BlankBlock);
 			}
 		}
 
@@ -122,15 +122,10 @@ void GameLevel::UpdateLevelState()
 	PlayerCharacter->UpdateEntity();
 }
 
-/**
-	Is it a bird? Is it a plane? Is it a wall?
-	Well I'm not sure about if 'it' is a bird or plane,
-	but I can check if 'it' is a wall...
-*/
+// Check if the tile at PixelCoordinates is a wall:
 bool GameLevel::IsWall(Vector2D* PixelCoordinates)
 {
-	// Yes, a constant value is used for here testing,
-	// resolve this if the test is succesful:
+	// Get the grid coordinates from PixelCoordinates:
 	int XPosition = (PixelCoordinates->XComponent / BlockDimensions.XComponent) - 1;
 	int YPosition = (PixelCoordinates->YComponent / BlockDimensions.YComponent) - 1;
 
@@ -182,16 +177,27 @@ void GameLevel::InitialiseWallBlockTexture()
 	SDL_FreeSurface(BlockSurface);
 }
 
-Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, std::string BlockType)
+void GameLevel::AddBlockToCollisionSystem(Vector2D EntityPosition, BlockType TypeOfBlock)
+{
+	if (TypeOfBlock == WallBlock)
+	{
+		//GameEntity ThisWallBlock = GameEntity(LevelRenderer, EntityPosition.XComponent, EntityPosition.YComponent, "");
+		//GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(&ThisWallBlock);
+	}
+}
+
+Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, BlockType TypeOfBlock)
 {
 	Vector2D UpdatedRectanglePosition = CurrentRectanglePosition;
 
-	if (BlockType == "Wall")
+	if (TypeOfBlock == WallBlock)
 	{
 		SDL_RenderCopy(LevelRenderer, WallBlockTexture, NULL, BlockTextureDimensions);
+		AddBlockToCollisionSystem(UpdatedRectanglePosition, WallBlock);
 	}
-	else if (BlockType == "Blank")
+	else
 	{
+		// Blank blocks are not signifcant blocks, so refrain from adding them to GameEntities:
 		SDL_RenderCopy(LevelRenderer, BlankBlockTexture, NULL, BlockTextureDimensions);
 	}
 

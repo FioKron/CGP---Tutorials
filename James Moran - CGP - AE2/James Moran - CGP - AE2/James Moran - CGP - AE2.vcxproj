@@ -24,6 +24,7 @@
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameBitmap.h" />
+    <ClInclude Include="GameCollisionSystem.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameManager.h" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameBitmap.cpp" />
+    <ClCompile Include="GameCollisionSystem.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="GameManager.cpp" />

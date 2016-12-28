@@ -13,13 +13,13 @@ Player::Player(SDL_Renderer * RendererToUse, int XPosition, int YPosition, std::
 void Player::AttemptMoveLeft()
 {
 	/** For now; simply move the Player left and right */
-	CleanUpPreviousPosition();
+	//CleanUpPreviousPosition();
 	EntityScreenPosition.XComponent--;
 }
 
 void Player::AttemptMoveRight()
 {
-	CleanUpPreviousPosition();
+	//CleanUpPreviousPosition();
 	EntityScreenPosition.XComponent++;
 }
 

@@ -5,8 +5,11 @@
 // Standard constructor:
 GameBitmap::GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
 {
-	ScreenPosition = Vector2D(XPosition, YPosition);
+	BitmapScreenPosition = Vector2D(XPosition, YPosition);
 	BitmapRenderer = RendererToUse;
+	BitmapDrawnOnce = false;
+	// RESOLVE:
+	BitmapWidthHeight = Vector2D(50, 50);
 
 	// Initilise the GameBitmap surface:
 	BitmapSurface = SDL_LoadBMP(FileName.c_str());
@@ -41,6 +44,28 @@ GameBitmap::GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XP
 			printf("%s\n", SDL_GetError());
 		}
 	}
+
+	BlankSurface = SDL_CreateRGBSurface(0, BitmapScreenPosition.XComponent, BitmapScreenPosition.YComponent, 32, 0, 0, 0, 0);
+
+	if (!BlankSurface)
+	{
+		printf("BlankSurface is invalid!%s\n", SDL_GetError());
+		printf("%s\n", SDL_GetError());
+	}
+	else
+	{
+		// White for a blank space:
+		Uint32 BlankColour = SDL_MapRGB(BlankSurface->format, 255, 255, 255);
+		SDL_FillRect(BlankSurface, NULL, BlankColour);
+		
+		BlankTexture = SDL_CreateTextureFromSurface(BitmapRenderer, BlankSurface);
+
+		if (!BitmapTexture)
+		{
+			printf("BlankTexture is invalid! %s\n", SDL_GetError());
+			printf("%s\n", SDL_GetError());
+		}
+	}	
 }
 
 // Standard destructor:
@@ -64,14 +89,73 @@ GameBitmap::~GameBitmap()
 }
 
 // For displaying this bitmap:
-void GameBitmap::Draw(int NewPositionX, int NewPositionY) 
+void GameBitmap::Draw(bool GameEntityHasMovedSinceLastDraw)
 {
-	ScreenPosition.XComponent = NewPositionX;
-	ScreenPosition.YComponent = NewPositionY;
-
-	if (BitmapTexture)
+	if (!BitmapDrawnOnce)
 	{
-		SDL_Rect DestinationRectangle = { ScreenPosition.XComponent, ScreenPosition.YComponent, BitmapSurface->w, BitmapSurface->h };
-		SDL_RenderCopy(BitmapRenderer, BitmapTexture, NULL, &DestinationRectangle);
+		// Draw the bitmap for the first time.
+		DrawBitmapTexture();
+		BitmapDrawnOnce = true;
+	}
+
+	if (BitmapTexture && GameEntityHasMovedSinceLastDraw)
+	{
+		// Update the position first...
+		//BitmapScreenPosition.XComponent = NewPositionX;
+		//BitmapScreenPosition.YComponent = NewPositionY;
+
+		// ...clean-up next...		
+		ClearBitmapTexture();
+
+		// ...then draw on-top of this blank space:
+		DrawBitmapTexture();
+	}
+}
+
+// Attempt to move by a pixel, leftwards, rightwards or upwards:
+void GameBitmap::AttemptBitmapLeftwardsMovement()
+{
+
+}
+
+void GameBitmap::AttemptBitmapRightwardsMovement()
+{
+
+}
+
+void GameBitmap::AttemptBitmapUpwardsMovement()
+{
+
+}
+
+Vector2D GameBitmap::GetBitmapPosition()
+{
+	return BitmapScreenPosition;
+}
+
+// Drawing and clearing the renderer:
+void GameBitmap::DrawBitmapTexture()
+{
+	SDL_Rect BitmapDestinationRectangle = { BitmapScreenPosition.XComponent, BitmapScreenPosition.YComponent, BitmapSurface->w, BitmapSurface->h };
+	SDL_RenderCopy(BitmapRenderer, BitmapTexture, NULL, &BitmapDestinationRectangle);
+}
+
+void GameBitmap::ClearBitmapTexture()
+{
+	SDL_Rect ClearDestinationRectangle = { BitmapScreenPosition.XComponent, BitmapScreenPosition.YComponent,
+		BitmapWidthHeight.XComponent, BitmapWidthHeight.YComponent };
+	SDL_RenderCopy(BitmapRenderer, BlankTexture, NULL, &ClearDestinationRectangle);
+}
+
+// Only draw the bitmap if the bitmap has received translation
+bool GameBitmap::IsNewPositionDifferentToOldPosition(Vector2D ProposedPosition)
+{
+	if (BitmapScreenPosition != ProposedPosition)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

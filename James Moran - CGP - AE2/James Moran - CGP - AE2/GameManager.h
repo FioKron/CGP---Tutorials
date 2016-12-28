@@ -2,8 +2,8 @@
 
 /**
 	This class handles what is present in the one and only (as it stands), level.
-	Holding references to all the entities present in the game level, as well as the
-	level itself.
+	Holding a reference to the current game level; which then handles the Entities 
+	present within it.
 */
 
 // For what is not included in SDL:

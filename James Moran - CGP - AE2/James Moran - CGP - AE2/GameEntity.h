@@ -11,25 +11,16 @@ public:
 		bool UsesTransparency = false);
 	~GameEntity();
 
-	/** 
-		For drawing the Bitmap of this entity in the correct
-		on-screen location
-	*/
-	int GetEntityXPosition();
-	int GetEntityYPosition();
-
-	/**
-		Description: Draw this Entity's bitmap.
-	*/
-	void Draw();
-
 	/** For updating this Entity */
 	void UpdateEntity();
 
-	// Other get methods:
+	// Get methods:
 
-	/** For calling to GameBitmap */
-	GameBitmap* GetEntityRepresentation();
+	/**
+		For drawing the Bitmap of this entity in the correct
+		on-screen location
+	*/
+	Vector2D GetEntityPosition();
 
 protected:
 
@@ -40,11 +31,5 @@ protected:
 	// For use in drawing:
 
 	Vector2D EntityScreenPosition;
-
-	/** Clean-up the bitmap from its previous position */
-	void CleanUpPreviousPosition();
-
-	/** The location of this Entity in the previous frame */
-	Vector2D PreviousEntityScreenPosition;
 };
 

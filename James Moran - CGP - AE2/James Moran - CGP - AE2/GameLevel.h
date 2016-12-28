@@ -3,10 +3,19 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameBitmap.h"
+#include "GameCollisionSystem.h"
 #include <vector>
 
 class GameLevel
 {
+	// To refer to each type of block (significant types of block only though):
+	enum BlockType
+	{
+		BlankBlock,
+		WallBlock,
+		DoorBlock,
+		KeyBlock
+	};
 
 public:
 
@@ -65,6 +74,14 @@ private:
 	void InitialiseBlankBlockTexture();
 	void InitialiseWallBlockTexture();
 
+	/**
+		Add a specific type of block to the GameCollisionSystem's collection:
+
+		@Params: Vector2D EntityPosition: The position of this block.
+		BlockType TypeOfBlock: The type of block this specific block is.
+	*/
+	void AddBlockToCollisionSystem(Vector2D EntityPosition, BlockType TypeOfBlock);
+
 	// For showing blocks of various types
 
 	/**
@@ -75,11 +92,11 @@ private:
 
 		SDL_Rect* BlockTextureDimensions: The rendering target.
 
-		std::string BlockType: The type of block to display at the current location.
+		BlockType TypeOfBlock: The type of block to display at the current location.
 
 		@Return: Vector2D UpdatedRectanglePosition: The new values of
 		the parameter parsed in to start off with.
 	*/
-	Vector2D DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, std::string BlockType);
+	Vector2D DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, BlockType TypeOfBlock);
 };
 

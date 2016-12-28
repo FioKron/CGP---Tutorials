@@ -15,7 +15,7 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 		30, // (Initial y position)
 		1000, // (Width, in pixels)
 		1000, // (Height, in pixels)
-		0 // (Windows behavior flags go here (when required)) 
+		0 // (Window behavior flags go here (when required)) 
 		);
 
 	// Check for validity in both cases:
@@ -29,7 +29,7 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 		GameWindow, // (The custom window (as delcared in game.h))
 		-1, // (The specific rendering driver to use (-1 for the first index
 		// that supports the specified flags))
-		0 // (Renderer behavior flags)
+		SDL_RENDERER_ACCELERATED // (Renderer behavior flags)
 		);
 
 	if (!GameRenderer)
