@@ -1,10 +1,11 @@
 #include "GameEntity.h"
 
 GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
-	bool UsesTransparency)
+	EntityID UniqueEntityID, bool UsesTransparency)
 {
-	EntityScreenPosition = Vector2D(XPosition, YPosition);
-	EntityRepresentation = new GameBitmap(RendererToUse, FileName, EntityScreenPosition.XComponent, EntityScreenPosition.YComponent, UsesTransparency);
+	//EntityScreenPosition = Vector2D(XPosition, YPosition);
+	UniqueID = UniqueEntityID;
+	EntityRepresentation = new GameBitmap(RendererToUse, FileName, XPosition, YPosition, UsesTransparency);
 }
 
 GameEntity::~GameEntity()
@@ -24,8 +25,19 @@ Vector2D GameEntity::GetEntityPosition()
 	return EntityRepresentation->GetBitmapPosition();
 }
 
+Vector2D GameEntity::GetEntityExtents()
+{
+	return EntityRepresentation->GetBitmapWidthHeight();
+}
+
+EntityID GameEntity::GetUniqueID()
+{
+	return UniqueID;
+}
+
 // Update behavior:
 void GameEntity::UpdateEntity()
 {
+	// Assume this GameEntity has moved, when UpdateEntity is called:
 	EntityRepresentation->Draw(true);
 }

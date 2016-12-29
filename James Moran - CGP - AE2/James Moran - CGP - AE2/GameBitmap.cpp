@@ -1,6 +1,4 @@
 #include "GameBitmap.h"
-#include "SDL.h"
-#include "SDL_render.h"
 
 // Standard constructor:
 GameBitmap::GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
@@ -112,25 +110,30 @@ void GameBitmap::Draw(bool GameEntityHasMovedSinceLastDraw)
 	}
 }
 
-// Attempt to move by a pixel, leftwards, rightwards or upwards:
-void GameBitmap::AttemptBitmapLeftwardsMovement()
-{
-
-}
-
-void GameBitmap::AttemptBitmapRightwardsMovement()
-{
-
-}
-
-void GameBitmap::AttemptBitmapUpwardsMovement()
-{
-
-}
-
 Vector2D GameBitmap::GetBitmapPosition()
 {
 	return BitmapScreenPosition;
+}
+
+Vector2D GameBitmap::GetBitmapWidthHeight()
+{
+	return BitmapWidthHeight;
+}
+
+// Movement of this bitmap as required:
+void GameBitmap::MoveBitmapLeftwards(int MovementSpeed)
+{
+	BitmapScreenPosition.XComponent -= MovementSpeed;
+}
+
+void GameBitmap::MoveBitmapRightwards(int MovementSpeed)
+{
+	BitmapScreenPosition.XComponent += MovementSpeed;
+}
+
+void GameBitmap::MoveBitmapUpwards(int MovementSpeed)
+{
+	BitmapScreenPosition.YComponent -= MovementSpeed;
 }
 
 // Drawing and clearing the renderer:

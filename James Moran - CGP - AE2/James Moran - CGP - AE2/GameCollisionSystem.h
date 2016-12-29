@@ -3,6 +3,27 @@
 #include "GameEntity.h"
 #include <vector>
 
+// Foward declared-classes:
+// (Hmm...)
+class GameEntity;
+
+// As well as structures:
+struct Vector2D;
+
+// Enumerations:
+
+/** 
+	To determine what direction an Entity is moving 
+	in. This is to handle what corners to check for and 
+	against when checking Entity-space-occupance.
+*/
+enum EntityDirection
+{
+	Leftwards,
+	Rightwards,
+	Upwards
+};
+
 /** 
 	For handling collisions between
 	game entities.
@@ -21,6 +42,23 @@ private:
 
 	/** Standard destructor */
 	~GameCollisionSystem();
+
+	// Sub-checks involved in an overal collision check:
+
+	/**
+		Description: Check if a GameEntity already extends out to the area between
+		and including; the ProposedNewTopLeftCorner and ProposedNewTopRightCorner.
+
+		@Params: GameEntity* MovingEntity: The GameEntity that is attemepting to move,
+		so as to not return true when checking gets to MovingEntity.
+		Vector2D ProposedNewPoint1: Check from this point, to the...
+		Vector2D ProposedNewBottomLeftCorner: ...second point, for the Entity trying to translate
+		these two points, of their bounding-box (for their new position).
+		EntityDirection Movementdirection: The direction MovingEntity is moving in.
+
+		@Return: True if this is the case.
+	*/
+	bool AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* MovingEntity, Vector2D ProposedNewPoint1, Vector2D ProposedNewPoint2, EntityDirection MovementDirection);
 
 	// Properties:
 

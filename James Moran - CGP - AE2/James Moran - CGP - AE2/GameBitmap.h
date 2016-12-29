@@ -2,10 +2,19 @@
 
 #include <string>
 #include "SDL.h"
+#include "GameCollisionSystem.h"
 
 // Structures:
 
-/** For a 2D vector */
+/** 
+	For a 2D vector 
+
+	An older version, as VECTOR2D would not have to receive
+	definition in full here (as the definition in GameEntity.h 
+	takes precedance).
+*/
+#ifndef VECTOR2D
+#define VECTOR2D
 struct Vector2D
 {
 	// Properties:
@@ -49,6 +58,7 @@ struct Vector2D
 		}
 	}
 };
+#endif
 
 class GameBitmap
 {
@@ -109,13 +119,23 @@ public:
 	*/
 	void Draw(bool GameEntityHasMovedSinceLastDraw);
 
-	/** Attempt to move in a certain direction */
-	void AttemptBitmapLeftwardsMovement();
-	void AttemptBitmapRightwardsMovement();
-	void AttemptBitmapUpwardsMovement();
-
 	// Get methods:
 
 	Vector2D GetBitmapPosition();
-};
 
+	Vector2D GetBitmapWidthHeight();
+
+	// Update methods:
+
+	/** 
+		Description: Move bitmaps by the movement speed of 
+		the GameEntity (in the respective direction).
+
+		@Param: int MovementSpeed: to number of pixels to move
+		in the respective direction by.
+	*/
+	void MoveBitmapLeftwards(int MovementSpeed);
+	void MoveBitmapRightwards(int MovementSpeed);
+	void MoveBitmapUpwards(int MovementSpeed);
+
+};

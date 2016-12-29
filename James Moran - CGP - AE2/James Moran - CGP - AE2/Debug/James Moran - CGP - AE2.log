@@ -1,6 +1,18 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (James Moran Tutorial 03 Exercise 03.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Player.cpp
+  GameEntity.cpp
+  GameBitmap.cpp
+  Generating Code...
+  Compiling...
+  InputManager.cpp
+  GameManager.cpp
   GameLevel.cpp
 c:\users\james moran\documents\c++ projects\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(43): warning C4018: '<': signed/unsigned mismatch
-c:\users\james moran\documents\c++ projects\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(150): warning C4715: 'GameLevel::GetPlayerCharacterReference': not all control paths return a value
+  EntryPoint.cpp
+  Enemy.cpp
+  Generating Code...
+c:\users\james moran\documents\c++ projects\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(151): warning C4715: 'GameLevel::GetPlayerCharacterReference': not all control paths return a value
+  Skipping... (no relevant changes detected)
+  GameCollisionSystem.cpp
   James Moran - CGP - AE2.vcxproj -> C:\Users\James Moran\Documents\C++ projects\James Moran - CGP - AE2\Debug\James Moran - CGP - AE2.exe
   James Moran - CGP - AE2.vcxproj -> C:\Users\James Moran\Documents\C++ projects\James Moran - CGP - AE2\Debug\James Moran - CGP - AE2.pdb (Full PDB)

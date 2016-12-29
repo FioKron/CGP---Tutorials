@@ -12,6 +12,6 @@ private:
 public:
 	/** Standard constructor */
 	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, 
-		std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
+		EntityID UniqueID = EnemyID, std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
 };
 

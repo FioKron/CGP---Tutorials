@@ -1,8 +1,8 @@
 #include "Player.h"
 
 // Initialise this instance:
-Player::Player(SDL_Renderer * RendererToUse, int XPosition, int YPosition, std::string FileName, bool UsesTransparency) :
-	GameEntity(RendererToUse, XPosition, YPosition, FileName, UsesTransparency)
+Player::Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, EntityID UniqueID, std::string FileName, bool UsesTransparency) :
+	GameEntity(RendererToUse, XPosition, YPosition, FileName, UniqueID, UsesTransparency)
 {
 	// Player starts with 3 lives, and won't have the key:
 	CurrentLives = 3;
@@ -12,15 +12,17 @@ Player::Player(SDL_Renderer * RendererToUse, int XPosition, int YPosition, std::
 // Handle attempts at movement:
 void Player::AttemptMoveLeft()
 {
-	/** For now; simply move the Player left and right */
-	//CleanUpPreviousPosition();
-	EntityScreenPosition.XComponent--;
+	if (GameCollisionSystem::GetCollisionSystem().CheckLeftSideCollision(this, EntityRepresentation->GetBitmapPosition().XComponent - 1))
+	{
+		// Declare a movement speed later:
+		EntityRepresentation->MoveBitmapLeftwards(1);
+	}
 }
 
 void Player::AttemptMoveRight()
 {
-	//CleanUpPreviousPosition();
-	EntityScreenPosition.XComponent++;
+
+	//EntityScreenPosition.XComponent++;
 }
 
 void Player::AttemptJump()

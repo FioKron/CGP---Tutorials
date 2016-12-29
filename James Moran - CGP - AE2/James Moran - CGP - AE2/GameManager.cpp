@@ -122,8 +122,5 @@ void GameManager::Update()
 // Get methods:
 GameLevel* GameManager::GetGameLevelReference()
 {
-	if (GameLevelReference)
-	{
-		return GameLevelReference;
-	}
+	return GameLevelReference;	
 }

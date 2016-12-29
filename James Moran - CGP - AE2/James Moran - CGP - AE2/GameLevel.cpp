@@ -84,11 +84,7 @@ void GameLevel::Render()
 	SDL_Rect BlockTextureDimensions = { RectangleOrigin.XComponent, RectangleOrigin.YComponent, BlockDimensions.XComponent, BlockDimensions.YComponent };
 
 	// Initialise textures:
-	if (!WallBlockTexture)
-	{
-		InitialiseWallBlockTexture();
-	}
-	
+
 	if (!BlankBlockTexture)
 	{
 		InitialiseBlankBlockTexture();
@@ -112,6 +108,11 @@ void GameLevel::Render()
 		RectangleOrigin.YComponent += BlockDimensions.YComponent;
 		BlockTextureDimensions.y = RectangleOrigin.YComponent;
 	}
+
+	// Add mobile-game entities to the end of this collection (after the tiles):
+	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(FirstEnemy);
+	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(SecondEnemy);
+	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(PlayerCharacter);
 }
 
 // For updating:
@@ -160,30 +161,15 @@ void GameLevel::InitialiseBlankBlockTexture()
 	// White for a blank space:
 	Uint32 BlankBlockColour = SDL_MapRGB(BlankBlockSurface->format, 255, 255, 255);
 
+	// For actually creating the texture:
 	SDL_FillRect(BlankBlockSurface, NULL, BlankBlockColour);
 	BlankBlockTexture = SDL_CreateTextureFromSurface(LevelRenderer, BlankBlockSurface);
 	SDL_FreeSurface(BlankBlockSurface);
 }
 
-void GameLevel::InitialiseWallBlockTexture()
+void GameLevel::AddBlockToCollisionSystem(GameEntity* BlockToAdd)
 {
-	SDL_Surface* BlockSurface = SDL_CreateRGBSurface(0, BlockDimensions.XComponent, BlockDimensions.YComponent, 32, 0, 0, 0, 0);
-
-	// Orange for a Wall block:
-	Uint32 WallBlockColour = SDL_MapRGB(BlockSurface->format, 255, 128, 0);
-	
-	SDL_FillRect(BlockSurface, NULL, WallBlockColour);
-	WallBlockTexture = SDL_CreateTextureFromSurface(LevelRenderer, BlockSurface);	
-	SDL_FreeSurface(BlockSurface);
-}
-
-void GameLevel::AddBlockToCollisionSystem(Vector2D EntityPosition, BlockType TypeOfBlock)
-{
-	if (TypeOfBlock == WallBlock)
-	{
-		//GameEntity ThisWallBlock = GameEntity(LevelRenderer, EntityPosition.XComponent, EntityPosition.YComponent, "");
-		//GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(&ThisWallBlock);
-	}
+	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(BlockToAdd);
 }
 
 Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, BlockType TypeOfBlock)
@@ -192,8 +178,11 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 
 	if (TypeOfBlock == WallBlock)
 	{
-		SDL_RenderCopy(LevelRenderer, WallBlockTexture, NULL, BlockTextureDimensions);
-		AddBlockToCollisionSystem(UpdatedRectanglePosition, WallBlock);
+		//SDL_RenderCopy(LevelRenderer, WallBlockTexture, NULL, BlockTextureDimensions);
+		GameEntity* ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent, 
+			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", WallBlockID);
+		ThisWallBlock->UpdateEntity();
+		AddBlockToCollisionSystem(ThisWallBlock);
 	}
 	else
 	{
@@ -202,18 +191,22 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	}
 
 	// Update the Dimension Rectangle's position:
-	if ((UpdatedRectanglePosition.XComponent) != (BlockDimensions.XComponent * LevelDimensions.XComponent))
-	{
-		// So long as the width of the level is not equal to the block width^2:
-		UpdatedRectanglePosition.XComponent += BlockDimensions.XComponent;
-	}
-	else
-	{
-		UpdatedRectanglePosition.XComponent = 0;
-	}
-
+	UpdateRectangleGridPosition(UpdatedRectanglePosition);
 	BlockTextureDimensions->x = UpdatedRectanglePosition.XComponent;
 
 	return UpdatedRectanglePosition;
+}
+
+void GameLevel::UpdateRectangleGridPosition(Vector2D& PositionToUpdate)
+{
+	if ((PositionToUpdate.XComponent) != (BlockDimensions.XComponent * LevelDimensions.XComponent))
+	{
+		// So long as the width of the level is not equal to the block width^2:
+		PositionToUpdate.XComponent += BlockDimensions.XComponent;
+	}
+	else
+	{
+		PositionToUpdate.XComponent = 0;
+	}	
 }
 

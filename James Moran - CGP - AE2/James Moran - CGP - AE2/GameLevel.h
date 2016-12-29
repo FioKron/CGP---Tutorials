@@ -70,17 +70,16 @@ private:
 
 	// Functions:
 
-	// For setting up various textures
+	// For setting up the blank block texture:
 	void InitialiseBlankBlockTexture();
-	void InitialiseWallBlockTexture();
 
 	/**
 		Add a specific type of block to the GameCollisionSystem's collection:
 
-		@Params: Vector2D EntityPosition: The position of this block.
-		BlockType TypeOfBlock: The type of block this specific block is.
+		@Param: GameEntity* BlockToAdd: The block to add to the collision system's
+		GameEntities collection.
 	*/
-	void AddBlockToCollisionSystem(Vector2D EntityPosition, BlockType TypeOfBlock);
+	void AddBlockToCollisionSystem(GameEntity* BlockToAdd);
 
 	// For showing blocks of various types
 
@@ -98,5 +97,16 @@ private:
 		the parameter parsed in to start off with.
 	*/
 	Vector2D DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, BlockType TypeOfBlock);
+
+	/** 
+		Description: Update the position of the rectangle on the grid, 
+		whilst rendering the level.
+
+		@Param: Vector2D& PositionToUpdate: The Vector2D to modify as appropriate.
+
+		@Return: Vector2D PositionToUpdate: After receiving the appropirate 
+		updating.
+	*/
+	void UpdateRectangleGridPosition(Vector2D& PositionToUpdate);
 };
 

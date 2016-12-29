@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameEntity.h"
+#include "GameCollisionSystem.h"
 
 /**
 	The class for the Player, the goal of them game for them;
@@ -22,7 +23,7 @@ public:
 
 	/** Standard constructor */
 	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition,
-		std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
+		EntityID UniqueID = PlayerID, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
 	
 	// Movement handling:
 	void AttemptMoveLeft();
