@@ -60,9 +60,31 @@ private:
 	*/
 	bool AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* MovingEntity, Vector2D ProposedNewPoint1, Vector2D ProposedNewPoint2, EntityDirection MovementDirection);
 
-	// Properties:
+	/** 
+		Description: Check if there is a blocking-GameEntity
+		at PositionToCheck.
 
-	std::vector<GameEntity*> GameEntities;
+		@Params: int RowToCheck: The row to check:
+		
+		Vector2D StartingVertex: The position to check from
+		
+		Vector2D EndingVertex: The position to check to.
+
+		@Return: bool PositionOccupied: True if there is a
+		blocking GameEntity here.	
+	*/
+	bool GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex);
+
+	// Properties:
+	
+	/** For the rows of all game entities */
+	std::vector<std::vector<GameEntity*>> GameEntities;
+
+	/** Temporary storage for each row, before adding the row to GameEntities */
+	std::vector<GameEntity*> TemporaryRow;
+
+	/** The maximum number of game-entities per row */
+	int GameEntitiesPerRow;
 
 public:
 
@@ -87,7 +109,7 @@ public:
 		@Return: GameCollisionSystem&: The class reference,
 		in order to use it. 
 	*/
-	static GameCollisionSystem& GetCollisionSystem()
+	static GameCollisionSystem& GetCollisionSystem(int NewEntitiesPerRow)
 	{
 		/**
 			(Comments on the respective lines are apparently the case,
@@ -95,6 +117,10 @@ public:
 			 http://stackoverflow.com/questions/1008019/c-singleton-design-pattern)
 		*/
 		static GameCollisionSystem Instance; // 'Guaranteed to be destroyed.'
+		
+		// For setting up the vector of vectors FIND A WAY TO
+		// GET THE NUMBER OF ROWS:
+		Instance.GameEntitiesPerRow = NewEntitiesPerRow;
 
 		return Instance; // 'Instantiated on first use.'
 	}
@@ -106,7 +132,10 @@ public:
 	*/
 
 	/**
-		@Params: int ProposedNewNegativeX: The proposed new value of the
+		Description: Allow leftwards movement if there is no collision with
+		other game-entities.
+
+		@Params: int ProposedNewNegativeXPosition: The proposed new value of the
 		Entity's X-Position (less-than the current value; as
 		this bitmap is moving leftwards),
 		to check for validility. 
@@ -116,10 +145,13 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeX);
+	bool CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeXPosition);
 
 	/**
-		@Params: int ProposedNewPositiveX: The proposed new value of the
+		Description: Allow rightwards movement if there is no collision with
+		other game-entities.
+
+		@Params: int ProposedNewPositiveXPosition: The proposed new value of the
 		Entity's X-Position (greater-than the current value; as
 		this bitmap is moving rightwards),
 		to check for validility.
@@ -129,10 +161,13 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveX);
+	bool CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveXPosition);
 
 	/**
-		@Params: int ProposedNewPositiveY: The proposed new value of the
+		Description: Allow upwards movement if there is no collision with
+		other game-entities.
+
+		@Params: int ProposedNewPositiveYPosition: The proposed new value of the
 		Entity's Y-Position (greater-than the current value; as
 		this bitmap is moving upwards),
 		to check for validility. 
@@ -142,6 +177,6 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveY);
+	bool CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveYPosition);
 };
 

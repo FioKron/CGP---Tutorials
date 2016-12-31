@@ -16,84 +16,81 @@ GameCollisionSystem::~GameCollisionSystem()
 bool GameCollisionSystem::AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* EntityMoving, Vector2D ProposedNewPoint1, 
 	Vector2D ProposedNewPoint2, EntityDirection MovementDirection)
 {
-	// To return false if at the end:
-	int ElementsChecked = 0;
-	// The greatest value of ElementsChecked will always have equality to the size
-	// of GameEntites, minus 1, so Elements to check is set to that value (for when checking is to stop): 
-	int ElementsToCheck = GameEntities.size() - 1; 
-
-	// COLAPSE INTO FUNCTIONS:
-	for each (GameEntity* ConsideredEntity in GameEntities)
+	if (MovementDirection == Leftwards)
 	{
-		if (ConsideredEntity)
+		// YComponent for the row number
+		int RowNumber = EntityMoving->GetEntityPosition().YComponent / EntityMoving->GetGameLevelBlockDimensions().YComponent;
+	
+		if (GameEntityIsAtPosition(EntityMoving, RowNumber, ProposedNewPoint1, ProposedNewPoint2))
 		{
-			// Only check for position-occupation; if the EntityMoving is not the ConsideredEntity:
-			if (EntityMoving != ConsideredEntity)
-			{
-				if (MovementDirection == Leftwards)
-				{
-					Vector2D ConsideredEntityTopRightCorner = Vector2D(ConsideredEntity->GetEntityPosition().XComponent + ConsideredEntity->GetEntityExtents().XComponent,
-						ConsideredEntity->GetEntityPosition().YComponent);
-					Vector2D ConsideredEntityBottomRightCorner = Vector2D(ConsideredEntityTopRightCorner.XComponent,
-						ConsideredEntityTopRightCorner.YComponent + ConsideredEntity->GetEntityExtents().YComponent);
-
-					/**
-					Now check if ConsideredEntity's range (TopRightCorner.YComponent to BottomRightCorner.YComponent),
-					matches EntityMoving's range (ProposedNewPoint1.YComponent to ProposedNewPoint2.YComponent):
-					*/
-					if ((ProposedNewPoint1.XComponent < ConsideredEntityTopRightCorner.XComponent) &&
-						(ProposedNewPoint1.YComponent > ConsideredEntityTopRightCorner.YComponent) &&
-						(ProposedNewPoint1.YComponent < ConsideredEntityBottomRightCorner.YComponent))
-					{
-						return true;
-					}
-					else if ((ProposedNewPoint2.XComponent < ConsideredEntityTopRightCorner.XComponent) &&
-						(ProposedNewPoint2.YComponent > ConsideredEntityTopRightCorner.YComponent) &&
-						(ProposedNewPoint2.YComponent < ConsideredEntityBottomRightCorner.YComponent))
-					{
-						return true;
-					}					
-				}
-			}
-			else
-			{
-				return false;
-			}
+			return true;
 		}
 		else
 		{
 			return false;
 		}
-
-		ElementsChecked++;
-
-		if (ElementsChecked == ElementsToCheck)
-		{
-			return false;
-		}
-
-		std::cout << ElementsChecked << std::endl;
 	}
 
 	// No entities occupy the space:
 	return false;
 }
 
+bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex)
+{
+	// (SIZE IS ABSOLUTE, SUBTRACT NOT FROM IT, OTHERWISE NOT ALL ENTITIES WILL GET CHECKED)
+	for (int Iterator = 0; Iterator < GameEntities.at(RowToCheck).size(); Iterator++)
+	{
+		GameEntity* EntityToCheck = GameEntities.at(RowToCheck).at(Iterator);
+
+		// Only check for position-occupation; if the EntityToCheck is not the EntityAttemptingMovement:
+		if (EntityAttemeptingMovement != EntityToCheck)
+		{
+			if (EntityToCheck->GetIsBlockingEntity() && EntityToCheck->BlockingGameEntityOccupiesPosition(StartingVertex, EndingVertex))
+			{
+				if (EntityToCheck->GetUniqueID() == EI_WALL_BLOCK)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	// No Entity taking up that space if execution reaches this point:
+	return false;
+}
+
 // For adding Entities to this collection, for future collision reference checking:
+// RESOLVE ISSUES HERE!?F!£F!£
 void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 {
-	GameEntities.push_back(EntityToAdd);
+	if (EntityToAdd)
+	{
+		if (TemporaryRow.size() < GameEntitiesPerRow)
+		{
+			TemporaryRow.push_back(EntityToAdd);
+		}
+		else
+		{
+			GameEntities.push_back(TemporaryRow);
+			TemporaryRow.clear();
+			TemporaryRow.push_back(EntityToAdd);
+		}	
+	}	
 }
 
 /** 
 	Check for collision on the left, right and top 
 	sides respectivley.
 */
-bool GameCollisionSystem::CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeX)
+bool GameCollisionSystem::CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeXPosition)
 {
 	// For evauluating collision:
 	Vector2D EntityWidthHeight = ConsideredEntity->GetEntityExtents();
-	Vector2D NewTopLeftCorner = Vector2D(ProposedNewNegativeX, ConsideredEntity->GetEntityPosition().YComponent);
+	Vector2D NewTopLeftCorner = Vector2D(ProposedNewNegativeXPosition, ConsideredEntity->GetEntityPosition().YComponent);
 	Vector2D NewBottomLeftCorner = Vector2D(NewTopLeftCorner.XComponent, NewTopLeftCorner.YComponent + EntityWidthHeight.YComponent);
 	
 	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, NewTopLeftCorner, 
@@ -108,12 +105,12 @@ bool GameCollisionSystem::CheckLeftSideCollision(GameEntity* ConsideredEntity, i
 	}
 }
 
-bool GameCollisionSystem::CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveX)
+bool GameCollisionSystem::CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveXPosition)
 {
 	return false;
 }
 
-bool GameCollisionSystem::CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveY)
+bool GameCollisionSystem::CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveYPosition)
 {
 	return false;
 }

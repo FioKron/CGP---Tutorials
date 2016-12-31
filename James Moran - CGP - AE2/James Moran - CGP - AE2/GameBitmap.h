@@ -110,12 +110,9 @@ public:
 	/**
 		Description: Draw this bitmap.
 
-		@Params: bool GameEntityHasMovedSinceLastDraw: For if the
+		@Param: bool GameEntityHasMovedSinceLastDraw: For if the
 		bitmap of this GameEntity has moved since the last call to
 		Draw().
-
-		int NewPositionX: The new X-Position for this Bitmap. (Tutorial 4, Exercise 1)
-		int NewPositionY: The new Y-Position for this Bitmap. (Tutorial 4, Exercise 1)
 	*/
 	void Draw(bool GameEntityHasMovedSinceLastDraw);
 

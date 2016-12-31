@@ -1,5 +1,6 @@
-#pragma once
+//#pragma once
 #include "GameBitmap.h"
+#include "GameLevel.h"
 
 // Foward declared-classes:
 // (Hmm...)
@@ -58,27 +59,65 @@ struct Vector2D
 #endif
 
 // Enumerations:
-
+#ifndef ENTITY_ID
+#define ENTITY_ID
 enum EntityID
 {
-	WallBlockID,
-	EnemyID,
-	PlayerID
+	EI_BLANK_BLOCK,
+	EI_WALL_BLOCK,
+	EI_ENEMY,
+	EI_PLAYER
 };
+#endif
+
+#ifndef GAME_ENTITY_H
+#define GAME_ENTITY_H
 
 class GameEntity
 {
-
+	
 public:
 
 	// Functions:
 
+	/**
+		Description: Standard constructor.
+
+		@Params: SDL_Renderer* RendererToUse: The renderer to use for this Entity.
+		int XPosition: The new X-Position of this entity (in pixels).
+		int YPosition: The new Y-Position of this entity (in pixels).
+		std::string FileName: The file name and relative path, of the bitmap for
+		this GameEntity to load.
+		EntityID UniqueEntityID: The unique ID of this Entity, for identification in
+		other class's functions.
+		Vector2D ActiveBlockDimensions: For the dimensions of each block, of the level,
+		this GameEntity is currently within (for determining where in the grid mobile-entities are).
+		bool UsesTransparency = false: As the majority of game-entities will not use a transparency
+		layer (can set so that this is not the case (not-not, that is)).
+	*/
 	GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
-		EntityID UniqueEntityID, bool UsesTransparency = false);
+		Vector2D ActiveBlockDimensions, EntityID UniqueEntityID, bool UsesTransparency = false);
+
+	/** Default constructor (for 'empty' initialisation) */
+	GameEntity();
+	
+	/** Standard destructor */
 	~GameEntity();
 
 	/** For updating this Entity */
 	void UpdateEntity();
+
+	/**
+		Description: Check if there is a blocking-GameEntity
+		at PositionToCheck.
+
+		@Param: Vector2D StartingVertex: The position to check from
+		Vector2D EndingVertex: The position to check to.
+
+		@Return: bool PositionOccupied: True if there is a
+		blocking GameEntity here.
+	*/
+	bool BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vector2D EndingVertex);
 
 	// Get methods:
 
@@ -92,6 +131,10 @@ public:
 
 	EntityID GetUniqueID();
 
+	Vector2D GetGameLevelBlockDimensions();
+
+	bool GetIsBlockingEntity();
+
 protected:
 
 	// Properties:
@@ -100,9 +143,19 @@ protected:
 
 	/** To uniquely identify this GameEntity */
 	EntityID UniqueID;
+
+	// Flags:
+
+	bool BlockingEntity;
+
+	/** 
+		Dimensions of each block within the
+		active level (for collision checking later) 
+	*/
+	Vector2D CurrentGameLevelBlockDimensions;
 		
 	// For use in drawing:
 	
 	//Vector2D EntityScreenPosition;
 };
-
+#endif

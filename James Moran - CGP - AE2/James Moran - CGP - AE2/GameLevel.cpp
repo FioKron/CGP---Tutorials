@@ -9,9 +9,9 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, V
 	LevelDimensions = Vector2D(NewLevelDimensions);
 
 	// Game Entities:
-	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800);
-	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50);
-	PlayerCharacter = new Player(RendererToUse, 900, 900);
+	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions);
+	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions);
+	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions);
 
 	// The grid reference for the Render method to use:
 	// (50-50 x 20-20):
@@ -65,6 +65,7 @@ GameLevel::~GameLevel()
 }
 
 // For getting the bounds of the level:
+// (-1, a)
 int GameLevel::GetHeight()
 {
 	return LevelDimensions.YComponent;
@@ -97,11 +98,11 @@ void GameLevel::Render()
 		{
 			if (LevelGrid[OuterCounter][InnerCounter] == 'W')
 			{
-				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, WallBlock);				
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_WALL);				
 			}
 			else
 			{
-				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BlankBlock);
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_BLANK);
 			}
 		}
 
@@ -110,9 +111,9 @@ void GameLevel::Render()
 	}
 
 	// Add mobile-game entities to the end of this collection (after the tiles):
-	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(FirstEnemy);
-	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(SecondEnemy);
-	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(PlayerCharacter);
+	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).AddGameEntityToCollection(FirstEnemy);
+	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).AddGameEntityToCollection(SecondEnemy);
+	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).AddGameEntityToCollection(PlayerCharacter);
 }
 
 // For updating:
@@ -167,28 +168,48 @@ void GameLevel::InitialiseBlankBlockTexture()
 	SDL_FreeSurface(BlankBlockSurface);
 }
 
-void GameLevel::AddBlockToCollisionSystem(GameEntity* BlockToAdd)
+void GameLevel::AddEntityToCollisionSystem(GameEntity* EntityToAdd)
 {
-	GameCollisionSystem::GetCollisionSystem().AddGameEntityToCollection(BlockToAdd);
+	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).AddGameEntityToCollection(EntityToAdd);
 }
 
 Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* BlockTextureDimensions, BlockType TypeOfBlock)
 {
 	Vector2D UpdatedRectanglePosition = CurrentRectanglePosition;
+	GameEntity* ThisBlankBlock;
+	GameEntity* ThisWallBlock;
 
+	switch (TypeOfBlock)
+	{
+	case BT_BLANK:
+		ThisBlankBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
+			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", LevelDimensions, EI_BLANK_BLOCK);
+		ThisBlankBlock->UpdateEntity();
+		AddEntityToCollisionSystem(ThisBlankBlock);
+		break;
+	
+	case BT_WALL:
+		ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
+			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", LevelDimensions, EI_WALL_BLOCK);
+		ThisWallBlock->UpdateEntity();
+		AddEntityToCollisionSystem(ThisWallBlock);
+		break;
+
+	default:
+		break;
+	}
+
+	/**
 	if (TypeOfBlock == WallBlock)
 	{
-		//SDL_RenderCopy(LevelRenderer, WallBlockTexture, NULL, BlockTextureDimensions);
-		GameEntity* ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent, 
-			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", WallBlockID);
-		ThisWallBlock->UpdateEntity();
-		AddBlockToCollisionSystem(ThisWallBlock);
+		
 	}
-	else
+	else if (TypeOfBlock == BlankBlock)
 	{
 		// Blank blocks are not signifcant blocks, so refrain from adding them to GameEntities:
 		SDL_RenderCopy(LevelRenderer, BlankBlockTexture, NULL, BlockTextureDimensions);
 	}
+	*/
 
 	// Update the Dimension Rectangle's position:
 	UpdateRectangleGridPosition(UpdatedRectanglePosition);

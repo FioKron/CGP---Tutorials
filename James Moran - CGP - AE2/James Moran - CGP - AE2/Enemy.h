@@ -1,6 +1,9 @@
 #pragma once
 #include "GameEntity.h"
 
+// Forward references again (welp):
+class GameEntity;
+
 class Enemy : public GameEntity
 {
 	
@@ -11,7 +14,7 @@ private:
 
 public:
 	/** Standard constructor */
-	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, 
-		EntityID UniqueID = EnemyID, std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
+	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
+		EntityID UniqueID = EI_ENEMY, std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
 };
 

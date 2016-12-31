@@ -3,6 +3,9 @@
 #include "GameEntity.h"
 #include "GameCollisionSystem.h"
 
+
+#ifndef PLAYER_H
+#define PLAYER_H
 /**
 	The class for the Player, the goal of them game for them;
 	is to get the key and escape from this dungeon level.
@@ -22,8 +25,8 @@ public:
 	// Functions:
 
 	/** Standard constructor */
-	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition,
-		EntityID UniqueID = PlayerID, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
+	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
+		EntityID UniqueID = EI_PLAYER, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
 	
 	// Movement handling:
 	void AttemptMoveLeft();
@@ -35,4 +38,4 @@ public:
 	bool GetHasKey();
 	int GetCurrentLives();
 };
-
+#endif

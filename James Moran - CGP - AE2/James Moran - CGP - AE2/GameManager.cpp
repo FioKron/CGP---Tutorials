@@ -39,8 +39,8 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 	}
 
 	// For setting up the game level:
-	GameLevelBlockDimensions = new Vector2D(NewGameLevelBlockDimensions);
-	GameLevelDimensions = new Vector2D(NewGameLevelDimensions);
+	GameLevelBlockDimensions = Vector2D(NewGameLevelBlockDimensions);
+	GameLevelDimensions = Vector2D(NewGameLevelDimensions);
 	GameLevelReference = new GameLevel(GameRenderer, NewGameLevelBlockDimensions, NewGameLevelDimensions);
 }
 
@@ -53,18 +53,6 @@ GameManager::~GameManager()
 	{
 		delete GameLevelReference;
 		GameLevelReference = nullptr;
-	}
-
-	if (GameLevelDimensions)
-	{
-		delete GameLevelDimensions;
-		GameLevelDimensions = nullptr;
-	}
-
-	if (GameLevelBlockDimensions)
-	{
-		delete GameLevelBlockDimensions;
-		GameLevelBlockDimensions = nullptr;
 	}
 
 	if (GameRenderer)

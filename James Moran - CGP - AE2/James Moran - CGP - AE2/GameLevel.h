@@ -6,22 +6,29 @@
 #include "GameCollisionSystem.h"
 #include <vector>
 
+// Forward declared classes again (argh):
+class Player;
+class Enemy;
+
 class GameLevel
 {
-	// To refer to each type of block (significant types of block only though):
+	// To refer to each type of block:
 	enum BlockType
 	{
-		BlankBlock,
-		WallBlock,
-		DoorBlock,
-		KeyBlock
+		BT_BLANK,
+		BT_WALL,
+		BT_DOOR,
+		BT_KEY
 	};
 
 public:
 
 	// Functions:
 
+	/** Standard constructor: */
 	GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, Vector2D NewLevelDimensions);
+	
+	/** Standard destructor: */
 	~GameLevel();
 	
 	/** For retriving the bounds of the level */
@@ -76,10 +83,10 @@ private:
 	/**
 		Add a specific type of block to the GameCollisionSystem's collection:
 
-		@Param: GameEntity* BlockToAdd: The block to add to the collision system's
-		GameEntities collection.
+		@Param: GameEntity* EntityToAdd: The Entity (Block, Player etc.)
+		to add to the collision system's GameEntities collection.
 	*/
-	void AddBlockToCollisionSystem(GameEntity* BlockToAdd);
+	void AddEntityToCollisionSystem(GameEntity* EntityToAdd);
 
 	// For showing blocks of various types
 

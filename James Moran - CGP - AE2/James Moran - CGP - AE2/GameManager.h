@@ -27,8 +27,8 @@ private:
 
 	/** For refering to the level */
 	GameLevel* GameLevelReference;
-	Vector2D* GameLevelBlockDimensions;
-	Vector2D* GameLevelDimensions;
+	Vector2D GameLevelBlockDimensions;
+	Vector2D GameLevelDimensions;
 
 	// Functions:
 
