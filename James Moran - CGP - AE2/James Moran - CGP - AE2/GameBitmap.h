@@ -82,6 +82,9 @@ private:
 	// Its extents
 	Vector2D BitmapWidthHeight;
 
+	// Screen dimensions (to make sure a texture is not drawn off screen)
+	Vector2D GameScreenDimensions;
+
 	// Flags:
 	
 	/** For ease in reducing flickering */
@@ -104,7 +107,8 @@ private:
 	bool IsNewPositionDifferentToOldPosition(Vector2D ProposedPosition);
 
 public:
-	GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency = false);
+	GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, 
+		Vector2D NewScreenDimensions, bool UsesTransparency = false);
 	~GameBitmap();
 
 	/**
@@ -121,6 +125,10 @@ public:
 	Vector2D GetBitmapPosition();
 
 	Vector2D GetBitmapWidthHeight();
+
+	// Validated set methods:
+
+	void SetBitmapPosition(Vector2D NewPosition);
 
 	// Update methods:
 

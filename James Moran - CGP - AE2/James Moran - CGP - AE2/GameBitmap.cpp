@@ -1,13 +1,16 @@
 #include "GameBitmap.h"
 
 // Standard constructor:
-GameBitmap::GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, int YPosition, bool UsesTransparency)
+GameBitmap::GameBitmap(SDL_Renderer* RendererToUse, std::string FileName, int XPosition, 
+	int YPosition, Vector2D NewScreenDimensions, bool UsesTransparency)
 {
 	BitmapScreenPosition = Vector2D(XPosition, YPosition);
 	BitmapRenderer = RendererToUse;
 	BitmapDrawnOnce = false;
 	// RESOLVE:
 	BitmapWidthHeight = Vector2D(50, 50);
+
+	GameScreenDimensions = NewScreenDimensions;
 
 	// Initilise the GameBitmap surface:
 	BitmapSurface = SDL_LoadBMP(FileName.c_str());
@@ -110,6 +113,8 @@ void GameBitmap::Draw(bool GameEntityHasMovedSinceLastDraw)
 	}
 }
 
+// Get methods:
+
 Vector2D GameBitmap::GetBitmapPosition()
 {
 	return BitmapScreenPosition;
@@ -118,6 +123,24 @@ Vector2D GameBitmap::GetBitmapPosition()
 Vector2D GameBitmap::GetBitmapWidthHeight()
 {
 	return BitmapWidthHeight;
+}
+
+// (Validated) set methods:
+
+void GameBitmap::SetBitmapPosition(Vector2D NewPosition)
+{
+	BitmapScreenPosition = NewPosition;
+
+	// Validation:
+	if (BitmapScreenPosition.XComponent > GameScreenDimensions.XComponent)
+	{
+		BitmapScreenPosition.XComponent = GameScreenDimensions.XComponent;
+	}
+
+	if (BitmapScreenPosition.YComponent > GameScreenDimensions.YComponent)
+	{
+		BitmapScreenPosition.YComponent = GameScreenDimensions.YComponent;
+	}
 }
 
 // Movement of this bitmap as required:

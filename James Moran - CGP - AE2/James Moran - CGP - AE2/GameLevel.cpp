@@ -1,17 +1,20 @@
 #include "GameLevel.h"
 
 // Initilisation:
-GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, Vector2D NewLevelDimensions)
+GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, 
+	Vector2D NewLevelDimensions, Vector2D NewScreenDimensions)
 {
 	LevelRenderer = RendererToUse;
 	// For the level's dimensions:
 	BlockDimensions = Vector2D(NewBlockDimensions);
 	LevelDimensions = Vector2D(NewLevelDimensions);
 
+	GameScreenDimensions = Vector2D(NewScreenDimensions);
+
 	// Game Entities:
-	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions);
-	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions);
-	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions);
+	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions);
+	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions);
+	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, NewScreenDimensions);
 
 	// The grid reference for the Render method to use:
 	// (50-50 x 20-20):
@@ -119,8 +122,8 @@ void GameLevel::Render()
 // For updating:
 void GameLevel::UpdateLevelState()
 {
-	FirstEnemy->UpdateEntity();
-	SecondEnemy->UpdateEntity();
+	FirstEnemy->UpdateEnemy();
+	SecondEnemy->UpdateEnemy();
 	PlayerCharacter->UpdateEntity();
 }
 
@@ -183,14 +186,15 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	{
 	case BT_BLANK:
 		ThisBlankBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
-			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", LevelDimensions, EI_BLANK_BLOCK);
+			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", LevelDimensions, 
+			GameScreenDimensions, EI_BLANK_BLOCK);
 		ThisBlankBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisBlankBlock);
 		break;
 	
 	case BT_WALL:
 		ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
-			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", LevelDimensions, EI_WALL_BLOCK);
+			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", LevelDimensions, GameScreenDimensions, EI_WALL_BLOCK);
 		ThisWallBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisWallBlock);
 		break;
@@ -198,18 +202,6 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	default:
 		break;
 	}
-
-	/**
-	if (TypeOfBlock == WallBlock)
-	{
-		
-	}
-	else if (TypeOfBlock == BlankBlock)
-	{
-		// Blank blocks are not signifcant blocks, so refrain from adding them to GameEntities:
-		SDL_RenderCopy(LevelRenderer, BlankBlockTexture, NULL, BlockTextureDimensions);
-	}
-	*/
 
 	// Update the Dimension Rectangle's position:
 	UpdateRectangleGridPosition(UpdatedRectanglePosition);

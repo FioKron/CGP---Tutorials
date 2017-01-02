@@ -52,6 +52,12 @@ private:
 	*/
 	void DisplayConsoleDebugMessage(std::string DebugMessage);
 
+	// Screen size handling:
+
+	Vector2D ScreenDimensions;
+	const int SCREEN_WIDTH = 1000;
+	const int SCREEN_HEIGHT = 1000;
+
 public:
 	
 	// Functions:
@@ -83,5 +89,7 @@ public:
 
 	/** For getting components of the game-level */
 	GameLevel* GetGameLevelReference();
+
+	Vector2D GetScreenDimensions();
 };
 

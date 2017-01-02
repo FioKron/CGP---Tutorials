@@ -12,17 +12,21 @@ struct Vector2D;
 
 // Enumerations:
 
-/** 
-	To determine what direction an Entity is moving 
-	in. This is to handle what corners to check for and 
-	against when checking Entity-space-occupance.
+/**
+To determine what direction an Entity is moving
+in. This is to handle what corners to check for and
+against when checking Entity-space-occupance.
 */
-enum EntityDirection
+
+#ifndef ENTITY_MOVEMENT_DIRECTION
+#define ENTITY_MOVEMENT_DIRECTION
+enum EntityMovementDirection
 {
-	Leftwards,
-	Rightwards,
-	Upwards
+	ED_LEFTWARDS,
+	ED_RIGHTWARDS,
+	ED_UPWARDS
 };
+#endif
 
 /** 
 	For handling collisions between
@@ -58,7 +62,8 @@ private:
 
 		@Return: True if this is the case.
 	*/
-	bool AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* MovingEntity, Vector2D ProposedNewPoint1, Vector2D ProposedNewPoint2, EntityDirection MovementDirection);
+	bool AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* MovingEntity, Vector2D ProposedNewPoint1, Vector2D ProposedNewPoint2, 
+		EntityMovementDirection MovementDirection);
 
 	/** 
 		Description: Check if there is a blocking-GameEntity
@@ -73,7 +78,18 @@ private:
 		@Return: bool PositionOccupied: True if there is a
 		blocking GameEntity here.	
 	*/
-	bool GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex);
+	bool GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex, 
+		EntityMovementDirection MovementDirection);
+
+	/**
+		Description: Get the row number EntityMoving is on.
+
+		@Param: GameEntity* EntityMoving: The Entity to get the
+		row number of.
+
+		@Return: int RowNumber: The respective calculated value.
+	*/
+	int GetEntityRowNumber(GameEntity* EntityMoving);
 
 	// Properties:
 	

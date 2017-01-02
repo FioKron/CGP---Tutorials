@@ -26,7 +26,8 @@ public:
 	// Functions:
 
 	/** Standard constructor: */
-	GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, Vector2D NewLevelDimensions);
+	GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, 
+		Vector2D NewLevelDimensions, Vector2D NewScreenDimensions);
 	
 	/** Standard destructor: */
 	~GameLevel();
@@ -66,6 +67,8 @@ private:
 	/** Game Level components */
 	Vector2D BlockDimensions;
 	Vector2D LevelDimensions;
+
+	Vector2D GameScreenDimensions;
 
 	//Vector2D* LevelDimensions;
 	std::vector<std::string> LevelGrid;

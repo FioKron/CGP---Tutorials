@@ -26,12 +26,8 @@ public:
 
 	/** Standard constructor */
 	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
-		EntityID UniqueID = EI_PLAYER, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
-	
-	// Movement handling:
-	void AttemptMoveLeft();
-	void AttemptMoveRight();
-	void AttemptJump();
+		Vector2D NewScreenDimensions, EntityID UniqueID = EI_PLAYER, 
+		std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
 
 	// Get methods:
 

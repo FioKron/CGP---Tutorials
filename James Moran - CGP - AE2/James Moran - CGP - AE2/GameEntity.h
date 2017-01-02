@@ -70,6 +70,16 @@ enum EntityID
 };
 #endif
 
+#ifndef ENTITY_MOVEMENT_DIRECTION
+#define ENTITY_MOVEMENT_DIRECTION
+enum EntityMovementDirection
+{
+	ED_LEFTWARDS,
+	ED_RIGHTWARDS,
+	ED_UPWARDS
+};
+#endif
+
 #ifndef GAME_ENTITY_H
 #define GAME_ENTITY_H
 
@@ -96,7 +106,8 @@ public:
 		layer (can set so that this is not the case (not-not, that is)).
 	*/
 	GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
-		Vector2D ActiveBlockDimensions, EntityID UniqueEntityID, bool UsesTransparency = false);
+		Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID,
+		bool UsesTransparency = false);
 
 	/** Default constructor (for 'empty' initialisation) */
 	GameEntity();
@@ -111,13 +122,18 @@ public:
 		Description: Check if there is a blocking-GameEntity
 		at PositionToCheck.
 
-		@Param: Vector2D StartingVertex: The position to check from
+		@Params: Vector2D StartingVertex: The position to check from
+		
 		Vector2D EndingVertex: The position to check to.
+
+		EntityMovementDirection MovementDirection: The direction another
+		Entity is attemepting to move in.
 
 		@Return: bool PositionOccupied: True if there is a
 		blocking GameEntity here.
 	*/
-	bool BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vector2D EndingVertex);
+	bool BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vector2D EndingVertex,
+		EntityMovementDirection MovementDirection);
 
 	// Get methods:
 
@@ -135,7 +151,51 @@ public:
 
 	bool GetIsBlockingEntity();
 
+	/**
+	To get the top-left, top-right,
+	bottom-left and bottom right verticies
+	of this GameEntity's bounding-box
+	(respectivley).
+
+	@Return: Vector2D: The respective vertex,
+	of this GameEntity's bounding-box.
+	*/
+	Vector2D GetEntityTopLeftVertex();
+	Vector2D GetEntityTopRightVertex();
+	Vector2D GetEntityBottomLeftVertex();
+	Vector2D GetEntityBottomRightVertex();
+
+	// Movement handling:
+	void AttemptMoveLeft();
+	void AttemptMoveRight();
+	void AttemptJump();
+
 protected:
+
+	// Properties:
+
+	// Constant values:
+
+	const int MOVEMENT_SPEED = 3;
+
+	// Functions:
+
+	/**
+	Description: Check if a vertex overlaps
+	the left-hand-side or right-hand-sidem
+	of this GameEntity's bounding-box
+	(respectivley).
+
+	@Param: Vector2D VertexToCheck:
+	The vertex to check for overlap,
+	on the right or left sides of this
+	GameEntity's bounding-box.
+
+	@Return: bool VertexOverlapsSide:
+	True if this is the case.
+	*/
+	bool PointsOverlapRightHandSide(Vector2D LineStartVertex, Vector2D LineEndVertex);
+	bool PointsOverlapLeftHandSide(Vector2D LineStartVertex, Vector2D LineEndVertex);
 
 	// Properties:
 
@@ -153,9 +213,5 @@ protected:
 		active level (for collision checking later) 
 	*/
 	Vector2D CurrentGameLevelBlockDimensions;
-		
-	// For use in drawing:
-	
-	//Vector2D EntityScreenPosition;
 };
 #endif

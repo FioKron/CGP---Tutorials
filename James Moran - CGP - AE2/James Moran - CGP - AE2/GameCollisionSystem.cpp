@@ -14,14 +14,14 @@ GameCollisionSystem::~GameCollisionSystem()
 }
 
 bool GameCollisionSystem::AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* EntityMoving, Vector2D ProposedNewPoint1, 
-	Vector2D ProposedNewPoint2, EntityDirection MovementDirection)
+	Vector2D ProposedNewPoint2, EntityMovementDirection MovementDirection)
 {
-	if (MovementDirection == Leftwards)
+	if (MovementDirection == ED_LEFTWARDS)
 	{
 		// YComponent for the row number
 		int RowNumber = EntityMoving->GetEntityPosition().YComponent / EntityMoving->GetGameLevelBlockDimensions().YComponent;
 	
-		if (GameEntityIsAtPosition(EntityMoving, RowNumber, ProposedNewPoint1, ProposedNewPoint2))
+		if (GameEntityIsAtPosition(EntityMoving, RowNumber, ProposedNewPoint1, ProposedNewPoint2, MovementDirection))
 		{
 			return true;
 		}
@@ -35,7 +35,8 @@ bool GameCollisionSystem::AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity
 	return false;
 }
 
-bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex)
+bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, 
+	Vector2D EndingVertex, EntityMovementDirection MovementDirection)
 {
 	// (SIZE IS ABSOLUTE, SUBTRACT NOT FROM IT, OTHERWISE NOT ALL ENTITIES WILL GET CHECKED)
 	for (int Iterator = 0; Iterator < GameEntities.at(RowToCheck).size(); Iterator++)
@@ -45,7 +46,8 @@ bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMo
 		// Only check for position-occupation; if the EntityToCheck is not the EntityAttemptingMovement:
 		if (EntityAttemeptingMovement != EntityToCheck)
 		{
-			if (EntityToCheck->GetIsBlockingEntity() && EntityToCheck->BlockingGameEntityOccupiesPosition(StartingVertex, EndingVertex))
+			if (EntityToCheck->GetIsBlockingEntity() && 
+				EntityToCheck->BlockingGameEntityOccupiesPosition(StartingVertex, EndingVertex, MovementDirection))
 			{
 				if (EntityToCheck->GetUniqueID() == EI_WALL_BLOCK)
 				{
@@ -89,12 +91,13 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 bool GameCollisionSystem::CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeXPosition)
 {
 	// For evauluating collision:
-	Vector2D EntityWidthHeight = ConsideredEntity->GetEntityExtents();
-	Vector2D NewTopLeftCorner = Vector2D(ProposedNewNegativeXPosition, ConsideredEntity->GetEntityPosition().YComponent);
-	Vector2D NewBottomLeftCorner = Vector2D(NewTopLeftCorner.XComponent, NewTopLeftCorner.YComponent + EntityWidthHeight.YComponent);
-	
-	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, NewTopLeftCorner, 
-		NewBottomLeftCorner, Leftwards))
+	Vector2D NewTopLeftVertex = ConsideredEntity->GetEntityTopLeftVertex();
+	NewTopLeftVertex.XComponent = ProposedNewNegativeXPosition;
+	Vector2D NewBottomLeftVertex = ConsideredEntity->GetEntityBottomLeftVertex();
+	NewBottomLeftVertex.XComponent = ProposedNewNegativeXPosition;
+
+	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, NewTopLeftVertex,
+		NewBottomLeftVertex, ED_LEFTWARDS))
 	{
 		// The space is free:
 		return true;
@@ -105,11 +108,26 @@ bool GameCollisionSystem::CheckLeftSideCollision(GameEntity* ConsideredEntity, i
 	}
 }
 
+// RESOLVE CHECKING RIGHT:
 bool GameCollisionSystem::CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveXPosition)
 {
-	return false;
-}
+	// For evauluating collision:
+	Vector2D NewTopRightVertex = ConsideredEntity->GetEntityTopRightVertex();
+	NewTopRightVertex.XComponent = ProposedNewPositiveXPosition;
+	Vector2D NewBottomRightVertex = ConsideredEntity->GetEntityBottomRightVertex();
+	NewBottomRightVertex.XComponent = ProposedNewPositiveXPosition;
 
+	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, NewTopRightVertex,
+		NewBottomRightVertex, ED_RIGHTWARDS))
+	{
+		// This space is free:
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 bool GameCollisionSystem::CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveYPosition)
 {
 	return false;
