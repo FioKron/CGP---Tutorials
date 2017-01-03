@@ -12,8 +12,8 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	GameScreenDimensions = Vector2D(NewScreenDimensions);
 
 	// Game Entities:
-	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions);
-	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions);
+	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions, EI_LOWEST_ENEMY);
+	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions, EI_HIGHEST_ENEMY);
 	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, NewScreenDimensions);
 
 	// The grid reference for the Render method to use:

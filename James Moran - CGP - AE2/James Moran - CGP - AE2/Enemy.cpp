@@ -1,16 +1,29 @@
 #include "Enemy.h"
 
+// Initialisation:
 Enemy::Enemy(SDL_Renderer * RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
 	Vector2D NewScreenDimensions, EntityID UniqueID, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, NewScreenDimensions, UniqueID, UsesTransparency)
 {
 	PatrolStartPoint = Vector2D(XPosition, YPosition);
 	PatrolEndPoint = Vector2D(NewPatrolEndPoint);
+
+	MovingToEndPatrolPoint = true;
 }
 
+// For updating this Enemy:
 void Enemy::UpdateEnemy()
 {
-	if (GetEntityPosition().XComponent != PatrolEndPoint.XComponent)
+	DeterminePointToMoveTo();
+
+	UpdateEntity();
+}
+
+// Handle moving between the two points:
+
+void Enemy::DeterminePointToMoveTo()
+{
+	if (MovingToEndPatrolPoint)
 	{
 		MoveToPatrolEndPoint();
 	}
@@ -18,15 +31,11 @@ void Enemy::UpdateEnemy()
 	{
 		MoveToPatrolStartPoint();
 	}
-
-	UpdateEntity();
 }
-
-// Handle moving between the two points:
 
 void Enemy::MoveToPatrolEndPoint()
 {
-	if (PatrolEndPoint.XComponent > PatrolStartPoint.XComponent)
+	if (UniqueID == EI_LOWEST_ENEMY)
 	{
 		MoveRightwardsToPatrolEndPoint();
 	}
@@ -34,12 +43,11 @@ void Enemy::MoveToPatrolEndPoint()
 	{
 		MoveLeftwardsToPatrolEndPoint();
 	}
-
 }
 
 void Enemy::MoveToPatrolStartPoint()
 {
-	if (PatrolStartPoint.XComponent > PatrolEndPoint.XComponent)
+	if (UniqueID == EI_HIGHEST_ENEMY)
 	{
 		MoveRightwardsToPatrolStartPoint();
 	}
@@ -49,46 +57,70 @@ void Enemy::MoveToPatrolStartPoint()
 	}
 }
 
+// Move in the appropriate movement direction: 
+
 void Enemy::MoveRightwardsToPatrolEndPoint()
 {
 	//AttemptMoveRight();
-	EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
-
-	if (GetEntityPosition().XComponent > PatrolEndPoint.XComponent)
-	{
-		EntityRepresentation->SetBitmapPosition(PatrolEndPoint);
-	}
+	MoveRightWards();
+	ValidateRightwardsMovement(PatrolEndPoint);
 }
 
 void Enemy::MoveLeftwardsToPatrolEndPoint()
 {
 	//AttemptMoveLeft();
-	EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
-
-	if (GetEntityPosition().XComponent < PatrolEndPoint.XComponent)
-	{
-		EntityRepresentation->SetBitmapPosition(PatrolEndPoint);
-	}
+	MoveLeftwards();
+	ValidateLeftwardsMovement(PatrolEndPoint);
 }
 
 void Enemy::MoveRightwardsToPatrolStartPoint()
 {
 	//AttemptMoveRight();
-	EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
-
-	if (GetEntityPosition().XComponent > PatrolStartPoint.XComponent)
-	{
-		EntityRepresentation->SetBitmapPosition(PatrolStartPoint);
-	}
+	MoveRightWards();
+	ValidateRightwardsMovement(PatrolStartPoint);
 }
 
 void Enemy::MoveLeftwardsToPatrolStartPoint()
 {
 	//AttemptMoveLeft();
-	EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
+	MoveLeftwards();
+	ValidateLeftwardsMovement(PatrolStartPoint);
+}
 
-	if (GetEntityPosition().XComponent < PatrolStartPoint.XComponent)
+void Enemy::MoveLeftwards()
+{
+	EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
+	// To allow the Player to avoid collision with these Enemies:
+	SDL_Delay(10);
+}
+
+void Enemy::MoveRightWards()
+{
+	EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
+	// To allow the Player to avoid collision with these Enemies:
+	SDL_Delay(10);
+}
+
+// Invert this flag:
+void Enemy::MovingToOtherPatrolPoint()
+{
+	MovingToEndPatrolPoint = !MovingToEndPatrolPoint;
+}
+
+// Handle movement validation:
+
+void Enemy::ValidateLeftwardsMovement(Vector2D TargetPatrolPoint)
+{
+	if (GetEntityPosition().XComponent <= TargetPatrolPoint.XComponent)
 	{
-		EntityRepresentation->SetBitmapPosition(PatrolStartPoint);
+		MovingToOtherPatrolPoint();
+	}
+}
+
+void Enemy::ValidateRightwardsMovement(Vector2D TargetPatrolPoint)
+{
+	if (GetEntityPosition().XComponent >= TargetPatrolPoint.XComponent)
+	{
+		MovingToOtherPatrolPoint();
 	}
 }
