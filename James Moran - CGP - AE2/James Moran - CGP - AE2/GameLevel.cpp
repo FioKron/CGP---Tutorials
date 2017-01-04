@@ -95,7 +95,7 @@ void GameLevel::Render()
 	}
 	
 	// A less-than or equal to operator was the solution to unintended patterns occuring earlier, as opposed to a less-than operator:
-	for (int OuterCounter = 0; OuterCounter <= GetHeight(); OuterCounter++)
+	for (int OuterCounter = 0; OuterCounter < GetHeight(); OuterCounter++)
 	{
 		for (int InnerCounter = 0; InnerCounter <= GetWidth(); InnerCounter++)
 		{

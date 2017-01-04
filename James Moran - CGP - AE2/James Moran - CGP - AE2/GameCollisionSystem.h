@@ -91,6 +91,16 @@ private:
 	*/
 	int GetEntityRowNumber(GameEntity* EntityMoving);
 
+	/**
+		Description: Get the column number EntityMoving is on.
+
+		@Param: GameEntity* EntityMoving: The Entity to get the
+		column number of.
+
+		@Return: int ColumnNumber: The respective calculated value.
+	*/
+	int GetEntityColumnNumber(GameEntity* EntityMoving);
+
 	// Properties:
 	
 	/** For the rows of all game entities */
@@ -99,8 +109,11 @@ private:
 	/** Temporary storage for each row, before adding the row to GameEntities */
 	std::vector<GameEntity*> TemporaryRow;
 
-	/** The maximum number of game-entities per row */
+	/** The maximum number of game-entities per row... */
 	int GameEntitiesPerRow;
+
+	/** ...as well as in a column */
+	int GameEntitiesPerColumn;
 
 public:
 
@@ -134,8 +147,7 @@ public:
 		*/
 		static GameCollisionSystem Instance; // 'Guaranteed to be destroyed.'
 		
-		// For setting up the vector of vectors FIND A WAY TO
-		// GET THE NUMBER OF ROWS:
+		// For setting up the vector of vectors: 
 		Instance.GameEntitiesPerRow = NewEntitiesPerRow;
 
 		return Instance; // 'Instantiated on first use.'

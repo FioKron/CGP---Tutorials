@@ -116,8 +116,12 @@ public:
 	/** Standard destructor */
 	~GameEntity();
 
-	/** For updating this Entity */
-	void UpdateEntity();
+	/**
+		For updating this Entity 
+		(The Player overrides this function;
+		to handle falling whilst airborne)
+	*/
+	virtual void UpdateEntity();
 
 	/**
 		Description: Check if there is a blocking-GameEntity
@@ -168,10 +172,9 @@ public:
 	Vector2D GetEntityBottomLeftVertex();
 	Vector2D GetEntityBottomRightVertex();
 
-	// Movement handling:
+	// Movement handling (for all types of mobile entities):
 	void AttemptMoveLeft();
 	void AttemptMoveRight();
-	void AttemptJump();
 
 protected:
 

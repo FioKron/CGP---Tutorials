@@ -75,19 +75,16 @@ void InputManager::SetKeyReleased(SDL_Keycode ReleasedKey)
 */
 void InputManager::PlayerAttemptsLeftwardsMovement()
 {
-	// Test:
 	PlayerReference->AttemptMoveLeft();
 }
 
 void InputManager::PlayerAttemptsRightwardsMovement()
 {
-	// Test:
 	PlayerReference->AttemptMoveRight();
 }
 
 void InputManager::PlayerAttemptsJump()
 {
-	// Test:
 	PlayerReference->AttemptJump();
 }
 

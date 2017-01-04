@@ -151,11 +151,6 @@ void GameEntity::AttemptMoveRight()
 	}
 }
 
-void GameEntity::AttemptJump()
-{
-
-}
-
 // Overlap checking:
 
 bool GameEntity::PointsOverlapRightHandSide(Vector2D LineStartVertex, Vector2D LineEndVertex)
