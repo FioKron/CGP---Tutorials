@@ -6,7 +6,7 @@ InputManager::InputManager(Player* NewPlayerReference)
 	PlayerReference = NewPlayerReference;
 
 	// Initilise PressedKeys to false (all of it):
-	for (int Counter = 0; Counter < PRESSED_KEYS_SIZE; Counter++)
+	for (int Counter = 0; Counter < KI_PRESSED_KEYS_SIZE; Counter++)
 	{
 		PressedKeys[Counter] = false;
 	}
@@ -27,21 +27,21 @@ void InputManager::SetKeyPressed(SDL_Keycode PressedKey)
 	switch (PressedKey)
 	{
 	case SDLK_ESCAPE:
-		PressedKeys[KEY_ESCAPE] = true;
+		PressedKeys[KI_ESCAPE] = true;
 		break;
 	case SDLK_w:
-		PressedKeys[KEY_W] = true;
+		PressedKeys[KI_W] = true;
 		PlayerAttemptsJump();
 		break;
 	case SDLK_a:
-		PressedKeys[KEY_A] = true;
+		PressedKeys[KI_A] = true;
 		PlayerAttemptsLeftwardsMovement();
 		break;
 	case SDLK_s:
-		PressedKeys[KEY_S] = true;
+		PressedKeys[KI_S] = true;
 		break;
 	case SDLK_d:
-		PressedKeys[KEY_D] = true;
+		PressedKeys[KI_D] = true;
 		PlayerAttemptsRightwardsMovement();
 		break;
 	}
@@ -52,19 +52,19 @@ void InputManager::SetKeyReleased(SDL_Keycode ReleasedKey)
 	switch (ReleasedKey)
 	{
 	case SDLK_ESCAPE:
-		PressedKeys[KEY_ESCAPE] = false;
+		PressedKeys[KI_ESCAPE] = false;
 		break;
 	case SDLK_w:
-		PressedKeys[KEY_W] = false;
+		PressedKeys[KI_W] = false;
 		break;
 	case SDLK_a:
-		PressedKeys[KEY_A] = false;
+		PressedKeys[KI_A] = false;
 		break;
 	case SDLK_s:
-		PressedKeys[KEY_S] = false;
+		PressedKeys[KI_S] = false;
 		break;
 	case SDLK_d:
-		PressedKeys[KEY_D] = false;
+		PressedKeys[KI_D] = false;
 		break;
 	}
 }

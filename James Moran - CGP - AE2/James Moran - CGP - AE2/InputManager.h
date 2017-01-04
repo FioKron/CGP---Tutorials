@@ -6,12 +6,12 @@
 
 enum KeyIdentity
 {
-	KEY_ESCAPE, 
-	KEY_W, 
-	KEY_A,
-	KEY_S,
-	KEY_D,
-	PRESSED_KEYS_SIZE // For the number of keys that the Player can press:
+	KI_ESCAPE, 
+	KI_W, 
+	KI_A,
+	KI_S,
+	KI_D,
+	KI_PRESSED_KEYS_SIZE // For the number of keys that the Player can press:
 };
 
 class InputManager
@@ -45,7 +45,7 @@ private:
 	Player* PlayerReference;
 
 	/** For the current pressed or released state of input keys */
-	bool PressedKeys[PRESSED_KEYS_SIZE];
+	bool PressedKeys[KI_PRESSED_KEYS_SIZE];
 
 	// Functions:
 

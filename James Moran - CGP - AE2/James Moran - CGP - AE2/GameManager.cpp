@@ -6,9 +6,6 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 	GameWindow = nullptr;
 	GameRenderer = nullptr;
 
-	// For GameWindow:
-	ScreenDimensions = Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 	SDL_Init(SDL_INIT_VIDEO);
 
 	// Initilise the window and renderer:
@@ -16,8 +13,8 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 		"Dungeon Escape", // (Title)
 		0, // (Initial x position)
 		30, // (Initial y position)
-		ScreenDimensions.XComponent, // (Width, in pixels)
-		ScreenDimensions.YComponent, // (Height, in pixels)
+		SCREEN_DIMENSIONS.XComponent, // (Width, in pixels)
+		SCREEN_DIMENSIONS.YComponent, // (Height, in pixels)
 		0 // (Window behavior flags go here (if required)) 
 		);
 
@@ -32,7 +29,7 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 		GameWindow, // (The custom window (as delcared in game.h))
 		-1, // (The specific rendering driver to use (-1 for the first index
 		// that supports the specified flags))
-		SDL_RENDERER_ACCELERATED // (Renderer behavior flags)
+		SDL_RENDERER_ACCELERATED // To make sure hardware-acceleration is used
 		);
 
 	if (!GameRenderer)
@@ -44,7 +41,7 @@ GameManager::GameManager(Vector2D NewGameLevelBlockDimensions, Vector2D NewGameL
 	// For setting up the game level:
 	GameLevelBlockDimensions = Vector2D(NewGameLevelBlockDimensions);
 	GameLevelDimensions = Vector2D(NewGameLevelDimensions);
-	GameLevelReference = new GameLevel(GameRenderer, NewGameLevelBlockDimensions, NewGameLevelDimensions, ScreenDimensions);
+	GameLevelReference = new GameLevel(GameRenderer, NewGameLevelBlockDimensions, NewGameLevelDimensions, SCREEN_DIMENSIONS);
 }
 
 // Clean up:

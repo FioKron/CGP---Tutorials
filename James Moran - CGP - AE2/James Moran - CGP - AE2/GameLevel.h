@@ -42,17 +42,16 @@ public:
 	/** For updating */
 	void UpdateLevelState();
 
-	// For showing blocks:
-	//void ShowWallBlock();
-	//void ShowBlankSpace();
-
 	// Tile Checking:
 
 	bool IsWall(Vector2D* PixelCoordinates);
 
 	// Get methods:
 
-	/** To get the Player Character reference this class holds */
+	/** 
+		To get the Player Character reference this class holds
+		(for the InputManager to use).
+	*/
 	Player* GetPlayerCharacterReference();
 
 private:
@@ -70,7 +69,6 @@ private:
 
 	Vector2D GameScreenDimensions;
 
-	//Vector2D* LevelDimensions;
 	std::vector<std::string> LevelGrid;
 
 	/** Game Entities on the level */

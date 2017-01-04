@@ -29,6 +29,11 @@ private:
 	GameLevel* GameLevelReference;
 	Vector2D GameLevelBlockDimensions;
 	Vector2D GameLevelDimensions;
+	
+	// Constant values:
+
+	/** To initialise the dimensions of the screen, as well as for GameLevelReference to refer to later. */
+	const Vector2D SCREEN_DIMENSIONS = Vector2D(1000, 1000);
 
 	// Functions:
 
@@ -50,13 +55,7 @@ private:
 
 		@Param: std::string DebugMessage: The message to show
 	*/
-	void DisplayConsoleDebugMessage(std::string DebugMessage);
-
-	// Screen size handling:
-
-	Vector2D ScreenDimensions;
-	const int SCREEN_WIDTH = 1000;
-	const int SCREEN_HEIGHT = 1000;
+	void DisplayConsoleDebugMessage(std::string DebugMessage);	
 
 public:
 	
@@ -89,7 +88,5 @@ public:
 
 	/** For getting components of the game-level */
 	GameLevel* GetGameLevelReference();
-
-	Vector2D GetScreenDimensions();
 };
 
