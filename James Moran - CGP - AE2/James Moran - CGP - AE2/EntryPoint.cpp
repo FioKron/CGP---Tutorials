@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		// Initilise initilisation of the game's level:
 		GameReference->InitiateLevelRendering();
 
-		while (!InputReference->KeyIsPressed(KEY_ESCAPE))
+		while (!InputReference->KeyIsPressed(KI_ESCAPE))
 		{
 			InputReference->Update();
 			GameReference->Update();

@@ -161,7 +161,7 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckLeftSideCollision(GameEntity* ConsideredEntity, int ProposedNewNegativeXPosition);
+	bool CheckLeftSideCollision(GameEntity* ConsideredEntity);
 
 	/**
 		Description: Allow rightwards movement if there is no collision with
@@ -177,7 +177,7 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckRightSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveXPosition);
+	bool CheckRightSideCollision(GameEntity* ConsideredEntity);
 
 	/**
 		Description: Allow upwards movement if there is no collision with
@@ -193,6 +193,6 @@ public:
 
 		@Return: True if movement in the respective direction is possible.
 	*/
-	bool CheckTopSideCollision(GameEntity* ConsideredEntity, int ProposedNewPositiveYPosition);
+	bool CheckTopSideCollision(GameEntity* ConsideredEntity);
 };
 

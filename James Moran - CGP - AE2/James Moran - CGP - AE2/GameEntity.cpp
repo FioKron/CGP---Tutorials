@@ -102,6 +102,11 @@ bool GameEntity::GetIsBlockingEntity()
 	return BlockingEntity;
 }
 
+int GameEntity::GetMovementSpeed()
+{
+	return MOVEMENT_SPEED;
+}
+
 // For getting the top-left, top-right,
 // bottom-left and bottom-right verticies:
 
@@ -132,18 +137,15 @@ Vector2D GameEntity::GetEntityBottomRightVertex()
 // Handle attempts at movement:
 void GameEntity::AttemptMoveLeft()
 {
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent)
-		.CheckLeftSideCollision(this, EntityRepresentation->GetBitmapPosition().XComponent - MOVEMENT_SPEED))
+	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).CheckLeftSideCollision(this))
 	{
-		// Declare a movement speed later:
 		EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
 	}
 }
 
 void GameEntity::AttemptMoveRight()
 {
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent)
-		.CheckRightSideCollision(this, EntityRepresentation->GetBitmapPosition().XComponent + MOVEMENT_SPEED))
+	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).CheckRightSideCollision(this))
 	{
 		EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
 	}

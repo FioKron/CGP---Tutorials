@@ -186,7 +186,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	{
 	case BT_BLANK:
 		ThisBlankBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
-			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", LevelDimensions, 
+			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", BlockDimensions,
 			GameScreenDimensions, EI_BLANK_BLOCK);
 		ThisBlankBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisBlankBlock);
@@ -194,7 +194,8 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	
 	case BT_WALL:
 		ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
-			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", LevelDimensions, GameScreenDimensions, EI_WALL_BLOCK);
+			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", BlockDimensions, 
+			GameScreenDimensions, EI_WALL_BLOCK);
 		ThisWallBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisWallBlock);
 		break;

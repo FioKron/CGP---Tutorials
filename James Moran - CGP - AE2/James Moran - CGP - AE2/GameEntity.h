@@ -152,6 +152,8 @@ public:
 
 	bool GetIsBlockingEntity();
 
+	int GetMovementSpeed();
+
 	/**
 	To get the top-left, top-right,
 	bottom-left and bottom right verticies
