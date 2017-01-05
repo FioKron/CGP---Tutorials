@@ -65,6 +65,8 @@ enum EntityID
 {
 	EI_BLANK_BLOCK,
 	EI_WALL_BLOCK,
+	EI_ENEMY_DOOR,
+	EI_LEVEL_EXIT_DOOR,
 	EI_HIGHEST_ENEMY,
 	EI_LOWEST_ENEMY,
 	EI_PLAYER
@@ -202,6 +204,7 @@ protected:
 	*/
 	bool PointsOverlapRightHandSide(Vector2D LineStartVertex, Vector2D LineEndVertex);
 	bool PointsOverlapLeftHandSide(Vector2D LineStartVertex, Vector2D LineEndVertex);
+	bool PointsOverlapBottomSide(Vector2D LineStartVertex, Vector2D LineEndVertex);
 
 	// Properties:
 

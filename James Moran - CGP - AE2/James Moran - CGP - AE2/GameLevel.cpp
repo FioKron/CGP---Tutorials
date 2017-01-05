@@ -19,7 +19,7 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	// The grid reference for the Render method to use:
 	// (50-50 x 20-20):
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWWWWW");
-	LevelGrid.push_back((std::string)"W..................W"); // (50)
+	LevelGrid.push_back((std::string)"W..E...E...E.......W"); // (50)
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWW......W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWW.....W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWW....W");
@@ -34,7 +34,7 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWW...W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWW..W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWW..WW");
-	LevelGrid.push_back((std::string)"W................WWW"); // (800)
+	LevelGrid.push_back((std::string)"W...E.....E....E.WWW"); // (800)
 	LevelGrid.push_back((std::string)"W..WWWWWWWWWWWWWWWWW");
 	LevelGrid.push_back((std::string)"WW.................W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWWWWW");
@@ -99,13 +99,21 @@ void GameLevel::Render()
 	{
 		for (int InnerCounter = 0; InnerCounter <= GetWidth(); InnerCounter++)
 		{
-			if (LevelGrid[OuterCounter][InnerCounter] == 'W')
+			switch (LevelGrid[OuterCounter][InnerCounter])
 			{
-				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_WALL);				
-			}
-			else
-			{
+
+			case 'W':
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_WALL);
+				break;
+
+			case 'E':
+				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_ENEMY_DOOR);
+				break;
+
+			default:
 				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_BLANK);
+				break;
+
 			}
 		}
 
@@ -122,12 +130,23 @@ void GameLevel::Render()
 // For updating:
 void GameLevel::UpdateLevelState()
 {
+	// The mobile-entities first:
 	FirstEnemy->UpdateEnemy();
 	SecondEnemy->UpdateEnemy();
 	PlayerCharacter->UpdateEntity();
+
+	/** 
+		Then re-draw any doors, after an Enemy
+		or the Player has moved over them: 
+	*/
+	for each (GameEntity* CurrentEnemyDoor in EnemyDoorEntities)
+	{
+		CurrentEnemyDoor->UpdateEntity();
+	}
 }
 
 // Check if the tile at PixelCoordinates is a wall:
+/*
 bool GameLevel::IsWall(Vector2D* PixelCoordinates)
 {
 	// Get the grid coordinates from PixelCoordinates:
@@ -143,7 +162,7 @@ bool GameLevel::IsWall(Vector2D* PixelCoordinates)
 		return false;
 	}
 }
-
+*/
 // Get methods here:
 
 Player* GameLevel::GetPlayerCharacterReference()
@@ -181,6 +200,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	Vector2D UpdatedRectanglePosition = CurrentRectanglePosition;
 	GameEntity* ThisBlankBlock;
 	GameEntity* ThisWallBlock;
+	GameEntity* ThisEnemyDoor;
 
 	switch (TypeOfBlock)
 	{
@@ -198,6 +218,20 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 			GameScreenDimensions, EI_WALL_BLOCK);
 		ThisWallBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisWallBlock);
+		break;
+
+	case BT_ENEMY_DOOR:
+		ThisEnemyDoor = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
+			UpdatedRectanglePosition.YComponent, "Bitmaps/EnemyDoorBitmap.bmp", BlockDimensions,
+			GameScreenDimensions, EI_ENEMY_DOOR);
+		ThisEnemyDoor->UpdateEntity();
+		AddEntityToCollisionSystem(ThisEnemyDoor);
+
+		/** 
+			Also add this to EnemyDoorEntities, for redrawing if 
+			the Player or an Enemy moves over the space it occupies:
+		*/
+		EnemyDoorEntities.push_back(ThisEnemyDoor);
 		break;
 
 	default:

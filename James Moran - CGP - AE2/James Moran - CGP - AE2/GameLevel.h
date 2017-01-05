@@ -18,6 +18,7 @@ class GameLevel
 		BT_BLANK,
 		BT_WALL,
 		BT_DOOR,
+		BT_ENEMY_DOOR,
 		BT_KEY
 	};
 
@@ -44,7 +45,7 @@ public:
 
 	// Tile Checking:
 
-	bool IsWall(Vector2D* PixelCoordinates);
+	//bool IsWall(Vector2D* PixelCoordinates);
 
 	// Get methods:
 
@@ -71,10 +72,12 @@ private:
 
 	std::vector<std::string> LevelGrid;
 
-	/** Game Entities on the level */
+	/** Notable Game Entities on the level */
 	Enemy* FirstEnemy;
 	Enemy* SecondEnemy;
 	Player* PlayerCharacter;
+	/** For all Enemy Doors */
+	std::vector<GameEntity*> EnemyDoorEntities;
 
 	// Functions:
 

@@ -70,6 +70,15 @@ bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMo
 					}
 					break;
 
+				case ED_UPWARDS:
+					if ((StartingVertex.YComponent >= EntityToCheck->GetEntityBottomLeftVertex().XComponent) &&
+						(StartingVertex.YComponent <= EntityToCheck->GetEntityTopLeftVertex().XComponent))
+					{
+						EntityIsAtPosition = true;
+						return EntityIsAtPosition;
+					}
+					break;
+
 				default:
 					break;
 				}				
@@ -175,11 +184,19 @@ bool GameCollisionSystem::CheckRightSideCollision(GameEntity* ConsideredEntity)
 bool GameCollisionSystem::CheckTopSideCollision(GameEntity* ConsideredEntity)
 {
 	// For evauluating collision:
-	Vector2D ProposedTopLeftVertex = Vector2D(ConsideredEntity->GetEntityTopRightVertex().XComponent +
-		ConsideredEntity->GetMovementSpeed(), ConsideredEntity->GetEntityTopRightVertex().YComponent);
+	Vector2D ProposedBottomLeftVertex = Vector2D(ConsideredEntity->GetEntityBottomLeftVertex().XComponent +
+		ConsideredEntity->GetMovementSpeed() * 10, ConsideredEntity->GetEntityBottomLeftVertex().YComponent);
 
-	Vector2D ProposedTopRightVertex = Vector2D(ConsideredEntity->GetEntityBottomRightVertex().XComponent +
-		ConsideredEntity->GetMovementSpeed(), ConsideredEntity->GetEntityBottomRightVertex().YComponent);
+	Vector2D ProposedBottomRightVertex = Vector2D(ConsideredEntity->GetEntityBottomRightVertex().XComponent +
+		ConsideredEntity->GetMovementSpeed() * 10, ConsideredEntity->GetEntityBottomRightVertex().YComponent);
 
-	return false;
+	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, ProposedBottomLeftVertex,
+		ProposedBottomRightVertex, ED_UPWARDS))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

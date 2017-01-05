@@ -17,9 +17,25 @@ private:
 
 	// Properties:
 
+	/** Whilst propelling themselves upwards (e.g. via jumping) */
+	int CurrentUpwardsMomentum;
 	
 	int CurrentLives;
+
+	// Constant values:
 	
+	/**
+		These values are for handling jumping:
+	*/
+	const int INITIAL_UPWARDS_MOMENTUM = 30;
+
+	/** 
+		Given int division, as the resultant value is floored;
+		CurrentUpwardsMomentum will change at every multiple of 10 - 1
+		(e.g. 29, 19 etc.)
+	*/
+	const float MOMENTUM_DIVISOR = 1;
+
 	// Flags:
 
 	bool HasKey;
@@ -29,6 +45,9 @@ private:
 		(if they have already jumped, or are falling)
 	*/
 	bool IsAirborne;
+
+	/** If the Player causes themselves to become airborne */
+	bool HasJumped;
 
 public:
 	
@@ -53,5 +72,6 @@ public:
 	bool GetHasKey();
 	int GetCurrentLives();
 	bool GetIsAirborne();
+	bool GetHasJumped();
 };
 #endif

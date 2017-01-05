@@ -11,13 +11,18 @@ GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition
 	EntityRepresentation = new GameBitmap(RendererToUse, FileName, XPosition, YPosition, NewScreenDimensions, UsesTransparency);
 
 	// Set BlockingEntity to the appropirate value:
-	if (UniqueEntityID == EI_BLANK_BLOCK)
+	switch (UniqueEntityID)
 	{
+	// Enemy Doors, as well as Blank Blocks, are not blocking entities:
+	case EI_BLANK_BLOCK:
+	case EI_ENEMY_DOOR:
 		BlockingEntity = false;
-	}
-	else
-	{
+		break;
+
+	// Otherwise...
+	default:
 		BlockingEntity = true;
+		break;
 	}
 }
 
@@ -44,8 +49,10 @@ bool GameEntity::BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vec
 	// Only perform execution of this function; if this Entity is a blocking-entity:
 	if (BlockingEntity)
 	{
-		if (MovementDirection == ED_LEFTWARDS)
+		switch (MovementDirection)
 		{
+
+		case ED_LEFTWARDS:
 			if (PointsOverlapRightHandSide(StartingVertex, EndingVertex))
 			{
 				return true;
@@ -54,9 +61,9 @@ bool GameEntity::BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vec
 			{
 				return false;
 			}
-		}
-		else if (MovementDirection == ED_RIGHTWARDS)
-		{
+			break;
+
+		case ED_RIGHTWARDS:
 			if (PointsOverlapLeftHandSide(StartingVertex, EndingVertex))
 			{
 				return true;
@@ -65,7 +72,22 @@ bool GameEntity::BlockingGameEntityOccupiesPosition(Vector2D StartingVertex, Vec
 			{
 				return false;
 			}
-		}
+			break;
+
+		case ED_UPWARDS:
+			if (PointsOverlapBottomSide(StartingVertex, EndingVertex))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			break;
+
+		default:
+			break;
+		}		
 	}
 	else
 	{
@@ -177,6 +199,19 @@ bool GameEntity::PointsOverlapLeftHandSide(Vector2D LineStartVertex, Vector2D Li
 			(LineEndVertex.YComponent > GetEntityTopLeftVertex().YComponent));
 
 	return LeftHandSideOverlap;
+}
+
+bool GameEntity::PointsOverlapBottomSide(Vector2D LineStartVertex, Vector2D LineEndVertex)
+{
+	// Local variable used for debugging purposes:
+	bool BottomSideOverlap = ((LineStartVertex.YComponent >= GetEntityBottomLeftVertex().YComponent) &&
+		(LineStartVertex.XComponent >= GetEntityBottomLeftVertex().XComponent) &&
+		(LineStartVertex.XComponent < GetEntityBottomRightVertex().XComponent)) ||
+		((LineEndVertex.YComponent >= GetEntityBottomRightVertex().YComponent) &&
+		(LineEndVertex.XComponent <= GetEntityBottomRightVertex().XComponent) &&
+			(LineEndVertex.XComponent > GetEntityBottomLeftVertex().XComponent));
+
+	return BottomSideOverlap;
 }
 
 // Update behavior:
