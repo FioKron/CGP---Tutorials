@@ -1,4 +1,7 @@
 #include "Enemy.h"
+#include "Windows.h"
+
+#include <iostream> // For debugging
 
 // Initialisation:
 Enemy::Enemy(SDL_Renderer * RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
@@ -9,14 +12,43 @@ Enemy::Enemy(SDL_Renderer * RendererToUse, Vector2D NewPatrolEndPoint, int XPosi
 	PatrolEndPoint = Vector2D(NewPatrolEndPoint);
 
 	MovingToEndPatrolPoint = true;
+	PatrollingAnotherCorridor = false;
 }
 
 // For updating this Enemy:
 void Enemy::UpdateEnemy()
 {
-	DeterminePointToMoveTo();
+	// Only whilst they have a presence on the game level:
+	if (!PatrollingAnotherCorridor)
+	{
+		
+		if (GameCollisionSystem::GetCollisionSystem(20).IsEnemyNearAnEnemyDoor(this))
+		{
+			NowPatrollingAnotherCorridor();
+			return;
+		}
+		
 
-	UpdateEntity();
+		DeterminePointToMoveTo();
+		UpdateEntity();
+	}
+	/**
+	else
+	{
+		std::cout << "PATROLKLING ABGNAWI" << std::endl;
+	}
+	*/
+}
+
+// Flag manipulation:
+void Enemy::NowPatrollingAnotherCorridor()
+{
+	PatrollingAnotherCorridor = true;
+}
+
+void Enemy::BackToPatrollingThisCorridor()
+{
+	PatrollingAnotherCorridor = false;
 }
 
 // Handle moving between the two points:

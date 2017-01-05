@@ -42,11 +42,42 @@ struct Vector2D
 		YComponent += IncrementationValue;
 	}
 
+	/** For range checking (of the x-component) */
+	bool IsThisVectorInRangeOfAnotherVectorAlongXAxis(Vector2D OtherVector, int Range)
+	{
+		if (this->YComponent == OtherVector.YComponent)
+		{
+			int FurthestNegativeX = this->XComponent - Range;
+			int FurthestPositiveX = this->XComponent + Range;
+
+			if ((OtherVector.XComponent >= FurthestNegativeX) && (OtherVector.XComponent <= FurthestPositiveX))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
 	// Overloaded operators:
 
 	bool Vector2D::operator!=(const Vector2D& Target)
 	{
 		if ((this->XComponent != Target.XComponent) && (this->YComponent != Target.YComponent))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	bool Vector2D::operator==(const Vector2D& Target)
+	{
+		if ((this->XComponent == Target.XComponent) && (this->YComponent == Target.YComponent))
 		{
 			return true;
 		}

@@ -18,6 +18,7 @@ private:
 	// Flags:
 
 	bool MovingToEndPatrolPoint;
+	bool PatrollingAnotherCorridor;
 
 	// Functions:
 
@@ -50,11 +51,18 @@ private:
 	void MoveRightWards();
 
 public:
+
+	// Functions:
+
 	/** Standard constructor */
 	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
 		Vector2D NewScreenDimensions, EntityID UniqueID, std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
 
 	/** Update handler */
 	void UpdateEnemy();
+
+	// Flag manipulation:
+	void NowPatrollingAnotherCorridor();
+	void BackToPatrollingThisCorridor();
 };
 

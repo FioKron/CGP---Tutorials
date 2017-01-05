@@ -65,6 +65,12 @@ GameLevel::~GameLevel()
 		delete FirstEnemy;
 		FirstEnemy = nullptr;
 	}	
+
+	for each (GameEntity* CurrentDoorEntity in EnemyDoorEntities)
+	{
+		delete CurrentDoorEntity;
+		CurrentDoorEntity = nullptr;
+	}
 }
 
 // For getting the bounds of the level:
@@ -102,15 +108,15 @@ void GameLevel::Render()
 			switch (LevelGrid[OuterCounter][InnerCounter])
 			{
 
-			case 'W':
+			case 'W': // Wall
 				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_WALL);
 				break;
 
-			case 'E':
+			case 'E': // Enemy Door
 				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_ENEMY_DOOR);
 				break;
 
-			default:
+			default: // Default to a blank block:
 				RectangleOrigin = DrawBlock(RectangleOrigin, &BlockTextureDimensions, BT_BLANK);
 				break;
 
@@ -120,6 +126,9 @@ void GameLevel::Render()
 		RectangleOrigin.YComponent += BlockDimensions.YComponent;
 		BlockTextureDimensions.y = RectangleOrigin.YComponent;
 	}
+
+	// For every Enemy Door:
+	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).CopyEnemyDoorEntities(EnemyDoorEntities);
 
 	// Add mobile-game entities to the end of this collection (after the tiles):
 	GameCollisionSystem::GetCollisionSystem(LevelDimensions.YComponent).AddGameEntityToCollection(FirstEnemy);

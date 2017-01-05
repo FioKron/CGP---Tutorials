@@ -133,7 +133,33 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 	}	
 }
 
-/** 
+// In effect; a set method: (with minor validation)
+void GameCollisionSystem::CopyEnemyDoorEntities(std::vector<GameEntity*> CurrentEnemyDoors)
+{
+	if (EnemyDoorEntities.empty())
+	{
+		EnemyDoorEntities = CurrentEnemyDoors;
+	}	
+}
+
+// Whilst an Enemy is patrolling...
+bool GameCollisionSystem::IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter)
+{
+	// The return value:
+	bool EnemyIsNearADoor = false;
+
+	for each (GameEntity* CurrentEnemyDoor in EnemyDoorEntities)
+	{
+		if (ThisEnemyCharacter->GetEntityPosition() == CurrentEnemyDoor->GetEntityPosition())
+		{
+			EnemyIsNearADoor = true;
+		}
+	}
+
+	return EnemyIsNearADoor;
+}
+
+/**
 	Check for collision on the left, right and top 
 	sides respectivley.
 */

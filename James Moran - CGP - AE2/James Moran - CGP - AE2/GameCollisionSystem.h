@@ -6,6 +6,7 @@
 // Foward declared-classes:
 // (Hmm...)
 class GameEntity;
+class Enemy;
 
 // As well as structures:
 struct Vector2D;
@@ -109,11 +110,22 @@ private:
 	/** Temporary storage for each row, before adding the row to GameEntities */
 	std::vector<GameEntity*> TemporaryRow;
 
+	/** For all Enemy Doors */
+	std::vector<GameEntity*> EnemyDoorEntities;
+
 	/** The maximum number of game-entities per row... */
 	int GameEntitiesPerRow;
 
 	/** ...as well as in a column */
 	int GameEntitiesPerColumn;
+
+	// Constant values:
+
+	/** 
+		An Enemy can only go to another corridor when they
+		are at least this close to an Enemy Door
+	*/
+	const int MAXIMUM_ENEMY_TO_ENEMY_DOOR_PROXIMITY = 5;
 
 public:
 
@@ -152,6 +164,27 @@ public:
 
 		return Instance; // 'Instantiated on first use.'
 	}
+
+	/**
+		Description: For GameLevel to copy EnemyDoorEntities
+		across to this singleton class (for all instances to use)
+
+		@Param: std::vector<GameEntity*> CurrentEnemyDoors:
+		The value to parse to this singleton class, for
+		EnemyDoorEntities.
+	*/
+	void CopyEnemyDoorEntities(std::vector<GameEntity*> CurrentEnemyDoors);
+
+	/**
+		Description: Check if Enemy is close enough to a door, in order to enter it.
+
+		@Param(s): Vector2D CurrentEnemyPosition: This Enemy's current position
+		(in pixel coordinates).
+
+		@Return: bool EnemyIsNearADoor: If true; the enemy will patrol along
+		the corridor this door leads to.
+	*/
+	bool IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter);
 
 	/**
 		The 3 functions below, are for
