@@ -13,10 +13,13 @@ GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition
 	// Set BlockingEntity to the appropirate value:
 	switch (UniqueEntityID)
 	{
-	// Enemy Doors, as well as Blank Blocks, are not blocking entities:
 	case EI_BLANK_BLOCK:
+		BlockingEntity = false;
+		break;
+
 	case EI_ENEMY_DOOR:
 		BlockingEntity = false;
+		PatrolRouteCovered = false;
 		break;
 
 	// Otherwise...
@@ -127,6 +130,21 @@ bool GameEntity::GetIsBlockingEntity()
 int GameEntity::GetMovementSpeed()
 {
 	return MOVEMENT_SPEED;
+}
+
+bool GameEntity::GetPatrolRouteCovered()
+{
+	return PatrolRouteCovered;
+}
+
+void GameEntity::PatrolRouteReceivedCoverage()
+{
+	PatrolRouteCovered = true;
+}
+
+void GameEntity::PatrolRouteNotCovered()
+{
+	PatrolRouteCovered = false;
 }
 
 // For getting the top-left, top-right,

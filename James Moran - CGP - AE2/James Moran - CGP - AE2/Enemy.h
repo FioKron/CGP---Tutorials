@@ -1,8 +1,31 @@
 #pragma once
 #include "GameEntity.h"
+#include "EnemyDoor.h"
 
 // Forward references again (welp):
 class GameEntity;
+
+/** 
+	This struct contains both a reference to an EnemyDoor,
+	as well as a flag for if this Enemy is close enough to
+	enter the door
+
+	RESOLVE ISSUES WITH THIS STRUCT DFAWDFAW
+*/
+#ifndef ENEMY_DOOR_AND_PROXIMITY_FLAG
+#define ENEMY_DOOR_AND_PROXIMITY_FLAG
+struct DoorReferenceAndProximityDetectionFlag
+{
+	EnemyDoor DoorReference;
+	bool ProximityFlag;
+
+	DoorReferenceAndProximityDetectionFlag(EnemyDoor* NewReference, bool NewProximityFlag)
+	{
+		DoorReference = NewReference;
+		ProximityFlag = NewProximityFlag;
+	}
+};
+#endif 
 
 class Enemy : public GameEntity
 {
@@ -14,6 +37,18 @@ private:
 	/** For the route the Enemy is to take for patrolling */
 	Vector2D PatrolStartPoint;
 	Vector2D PatrolEndPoint;
+
+	/** 
+		This door is parsed by reference into
+		IsEnemyNearAnEnemyDoor(), to update this door appropriatly
+	*/
+	EnemyDoor* ReferenceDoor;
+
+	/** 
+		An ad-hoc timer (for allowing the 
+		Enemy to return to the corridor the Player can see)
+	*/
+	float TestTimer;
 
 	// Flags:
 

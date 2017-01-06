@@ -4,7 +4,7 @@
 #include <iostream> // For debugging
 
 // Initialisation:
-Enemy::Enemy(SDL_Renderer * RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
+Enemy::Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
 	Vector2D NewScreenDimensions, EntityID UniqueID, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, NewScreenDimensions, UniqueID, UsesTransparency)
 {
@@ -13,6 +13,8 @@ Enemy::Enemy(SDL_Renderer * RendererToUse, Vector2D NewPatrolEndPoint, int XPosi
 
 	MovingToEndPatrolPoint = true;
 	PatrollingAnotherCorridor = false;
+
+	TestTimer = 0.0f;
 }
 
 // For updating this Enemy:
@@ -20,24 +22,27 @@ void Enemy::UpdateEnemy()
 {
 	// Only whilst they have a presence on the game level:
 	if (!PatrollingAnotherCorridor)
-	{
-		
+	{	
 		if (GameCollisionSystem::GetCollisionSystem(20).IsEnemyNearAnEnemyDoor(this))
 		{
 			NowPatrollingAnotherCorridor();
 			return;
 		}
 		
-
 		DeterminePointToMoveTo();
 		UpdateEntity();
 	}
-	/**
 	else
 	{
-		std::cout << "PATROLKLING ABGNAWI" << std::endl;
+		EntityRepresentation->SetBitmapPosition(Vector2D(-50, -50));
+
+		TestTimer++;
+
+		if (TestTimer == 3000.0f)
+		{
+			BackToPatrollingThisCorridor();
+		}
 	}
-	*/
 }
 
 // Flag manipulation:
