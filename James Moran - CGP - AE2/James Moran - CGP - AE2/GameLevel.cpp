@@ -1,5 +1,4 @@
 #include "GameLevel.h"
-#include <map>
 
 // Initilisation:
 GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, 
@@ -35,43 +34,17 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	LevelGrid.push_back((std::string)"WW.................W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWWWWW");
 
-	// Determine the area that is valid for the Player to move into:
-	
-	// The valid XPosition for each row:
-	std::vector<int> ValidXPositionPerRow;
-	std::map<int, int> ValidXStartEndPointsPerRow;
+	// For initialisation of mobile GameEntities:
+	std::vector<ValidStartEndXPositionsPerRow> ValidMobileEntityMovementValues = GetValidXPositionsPerRow();
 
-	for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
-	{
-		for (int ColumnCounter = 0; ColumnCounter <= GetWidth(); ColumnCounter++)
-		{
-			switch (LevelGrid[RowCounter][ColumnCounter])
-			{
-
-			case '.':
-			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
-				if (ValidXPositionPerRow.size() < RowCounter + 1)
-				{
-					//ValidXStartEndPointsPerRow.at(RowCounter) = 
-					//ValidXPositionPerRow.push_back(ColumnCounter * BlockDimensions.XComponent);
-				}
-				else
-				{
-					ValidXPositionPerRow[RowCounter] += BlockDimensions.XComponent;
-				}
-				break;
-
-			default: // Blank for now
-				break;
-
-			}
-		}
-	}
 
 	// Game Entities:
-	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions, EI_LOWEST_ENEMY);
-	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions, EI_HIGHEST_ENEMY);
-	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, NewScreenDimensions);
+	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, 
+		NewScreenDimensions, EI_LOWEST_ENEMY, ValidMobileEntityMovementValues);
+	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, 
+		NewScreenDimensions, EI_HIGHEST_ENEMY, ValidMobileEntityMovementValues);
+	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, 
+		NewScreenDimensions, ValidMobileEntityMovementValues);
 }
 
 // Clean-up:
@@ -251,7 +224,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_BLANK:
 		ThisBlankBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", BlockDimensions,
-			GameScreenDimensions, EI_BLANK_BLOCK);
+			GameScreenDimensions, EI_BLANK_BLOCK, GetValidXPositionsPerRow());
 		ThisBlankBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisBlankBlock);
 		break;
@@ -259,7 +232,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_WALL:
 		ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", BlockDimensions, 
-			GameScreenDimensions, EI_WALL_BLOCK);
+			GameScreenDimensions, EI_WALL_BLOCK, GetValidXPositionsPerRow());
 		ThisWallBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisWallBlock);
 		break;
@@ -267,7 +240,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_ENEMY_DOOR:
 		ThisEnemyDoor = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/EnemyDoorBitmap.bmp", BlockDimensions,
-			GameScreenDimensions, EI_ENEMY_DOOR);
+			GameScreenDimensions, EI_ENEMY_DOOR, GetValidXPositionsPerRow());
 		ThisEnemyDoor->UpdateEntity();
 		AddEntityToCollisionSystem(ThisEnemyDoor);
 
@@ -300,5 +273,45 @@ void GameLevel::UpdateRectangleGridPosition(Vector2D& PositionToUpdate)
 	{
 		PositionToUpdate.XComponent = 0;
 	}	
+}
+
+std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
+{
+	// Determine the area that is valid for the Player to move into:
+
+	// The valid XPosition for each row:
+	std::vector<ValidStartEndXPositionsPerRow> ValidPositions;
+
+	for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
+	{
+		for (int ColumnCounter = 0; ColumnCounter <= GetWidth(); ColumnCounter++)
+		{
+			switch (LevelGrid[RowCounter][ColumnCounter])
+			{
+
+			case '.':
+			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
+				if (ValidPositions.size() < RowCounter + 1)
+				{
+					// For both beginning and end, initially:
+					Vector2D InitialValidValues = Vector2D(ColumnCounter * BlockDimensions.XComponent,
+						ColumnCounter * BlockDimensions.XComponent);
+
+					ValidPositions.push_back(ValidStartEndXPositionsPerRow(InitialValidValues));
+				}
+				else
+				{
+					ValidPositions[RowCounter].StartEndPositions.YComponent += BlockDimensions.XComponent;
+				}
+				break;
+
+			default: // Blank for now
+				break;
+
+			}
+		}
+	}
+
+	return ValidPositions;
 }
 

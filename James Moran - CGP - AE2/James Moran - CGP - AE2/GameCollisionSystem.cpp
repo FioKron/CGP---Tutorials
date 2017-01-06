@@ -108,7 +108,7 @@ int GameCollisionSystem::GetEntityRowNumber(GameEntity* EntityMoving)
 }
 
 // ...as well as column:
-int GameCollisionSystem::GetEntityColumnNumber(GameEntity * EntityMoving)
+int GameCollisionSystem::GetEntityColumnNumber(GameEntity* EntityMoving)
 {
 	// XComponent for the column number:
 	return EntityMoving->GetEntityPosition().XComponent / 
@@ -132,6 +132,41 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 			TemporaryRow.push_back(EntityToAdd);
 		}	
 	}	
+}
+
+bool GameCollisionSystem::AttemptLeftwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+{
+	// Only check the range for a particular row:
+	int RowToCheck = ProposedTargetPosition.YComponent / BLOCK_DIMENSIONS.YComponent;
+	
+	// Get the lowest and highest points to check against (in this range of values)
+	int LowestXValue = ValidPositionRanges[RowToCheck].StartEndPositions.XComponent;
+	int HighestXValue = ValidPositionRanges[RowToCheck].StartEndPositions.YComponent;
+
+	if ((ProposedTargetPosition.XComponent >= LowestXValue) &&
+		(ProposedTargetPosition.XComponent <= HighestXValue))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool GameCollisionSystem::AttemptRightwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+{
+	return false;
+}
+
+bool GameCollisionSystem::AttemptUpwardswardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+{
+	return false;
+}
+
+bool GameCollisionSystem::AttemptDownwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+{
+	return false;
 }
 
 // In effect; a set method: (with minor validation)

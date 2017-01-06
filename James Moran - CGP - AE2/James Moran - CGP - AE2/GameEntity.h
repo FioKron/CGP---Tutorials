@@ -1,10 +1,15 @@
-//#pragma once
+//#pragma once - Include guards are used instead
 #include "GameBitmap.h"
 #include "GameLevel.h"
+
+// For collections:
+#include <vector>
 
 // Foward declared-classes:
 // (Hmm...)
 class GameBitmap;
+
+struct ValidStartEndXPositionsPerRow;
 
 // FOR AN UNKNOWN REASON, EVEN THOUGH IT IS DEFINED IN GameBitmap.h,
 // THE INCLUDE-GUARDS ARE STILL REQUIRED HERE, FOR GameEntity TO 
@@ -141,7 +146,7 @@ public:
 	*/
 	GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
 		Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID,
-		bool UsesTransparency = false);
+		std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues, bool UsesTransparency = false);
 
 	/** Default constructor (for 'empty' initialisation) */
 	GameEntity();
@@ -190,6 +195,8 @@ public:
 	bool GetIsBlockingEntity();
 
 	int GetMovementSpeed();
+
+	std::vector<ValidStartEndXPositionsPerRow> GetValidMobileEntityMovementValues();
 
 	/**
 	To get the top-left, top-right,
@@ -253,5 +260,8 @@ protected:
 		active level (for collision checking later) 
 	*/
 	Vector2D CurrentGameLevelBlockDimensions;
+
+	/** A map of the area a mobile-entity can move in */
+	std::vector<ValidStartEndXPositionsPerRow> ValidMobileEntityMovementValues;
 };
 #endif

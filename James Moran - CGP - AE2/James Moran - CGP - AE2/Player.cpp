@@ -2,8 +2,10 @@
 
 // Initialise this instance:
 Player::Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions, 
-	Vector2D NewScreenDimensions, EntityID UniqueID, std::string FileName, bool UsesTransparency) :
-	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, NewScreenDimensions, UniqueID, UsesTransparency)
+	Vector2D NewScreenDimensions, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
+	EntityID UniqueID, std::string FileName, bool UsesTransparency) :
+	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, 
+		NewScreenDimensions, UniqueID, NewValidMobileEntityMovementValues, UsesTransparency)
 {
 	// Player starts with 3 lives (test value):
 	CurrentLives = 3;

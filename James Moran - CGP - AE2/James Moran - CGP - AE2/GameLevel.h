@@ -10,6 +10,26 @@
 class Player;
 class Enemy;
 
+// For mapping out collision:
+#ifndef VALID_START_END_X_POSITIONS_PER_ROW
+#define VALID_START_END_X_POSITIONS_PER_ROW
+struct ValidStartEndXPositionsPerRow
+{
+	/** 
+		The X-Component is the start position
+		and the Y-Component is the end position
+	*/
+	Vector2D StartEndPositions;
+
+	ValidStartEndXPositionsPerRow(Vector2D NewStartEnd)
+	{
+		StartEndPositions = NewStartEnd;
+	}
+};
+
+#endif 
+
+
 class GameLevel
 {
 	// To refer to each type of block:
@@ -119,5 +139,14 @@ private:
 		updating.
 	*/
 	void UpdateRectangleGridPosition(Vector2D& PositionToUpdate);
+
+	/** 
+		Description: Get the valid points for movement (by the Player and 
+		any Enemies), for each row.
+
+		@Return: std::vector<ValidStartEndXPositionPerRow> ValidPositions:
+		For any Entity's valid movement positions.
+	*/
+	std::vector<ValidStartEndXPositionsPerRow> GetValidXPositionsPerRow();
 };
 

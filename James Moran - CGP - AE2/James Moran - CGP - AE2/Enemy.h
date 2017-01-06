@@ -1,9 +1,11 @@
 #pragma once
 #include "GameEntity.h"
+#include <vector>
 
 // Forward references again (welp):
 class GameEntity;
 
+struct ValidStartEndXPositionsPerRow;
 
 /** 
 	This struct contains both a reference to an EnemyDoor,
@@ -96,7 +98,8 @@ public:
 
 	/** Standard constructor */
 	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
-		Vector2D NewScreenDimensions, EntityID UniqueID, std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
+		Vector2D NewScreenDimensions, EntityID UniqueID, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
+		std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
 
 	/** Update handler */
 	void UpdateEnemy();

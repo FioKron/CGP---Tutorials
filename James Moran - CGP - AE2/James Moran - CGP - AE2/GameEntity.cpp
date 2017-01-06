@@ -1,14 +1,18 @@
 #include "GameEntity.h"
 #include <iostream> // For debugging
 
+struct ValidStartEndXPositionsPerRow;
+
 // Standard constructor:
 GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
-	Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, 
-	EntityID UniqueEntityID, bool UsesTransparency)
+	Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID, 
+	std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues, 
+	bool UsesTransparency)
 {
 	UniqueID = UniqueEntityID;
 	CurrentGameLevelBlockDimensions = ActiveBlockDimensions;
 	EntityRepresentation = new GameBitmap(RendererToUse, FileName, XPosition, YPosition, NewScreenDimensions, UsesTransparency);
+	ValidMobileEntityMovementValues = NewValidMobileEntityMovementValues;
 
 	// Set BlockingEntity to the appropirate value:
 	switch (UniqueEntityID)
@@ -132,6 +136,11 @@ int GameEntity::GetMovementSpeed()
 	return MOVEMENT_SPEED;
 }
 
+std::vector<ValidStartEndXPositionsPerRow> GameEntity::GetValidMobileEntityMovementValues()
+{
+	return ValidMobileEntityMovementValues;
+}
+
 /**
 bool GameEntity::GetPatrolRouteCovered()
 {
@@ -175,10 +184,21 @@ Vector2D GameEntity::GetEntityBottomRightVertex()
 		GetEntityTopRightVertex().YComponent + GetEntityExtents().YComponent);
 }
 
+/**
+	MAPPING OUT THE AREA FOR COLLISION SEEMS TO 
+	ACHIEVE THE ITENDED RESULTS! SO PUT THIS IS PLACE
+	FOR UPWARDS AND DOWNWARDS MOVEMENT!!GFAW
+*/
+
 // Handle attempts at movement:
 void GameEntity::AttemptMoveLeft()
 {
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).CheckLeftSideCollision(this))
+	// Intended position is to the left of the current position:
+	Vector2D TargetPosition = GetEntityPosition();
+	TargetPosition.XComponent -= MOVEMENT_SPEED;
+
+	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+		AttemptLeftwardsMovement(ValidMobileEntityMovementValues, TargetPosition))
 	{
 		EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
 	}
@@ -186,7 +206,12 @@ void GameEntity::AttemptMoveLeft()
 
 void GameEntity::AttemptMoveRight()
 {
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).CheckRightSideCollision(this))
+	// Intended position is to the right of the current position:
+	Vector2D TargetPosition = GetEntityPosition();
+	TargetPosition.XComponent += MOVEMENT_SPEED;
+
+	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+		AttemptLeftwardsMovement(ValidMobileEntityMovementValues, TargetPosition))
 	{
 		EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
 	}

@@ -2,6 +2,7 @@
 
 #include "GameEntity.h"
 #include "GameCollisionSystem.h"
+#include <vector>
 
 
 #ifndef PLAYER_H
@@ -55,8 +56,8 @@ public:
 
 	/** Standard constructor */
 	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
-		Vector2D NewScreenDimensions, EntityID UniqueID = EI_PLAYER, 
-		std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
+		Vector2D NewScreenDimensions, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
+		EntityID UniqueID = EI_PLAYER, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
 
 	/** Only the Player can jump (Enemies follow a preset patrol route) */
 	void AttemptJump();

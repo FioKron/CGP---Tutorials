@@ -127,6 +127,9 @@ private:
 	*/
 	const int MAXIMUM_ENEMY_TO_ENEMY_DOOR_PROXIMITY = 5;
 
+	// For reference to the game's dimensions for each block
+	const Vector2D BLOCK_DIMENSIONS = Vector2D(50, 50);
+
 public:
 
 	// Functions:
@@ -164,6 +167,29 @@ public:
 
 		return Instance; // 'Instantiated on first use.'
 	}
+
+	/** 
+		Description: Attempt leftwards, rightwards, 
+		upwards or downwards movement (respectively).
+
+		@Params: std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges:
+		For the positions that are valid for this mobile-entity to
+		move into.
+
+		Vector2D ProposedTargetPosition: The intended location to move this
+		mobile-entity to.
+
+		@Return: bool MovementValid: For whether movement to the intended 
+		position is valid.
+	*/
+	bool AttemptLeftwardsMovement(std::vector<ValidStartEndXPositionsPerRow> 
+		ValidPositionRanges, Vector2D ProposedTargetPosition);
+	bool AttemptRightwardsMovement(std::vector<ValidStartEndXPositionsPerRow>
+		ValidPositionRanges, Vector2D ProposedTargetPosition);
+	bool AttemptUpwardswardsMovement(std::vector<ValidStartEndXPositionsPerRow>
+		ValidPositionRanges, Vector2D ProposedTargetPosition);
+	bool AttemptDownwardsMovement(std::vector<ValidStartEndXPositionsPerRow>
+		ValidPositionRanges, Vector2D ProposedTargetPosition);
 
 	/**
 		Description: For GameLevel to copy EnemyDoorEntities
