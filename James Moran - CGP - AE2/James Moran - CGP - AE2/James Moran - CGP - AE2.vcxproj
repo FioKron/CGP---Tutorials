@@ -23,7 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyDoor.h" />
     <ClInclude Include="GameBitmap.h" />
     <ClInclude Include="GameCollisionSystem.h" />
     <ClInclude Include="GameEntity.h" />
@@ -34,7 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyDoor.cpp" />
     <ClCompile Include="GameBitmap.cpp" />
     <ClCompile Include="GameCollisionSystem.cpp" />
     <ClCompile Include="GameEntity.cpp" />

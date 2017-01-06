@@ -1,4 +1,5 @@
 #include "GameLevel.h"
+#include <map>
 
 // Initilisation:
 GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions, 
@@ -10,11 +11,6 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	LevelDimensions = Vector2D(NewLevelDimensions);
 
 	GameScreenDimensions = Vector2D(NewScreenDimensions);
-
-	// Game Entities:
-	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions, EI_LOWEST_ENEMY);
-	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions, EI_HIGHEST_ENEMY);
-	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, NewScreenDimensions);
 
 	// The grid reference for the Render method to use:
 	// (50-50 x 20-20):
@@ -38,6 +34,44 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	LevelGrid.push_back((std::string)"W..WWWWWWWWWWWWWWWWW");
 	LevelGrid.push_back((std::string)"WW.................W");
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWWWWW");
+
+	// Determine the area that is valid for the Player to move into:
+	
+	// The valid XPosition for each row:
+	std::vector<int> ValidXPositionPerRow;
+	std::map<int, int> ValidXStartEndPointsPerRow;
+
+	for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
+	{
+		for (int ColumnCounter = 0; ColumnCounter <= GetWidth(); ColumnCounter++)
+		{
+			switch (LevelGrid[RowCounter][ColumnCounter])
+			{
+
+			case '.':
+			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
+				if (ValidXPositionPerRow.size() < RowCounter + 1)
+				{
+					//ValidXStartEndPointsPerRow.at(RowCounter) = 
+					//ValidXPositionPerRow.push_back(ColumnCounter * BlockDimensions.XComponent);
+				}
+				else
+				{
+					ValidXPositionPerRow[RowCounter] += BlockDimensions.XComponent;
+				}
+				break;
+
+			default: // Blank for now
+				break;
+
+			}
+		}
+	}
+
+	// Game Entities:
+	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, NewScreenDimensions, EI_LOWEST_ENEMY);
+	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, NewScreenDimensions, EI_HIGHEST_ENEMY);
+	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, NewScreenDimensions);
 }
 
 // Clean-up:
@@ -100,7 +134,8 @@ void GameLevel::Render()
 		InitialiseBlankBlockTexture();
 	}
 	
-	// A less-than or equal to operator was the solution to unintended patterns occuring earlier, as opposed to a less-than operator:
+	// A less-than or equal to operator was the solution to unintended patterns occuring earlier, as opposed to a less-than operator
+	// (for the InnerCounter):
 	for (int OuterCounter = 0; OuterCounter < GetHeight(); OuterCounter++)
 	{
 		for (int InnerCounter = 0; InnerCounter <= GetWidth(); InnerCounter++)

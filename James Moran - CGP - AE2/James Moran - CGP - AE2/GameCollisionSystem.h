@@ -111,7 +111,7 @@ private:
 	std::vector<GameEntity*> TemporaryRow;
 
 	/** For all Enemy Doors */
-	std::vector<EnemyDoor*> EnemyDoorEntities;
+	std::vector<GameEntity*> EnemyDoorEntities;
 
 	/** The maximum number of game-entities per row... */
 	int GameEntitiesPerRow;
@@ -173,7 +173,7 @@ public:
 		The value to parse to this singleton class, for
 		EnemyDoorEntities.
 	*/
-	void CopyEnemyDoorEntities(std::vector<EnemyDoor*> CurrentEnemyDoors);
+	void CopyEnemyDoorEntities(std::vector<GameEntity*> CurrentEnemyDoors);
 
 	/**
 		Description: Check if Enemy is close enough to a door, in order to enter it.
@@ -184,7 +184,7 @@ public:
 		@Return: bool EnemyIsNearADoor: If true; the enemy will patrol along
 		the corridor this door leads to.
 	*/
-	DoorReferenceAndProximityDetectionFlag IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter);
+	bool IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter);
 
 	/**
 		The 3 functions below, are for

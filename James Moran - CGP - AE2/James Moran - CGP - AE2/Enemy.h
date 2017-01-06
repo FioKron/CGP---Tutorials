@@ -1,9 +1,9 @@
 #pragma once
 #include "GameEntity.h"
-#include "EnemyDoor.h"
 
 // Forward references again (welp):
 class GameEntity;
+
 
 /** 
 	This struct contains both a reference to an EnemyDoor,
@@ -11,12 +11,12 @@ class GameEntity;
 	enter the door
 
 	RESOLVE ISSUES WITH THIS STRUCT DFAWDFAW
-*/
+
 #ifndef ENEMY_DOOR_AND_PROXIMITY_FLAG
 #define ENEMY_DOOR_AND_PROXIMITY_FLAG
 struct DoorReferenceAndProximityDetectionFlag
 {
-	EnemyDoor DoorReference;
+	EnemyDoor* DoorReference;
 	bool ProximityFlag;
 
 	DoorReferenceAndProximityDetectionFlag(EnemyDoor* NewReference, bool NewProximityFlag)
@@ -24,9 +24,14 @@ struct DoorReferenceAndProximityDetectionFlag
 		DoorReference = NewReference;
 		ProximityFlag = NewProximityFlag;
 	}
+
+	DoorReferenceAndProximityDetectionFlag()
+	{
+
+	}
 };
 #endif 
-
+*/
 class Enemy : public GameEntity
 {
 	
@@ -42,7 +47,7 @@ private:
 		This door is parsed by reference into
 		IsEnemyNearAnEnemyDoor(), to update this door appropriatly
 	*/
-	EnemyDoor* ReferenceDoor;
+	//EnemyDoor* ReferenceDoor;
 
 	/** 
 		An ad-hoc timer (for allowing the 

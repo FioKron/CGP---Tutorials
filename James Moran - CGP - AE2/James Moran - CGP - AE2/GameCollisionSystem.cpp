@@ -1,5 +1,5 @@
 #include "GameCollisionSystem.h"
-#include "EnemyDoor.h"
+//#include "EnemyDoor.h"
 #include <iostream> // For debugging
 
 // For initialisation:
@@ -135,7 +135,7 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 }
 
 // In effect; a set method: (with minor validation)
-void GameCollisionSystem::CopyEnemyDoorEntities(std::vector<EnemyDoor*> CurrentEnemyDoors)
+void GameCollisionSystem::CopyEnemyDoorEntities(std::vector<GameEntity*> CurrentEnemyDoors)
 {
 	if (EnemyDoorEntities.empty())
 	{
@@ -144,18 +144,18 @@ void GameCollisionSystem::CopyEnemyDoorEntities(std::vector<EnemyDoor*> CurrentE
 }
 
 // Whilst an Enemy is patrolling...
-DoorReferenceAndProximityDetectionFlag GameCollisionSystem::IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter)
+bool GameCollisionSystem::IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter)
 {
 	// The return value(s):
 	bool EnemyIsNearADoor = false;
-	EnemyDoor* DoorEnemyIsNear;
+	//EnemyDoor* DoorEnemyIsNear;
 
-	for each (EnemyDoor* CurrentEnemyDoor in EnemyDoorEntities)
+	for each (GameEntity* CurrentEnemyDoor in EnemyDoorEntities)
 	{
 		/** 
 			Make sure ThisEnemyCharacter is able to access this door
 			and the patrol route has not recieved covering:
-		*/
+		
 		if ((ThisEnemyCharacter->GetEntityPosition() == CurrentEnemyDoor->GetEntityPosition())
 			&& (!CurrentEnemyDoor->GetPatrolRouteCovered()))
 		{
@@ -163,9 +163,10 @@ DoorReferenceAndProximityDetectionFlag GameCollisionSystem::IsEnemyNearAnEnemyDo
 			DoorEnemyIsNear = CurrentEnemyDoor;
 			return DoorReferenceAndProximityDetectionFlag(DoorEnemyIsNear, EnemyIsNearADoor);
 		}
+		*/
 	}
 
-	return DoorReferenceAndProximityDetectionFlag(DoorEnemyIsNear, EnemyIsNearADoor);
+	return EnemyIsNearADoor;
 }
 
 /**

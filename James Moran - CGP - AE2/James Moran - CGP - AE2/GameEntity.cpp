@@ -19,7 +19,7 @@ GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition
 
 	case EI_ENEMY_DOOR:
 		BlockingEntity = false;
-		PatrolRouteCovered = false;
+	//		PatrolRouteCovered = false;
 		break;
 
 	// Otherwise...
@@ -132,6 +132,7 @@ int GameEntity::GetMovementSpeed()
 	return MOVEMENT_SPEED;
 }
 
+/**
 bool GameEntity::GetPatrolRouteCovered()
 {
 	return PatrolRouteCovered;
@@ -146,7 +147,7 @@ void GameEntity::PatrolRouteNotCovered()
 {
 	PatrolRouteCovered = false;
 }
-
+*/
 // For getting the top-left, top-right,
 // bottom-left and bottom-right verticies:
 
