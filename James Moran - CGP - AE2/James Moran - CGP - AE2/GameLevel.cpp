@@ -291,6 +291,7 @@ std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
 
 			case '.':
 			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
+				// For the starting point of valid positions for this row:
 				if (ValidPositions.size() < RowCounter + 1)
 				{
 					// For both beginning and end, initially:
@@ -299,6 +300,7 @@ std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
 
 					ValidPositions.push_back(ValidStartEndXPositionsPerRow(InitialValidValues));
 				}
+				// Then keep moving along the row till the end is reached:
 				else
 				{
 					ValidPositions[RowCounter].StartEndPositions.YComponent += BlockDimensions.XComponent;

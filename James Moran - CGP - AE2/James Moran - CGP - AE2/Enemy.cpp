@@ -126,18 +126,41 @@ void Enemy::MoveLeftwardsToPatrolStartPoint()
 	ValidateLeftwardsMovement(PatrolStartPoint);
 }
 
+// Attempt to move leftwards...
 void Enemy::MoveLeftwards()
 {
-	EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
-	// To allow the Player to avoid collision with these Enemies:
-	SDL_Delay(10);
+	if (!AttemptHorizontalMovement(ED_LEFTWARDS))
+	{
+		// Signal that it is time to move to the other
+		// patrol point then:
+		MovingToOtherPatrolPoint();
+	}
+	else
+	{
+		WaitAfterTranslation(WAIT_TIME_BETWEEN_MOVEMENT_ATTEMPTS);
+	}
+	
 }
 
+// ...or rightwards:
 void Enemy::MoveRightWards()
 {
-	EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
-	// To allow the Player to avoid collision with these Enemies:
-	SDL_Delay(10);
+	if (!AttemptHorizontalMovement(ED_RIGHTWARDS))
+	{
+		// Signal that it is time to move to the other
+		// patrol point then:
+		MovingToOtherPatrolPoint();
+	}
+	else
+	{
+		WaitAfterTranslation(WAIT_TIME_BETWEEN_MOVEMENT_ATTEMPTS);
+	}
+}
+
+// To allow the Player to avoid collision with this Enemy:
+void Enemy::WaitAfterTranslation(Uint32 MilliSeconds)
+{
+	SDL_Delay(MilliSeconds);
 }
 
 // Invert this flag:

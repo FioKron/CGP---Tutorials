@@ -57,6 +57,14 @@ private:
 	*/
 	float TestTimer;
 
+	// Constant values:
+
+	/** 
+		The time in milliseconds to wait for, before performing
+		the next attempt at movement
+	*/
+	const Uint32 WAIT_TIME_BETWEEN_MOVEMENT_ATTEMPTS = 10;
+
 	// Flags:
 
 	bool MovingToEndPatrolPoint;
@@ -91,6 +99,14 @@ private:
 	// Handling general movment
 	void MoveLeftwards();
 	void MoveRightWards();
+
+	/** 
+		Description: For waiting after translation (movement).
+
+		@Param: Uint32 MilliSeconds: To parse into SDL_Delay(),
+		to have the game wait for that many milliseconds.
+	*/
+	void WaitAfterTranslation(Uint32 MilliSeconds);
 
 public:
 

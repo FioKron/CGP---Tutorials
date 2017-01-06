@@ -212,9 +212,17 @@ public:
 	Vector2D GetEntityBottomLeftVertex();
 	Vector2D GetEntityBottomRightVertex();
 
-	// Movement handling (for all types of mobile entities):
-	void AttemptMoveLeft();
-	void AttemptMoveRight();
+	/** 
+		Description: For movement handling (common amongst all types of mobile entities).
+
+		@Param: EntityMovementDirection MovementDirection: The intended positive, or
+		negative movement direction, along the respective axis (X or Y respectivley).
+
+		@Return: bool MovementValid: For whether this attempt at movement
+		was successful.
+	*/
+	bool AttemptHorizontalMovement(EntityMovementDirection MovementDirection);
+	bool AttemptVerticalMovement(EntityMovementDirection MovementDirection);
 
 protected:
 

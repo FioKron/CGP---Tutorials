@@ -169,8 +169,8 @@ public:
 	}
 
 	/** 
-		Description: Attempt leftwards, rightwards, 
-		upwards or downwards movement (respectively).
+		Description: Attempt horizontal (leftwards or rightwards) 
+		and vertical (upwards or downwards) movement (respectively).
 
 		@Params: std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges:
 		For the positions that are valid for this mobile-entity to
@@ -182,13 +182,9 @@ public:
 		@Return: bool MovementValid: For whether movement to the intended 
 		position is valid.
 	*/
-	bool AttemptLeftwardsMovement(std::vector<ValidStartEndXPositionsPerRow> 
+	bool AttemptHorizontalMovement(std::vector<ValidStartEndXPositionsPerRow> 
 		ValidPositionRanges, Vector2D ProposedTargetPosition);
-	bool AttemptRightwardsMovement(std::vector<ValidStartEndXPositionsPerRow>
-		ValidPositionRanges, Vector2D ProposedTargetPosition);
-	bool AttemptUpwardswardsMovement(std::vector<ValidStartEndXPositionsPerRow>
-		ValidPositionRanges, Vector2D ProposedTargetPosition);
-	bool AttemptDownwardsMovement(std::vector<ValidStartEndXPositionsPerRow>
+	bool AttemptVerticalMovement(std::vector<ValidStartEndXPositionsPerRow>
 		ValidPositionRanges, Vector2D ProposedTargetPosition);
 
 	/**

@@ -168,10 +168,10 @@ public:
 		the GameEntity (in the respective direction).
 
 		@Param: int MovementSpeed: to number of pixels to move
-		in the respective direction by.
+		along the respective axis by (positive for rightwards
+		and downwards movement, or negative for leftwards and
+		upwards movement, in the order of definition).
 	*/
-	void MoveBitmapLeftwards(int MovementSpeed);
-	void MoveBitmapRightwards(int MovementSpeed);
-	void MoveBitmapUpwards(int MovementSpeed);
-
+	void MoveBitmapHorizontally(int MovementSpeed);
+	void MoveBitmapVertically(int MovementSpeed);
 };

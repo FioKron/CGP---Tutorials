@@ -144,19 +144,14 @@ void GameBitmap::SetBitmapPosition(Vector2D NewPosition)
 }
 
 // Movement of this bitmap as required:
-void GameBitmap::MoveBitmapLeftwards(int MovementSpeed)
-{
-	BitmapScreenPosition.XComponent -= MovementSpeed;
-}
-
-void GameBitmap::MoveBitmapRightwards(int MovementSpeed)
+void GameBitmap::MoveBitmapHorizontally(int MovementSpeed)
 {
 	BitmapScreenPosition.XComponent += MovementSpeed;
 }
 
-void GameBitmap::MoveBitmapUpwards(int MovementSpeed)
+void GameBitmap::MoveBitmapVertically(int MovementSpeed)
 {
-	BitmapScreenPosition.YComponent -= MovementSpeed;
+	BitmapScreenPosition.YComponent += MovementSpeed;
 }
 
 // Drawing and clearing the renderer:

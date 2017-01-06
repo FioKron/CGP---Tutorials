@@ -40,10 +40,15 @@ bool Player::GetHasJumped()
 	return HasJumped;
 }
 
+// Attempt to jump:
 void Player::AttemptJump()
 {
-	if ((GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent)
-		.CheckTopSideCollision(this)) && (!IsAirborne))
+	// After initiating a jump; this is where the Player will attempt to move to:
+	Vector2D ProposedNewHigherPosition = Vector2D(GetEntityPosition().XComponent, 
+		GetEntityPosition().YComponent + (CurrentUpwardsMomentum / MOMENTUM_DIVISOR));
+
+	if ((GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+		AttemptVerticalMovement(ValidMobileEntityMovementValues, ProposedNewHigherPosition)) && (!IsAirborne))
 	{
 		// The HandleGravity method will handle Player movement now:
 		HasJumped = true;
@@ -63,20 +68,24 @@ void Player::UpdateEntity()
 	}
 }
 
+// For jumping or falling (if the Player has not jumped):
+int Player::GetResultantUpwardsMomentum()
+{
+	return CurrentUpwardsMomentum /
+		MOMENTUM_DIVISOR;
+}
+
 // Implement after managing jumping (ideally):
 void Player::HandleGravity()
 {
-	int ResultantUpwardsMomentum = CurrentUpwardsMomentum /
-		MOMENTUM_DIVISOR;
-
 	if (HasJumped)
-	{
-		EntityRepresentation->MoveBitmapUpwards(ResultantUpwardsMomentum);
+	{ 
+		EntityRepresentation->MoveBitmapVertically(GetResultantUpwardsMomentum());
 	}
 	else
 	{
-		ResultantUpwardsMomentum = -10;
-		EntityRepresentation->MoveBitmapUpwards(ResultantUpwardsMomentum);
+		CurrentUpwardsMomentum = -10;
+		EntityRepresentation->MoveBitmapVertically(GetResultantUpwardsMomentum());
 	}
 
 	CurrentUpwardsMomentum--;

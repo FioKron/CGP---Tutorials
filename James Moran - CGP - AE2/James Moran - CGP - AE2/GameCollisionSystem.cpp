@@ -134,7 +134,7 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 	}	
 }
 
-bool GameCollisionSystem::AttemptLeftwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+bool GameCollisionSystem::AttemptHorizontalMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
 {
 	// Only check the range for a particular row:
 	int RowToCheck = ProposedTargetPosition.YComponent / BLOCK_DIMENSIONS.YComponent;
@@ -154,17 +154,7 @@ bool GameCollisionSystem::AttemptLeftwardsMovement(std::vector<ValidStartEndXPos
 	}
 }
 
-bool GameCollisionSystem::AttemptRightwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
-{
-	return false;
-}
-
-bool GameCollisionSystem::AttemptUpwardswardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
-{
-	return false;
-}
-
-bool GameCollisionSystem::AttemptDownwardsMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+bool GameCollisionSystem::AttemptVerticalMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
 {
 	return false;
 }

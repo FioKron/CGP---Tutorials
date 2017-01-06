@@ -50,6 +50,11 @@ private:
 	/** If the Player causes themselves to become airborne */
 	bool HasJumped;
 
+	// Functions:
+
+	/** Get the final upwards momentum */
+	int GetResultantUpwardsMomentum();
+
 public:
 	
 	// Functions:

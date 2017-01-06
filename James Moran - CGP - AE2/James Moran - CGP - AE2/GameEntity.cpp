@@ -191,30 +191,60 @@ Vector2D GameEntity::GetEntityBottomRightVertex()
 */
 
 // Handle attempts at movement:
-void GameEntity::AttemptMoveLeft()
+bool GameEntity::AttemptHorizontalMovement(EntityMovementDirection MovementDirection)
 {
-	// Intended position is to the left of the current position:
-	Vector2D TargetPosition = GetEntityPosition();
-	TargetPosition.XComponent -= MOVEMENT_SPEED;
+	// Return value:
+	bool MovementValid = false;
+
+	// The intended movement target:
+	Vector2D TargetPosition;
+
+	// This Entity's original position:
+	Vector2D OriginalPosition;
+
+	// Movement-speed; depending on the target and original positions:
+	int TargetMovementSpeed = 0;
+	
+	TargetPosition = GetEntityPosition();
+	OriginalPosition = TargetPosition;
+
+	if (MovementDirection == ED_LEFTWARDS)
+	{
+		// Intended position is to the left of the current position:		
+		TargetPosition.XComponent -= MOVEMENT_SPEED;
+	}
+	else
+	{
+		// Otherwise; this Entity is moving to the right:
+		TargetPosition.XComponent += MOVEMENT_SPEED;
+	}
+	
 
 	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
-		AttemptLeftwardsMovement(ValidMobileEntityMovementValues, TargetPosition))
+		AttemptHorizontalMovement(ValidMobileEntityMovementValues, TargetPosition))
 	{
-		EntityRepresentation->MoveBitmapLeftwards(MOVEMENT_SPEED);
+		// Move left or right, accordingly:
+		if (MovementDirection == ED_LEFTWARDS)
+		{
+			TargetMovementSpeed = -(MOVEMENT_SPEED);
+			
+		}
+		else
+		{
+			TargetMovementSpeed = MOVEMENT_SPEED;
+		}
+
+		EntityRepresentation->MoveBitmapHorizontally(TargetMovementSpeed);
+
+		MovementValid = true;
 	}
+
+	return MovementValid;
 }
 
-void GameEntity::AttemptMoveRight()
+bool GameEntity::AttemptVerticalMovement(EntityMovementDirection MovementDirection)
 {
-	// Intended position is to the right of the current position:
-	Vector2D TargetPosition = GetEntityPosition();
-	TargetPosition.XComponent += MOVEMENT_SPEED;
-
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
-		AttemptLeftwardsMovement(ValidMobileEntityMovementValues, TargetPosition))
-	{
-		EntityRepresentation->MoveBitmapRightwards(MOVEMENT_SPEED);
-	}
+	return false;
 }
 
 // Overlap checking:
