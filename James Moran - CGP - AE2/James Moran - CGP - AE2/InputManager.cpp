@@ -31,7 +31,7 @@ void InputManager::SetKeyPressed(SDL_Keycode PressedKey)
 		break;
 	case SDLK_w:
 		PressedKeys[KI_W] = true;
-		PlayerAttemptsJump();
+		PlayerAttemptsUpwardsMovement();
 		break;
 	case SDLK_a:
 		PressedKeys[KI_A] = true;
@@ -39,6 +39,7 @@ void InputManager::SetKeyPressed(SDL_Keycode PressedKey)
 		break;
 	case SDLK_s:
 		PressedKeys[KI_S] = true;
+		PlayerAttemptsDownwardsMovement();
 		break;
 	case SDLK_d:
 		PressedKeys[KI_D] = true;
@@ -83,9 +84,14 @@ void InputManager::PlayerAttemptsRightwardsMovement()
 	PlayerReference->AttemptHorizontalMovement(ED_RIGHTWARDS);
 }
 
-void InputManager::PlayerAttemptsJump()
+void InputManager::PlayerAttemptsUpwardsMovement()
 {
-	PlayerReference->AttemptJump();
+	PlayerReference->AttemptVerticalMovement(ED_UPWARDS);
+}
+
+void InputManager::PlayerAttemptsDownwardsMovement()
+{
+	PlayerReference->AttemptVerticalMovement(ED_DOWNWARDS);
 }
 
 // Poll InputEvent:

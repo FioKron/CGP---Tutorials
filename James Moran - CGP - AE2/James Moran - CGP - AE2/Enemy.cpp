@@ -5,10 +5,10 @@
 
 // Initialisation:
 Enemy::Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
-	Vector2D NewScreenDimensions, EntityID UniqueID, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
-	std::string FileName, bool UsesTransparency) :
+	Vector2D NewScreenDimensions, EntityID UniqueID, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
+	std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, NewScreenDimensions,
-		UniqueID, NewValidMobileEntityMovementValues, UsesTransparency)
+		UniqueID, NewValidMobileEntityRowMovementValues, NewValidMobileEntityColumnMovementValues, UsesTransparency)
 {
 	PatrolStartPoint = Vector2D(XPosition, YPosition);
 	PatrolEndPoint = Vector2D(NewPatrolEndPoint);
@@ -129,7 +129,9 @@ void Enemy::MoveLeftwardsToPatrolStartPoint()
 // Attempt to move leftwards...
 void Enemy::MoveLeftwards()
 {
-	if (!AttemptHorizontalMovement(ED_LEFTWARDS))
+	AttemptHorizontalMovement(ED_LEFTWARDS);
+	if ((GetEntityPosition() == PatrolStartPoint) ||
+		(GetEntityPosition() == PatrolEndPoint))
 	{
 		// Signal that it is time to move to the other
 		// patrol point then:
@@ -138,14 +140,16 @@ void Enemy::MoveLeftwards()
 	else
 	{
 		WaitAfterTranslation(WAIT_TIME_BETWEEN_MOVEMENT_ATTEMPTS);
-	}
-	
+	}	
 }
 
 // ...or rightwards:
 void Enemy::MoveRightWards()
 {
-	if (!AttemptHorizontalMovement(ED_RIGHTWARDS))
+	AttemptHorizontalMovement(ED_RIGHTWARDS);
+
+	if ((GetEntityPosition() == PatrolStartPoint) ||
+		(GetEntityPosition() == PatrolEndPoint))
 	{
 		// Signal that it is time to move to the other
 		// patrol point then:

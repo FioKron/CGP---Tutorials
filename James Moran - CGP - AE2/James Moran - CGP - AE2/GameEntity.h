@@ -9,7 +9,7 @@
 // (Hmm...)
 class GameBitmap;
 
-struct ValidStartEndXPositionsPerRow;
+struct ValidStartEndPositions;
 
 // FOR AN UNKNOWN REASON, EVEN THOUGH IT IS DEFINED IN GameBitmap.h,
 // THE INCLUDE-GUARDS ARE STILL REQUIRED HERE, FOR GameEntity TO 
@@ -68,9 +68,13 @@ struct Vector2D
 
 	// Overloaded operators:
 
+	/** 
+		For if either the X or Y Component values of this Vector, 
+		are not equal to Target's X or Y Component values 
+	*/
 	bool Vector2D::operator!=(const Vector2D& Target)
 	{
-		if ((this->XComponent != Target.XComponent) && (this->YComponent != Target.YComponent))
+		if ((this->XComponent != Target.XComponent) || (this->YComponent != Target.YComponent))
 		{
 			return true;
 		}
@@ -115,7 +119,8 @@ enum EntityMovementDirection
 {
 	ED_LEFTWARDS,
 	ED_RIGHTWARDS,
-	ED_UPWARDS
+	ED_UPWARDS,
+	ED_DOWNWARDS
 };
 #endif
 
@@ -146,7 +151,8 @@ public:
 	*/
 	GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
 		Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID,
-		std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues, bool UsesTransparency = false);
+		std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
+		std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues, bool UsesTransparency = false);
 
 	/** Default constructor (for 'empty' initialisation) */
 	GameEntity();
@@ -196,7 +202,13 @@ public:
 
 	int GetMovementSpeed();
 
-	std::vector<ValidStartEndXPositionsPerRow> GetValidMobileEntityMovementValues();
+	/** For movement in general and movement validation */
+	std::vector<ValidStartEndPositions> GetValidMobileEntityRowMovementValues();
+	std::vector<ValidStartEndPositions> GetValidMobileEntityColumnMovementValues();
+
+	/** For reference to the row and column of this GameEntity */
+	int GetCurrentRow();
+	int GetCurrentColumn();
 
 	/**
 	To get the top-left, top-right,
@@ -217,12 +229,9 @@ public:
 
 		@Param: EntityMovementDirection MovementDirection: The intended positive, or
 		negative movement direction, along the respective axis (X or Y respectivley).
-
-		@Return: bool MovementValid: For whether this attempt at movement
-		was successful.
 	*/
-	bool AttemptHorizontalMovement(EntityMovementDirection MovementDirection);
-	bool AttemptVerticalMovement(EntityMovementDirection MovementDirection);
+	void AttemptHorizontalMovement(EntityMovementDirection MovementDirection);
+	void AttemptVerticalMovement(EntityMovementDirection MovementDirection);
 
 protected:
 
@@ -269,7 +278,11 @@ protected:
 	*/
 	Vector2D CurrentGameLevelBlockDimensions;
 
-	/** A map of the area a mobile-entity can move in */
-	std::vector<ValidStartEndXPositionsPerRow> ValidMobileEntityMovementValues;
+	/** 
+		A map of the area a mobile-entity can move in 
+		(for both the rows and the columns)
+	*/
+	std::vector<ValidStartEndPositions> ValidMobileEntityRowMovementValues;
+	std::vector<ValidStartEndPositions> ValidMobileEntityColumnMovementValues;
 };
 #endif

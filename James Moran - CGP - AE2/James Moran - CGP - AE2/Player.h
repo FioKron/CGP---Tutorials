@@ -28,14 +28,14 @@ private:
 	/**
 		These values are for handling jumping:
 	*/
-	const int INITIAL_UPWARDS_MOMENTUM = 30;
+	//const int INITIAL_UPWARDS_MOMENTUM = 30;
 
 	/** 
 		Given int division, as the resultant value is floored;
 		CurrentUpwardsMomentum will change at every multiple of 10 - 1
 		(e.g. 29, 19 etc.)
 	*/
-	const float MOMENTUM_DIVISOR = 1;
+	//const float MOMENTUM_DIVISOR = 10;
 
 	// Flags:
 
@@ -45,10 +45,10 @@ private:
 		As the Player is not allowed to jump whilst in the air
 		(if they have already jumped, or are falling)
 	*/
-	bool IsAirborne;
+	//bool IsAirborne;
 
 	/** If the Player causes themselves to become airborne */
-	bool HasJumped;
+	//bool HasJumped;
 
 	// Functions:
 
@@ -61,23 +61,24 @@ public:
 
 	/** Standard constructor */
 	Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
-		Vector2D NewScreenDimensions, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
+		Vector2D NewScreenDimensions, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
+		std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues,
 		EntityID UniqueID = EI_PLAYER, std::string FileName = "Bitmaps/HeroBitmap.bmp", bool UsesTransparency = true);
 
 	/** Only the Player can jump (Enemies follow a preset patrol route) */
-	void AttemptJump();
+	//void AttemptJump();
 
 	/** For handling falling (such as after jumping) */
-	void HandleGravity();
+	//void HandleGravity();
 
 	/** For a gravity sub-system */
-	void UpdateEntity()override;
+	//void UpdateEntity()override;
 
 	// Get methods:
 
 	bool GetHasKey();
 	int GetCurrentLives();
-	bool GetIsAirborne();
-	bool GetHasJumped();
+	//bool GetIsAirborne();
+	//bool GetHasJumped();
 };
 #endif

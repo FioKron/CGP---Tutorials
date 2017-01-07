@@ -11,9 +11,9 @@ class Player;
 class Enemy;
 
 // For mapping out collision:
-#ifndef VALID_START_END_X_POSITIONS_PER_ROW
-#define VALID_START_END_X_POSITIONS_PER_ROW
-struct ValidStartEndXPositionsPerRow
+#ifndef VALID_START_END_POSITIONS
+#define VALID_START_END_POSITIONS
+struct ValidStartEndPositions
 {
 	/** 
 		The X-Component is the start position
@@ -21,7 +21,7 @@ struct ValidStartEndXPositionsPerRow
 	*/
 	Vector2D StartEndPositions;
 
-	ValidStartEndXPositionsPerRow(Vector2D NewStartEnd)
+	ValidStartEndPositions(Vector2D NewStartEnd)
 	{
 		StartEndPositions = NewStartEnd;
 	}
@@ -142,11 +142,42 @@ private:
 
 	/** 
 		Description: Get the valid points for movement (by the Player and 
-		any Enemies), for each row.
+		any Enemies), for each row (when moving leftwards or rightwards).
 
-		@Return: std::vector<ValidStartEndXPositionPerRow> ValidPositions:
-		For any Entity's valid movement positions.
+		@Return: std::vector<ValidStartEndPosition> ValidPositions:
+		For any Entity's valid movement positions within the rows of the
+		game level.
 	*/
-	std::vector<ValidStartEndXPositionsPerRow> GetValidXPositionsPerRow();
+	std::vector<ValidStartEndPositions> GetValidXPositionsPerRow();
+
+	/**
+		Description: Get the valid points for movement (by the Player and
+		any Enemies), for each Column (when moving upwards or downwards).
+
+		@Return: std::vector<ValidStartEndPosition> ValidPositions:
+		For any Entity's valid movement positions within the columns of the 
+		game level.
+	*/
+	std::vector<ValidStartEndPositions> GetValidYPositionsPerColumn();
+
+	/**
+		Description: Update ValidPositions (from the function above).
+
+		@Params: std::vector<ValidStartEndPositions> ValidColumnPositions:
+		The current state of valid positions, within a column, the Player can
+		move into.
+
+		char PreviousBlockType: The type of block identified within this row of 
+		the column, during the last call to this function.
+
+		int ColumnCounter, int RowCounter: From the inner and outer for loops;
+		for use in identifying the current position in this column, as well
+		as for calculations.
+
+		@Return: std::vector<ValidStartEndPosition> ValidColumnPositions:
+		The valid points within a column, the Player can move into.
+	*/
+	std::vector<ValidStartEndPositions> UpdateValidColumnPositions(std::vector<ValidStartEndPositions> ValidColumnPositions,
+		char PreviousBlockType, int ColumnCounter, int RowCounter);
 };
 

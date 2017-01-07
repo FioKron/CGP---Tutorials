@@ -68,7 +68,7 @@ private:
 
 	/** 
 		Description: Check if there is a blocking-GameEntity
-		at PositionToCheck.
+		at the intended position for these verticies.
 
 		@Params: int RowToCheck: The row to check:
 		
@@ -79,8 +79,10 @@ private:
 		@Return: bool PositionOccupied: True if there is a
 		blocking GameEntity here.	
 	*/
-	bool GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex, 
+	bool GameEntityIsAtRowPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, Vector2D EndingVertex, 
 		EntityMovementDirection MovementDirection);
+
+	
 
 	/**
 		Description: Get the row number EntityMoving is on.
@@ -169,23 +171,40 @@ public:
 	}
 
 	/** 
-		Description: Attempt horizontal (leftwards or rightwards) 
-		and vertical (upwards or downwards) movement (respectively).
+		Description: Attempt horizontal (leftwards or rightwards) movement.
 
-		@Params: std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges:
-		For the positions that are valid for this mobile-entity to
+		@Params: std::vector<ValidStartEndPositions> ValidRowPositionRanges:
+		For the X-positions that are valid for this mobile-entity to
 		move into.
 
 		Vector2D ProposedTargetPosition: The intended location to move this
 		mobile-entity to.
 
-		@Return: bool MovementValid: For whether movement to the intended 
+		@Return: Vector2D ValidatedPosition: The ultimate movement position,
+		after this method has checked it for validation.
+	*/
+	Vector2D AttemptHorizontalMovement(std::vector<ValidStartEndPositions> 
+		ValidRowPositionRanges, Vector2D ProposedTargetPosition);
+	
+	/**
+		Description: Attempt vertical (upwards or downwards) movement.
+
+		@Params: std::vector<ValidStartEndPositions> ValidColumnPositionRanges:
+		For the Y-positions that are valid for this mobile-entity to
+		move into.
+
+		Vector2D ProposedTargetPosition: The intended location to move this
+		mobile-entity to.
+
+		GameEntity* EntityAttemptingMovement: To get this Entity's original
+		position, row and column, as well as any other information to determine
+		if vertical movement is possible for this GameEntity.
+
+		@Return: bool: For whether movement to the intended
 		position is valid.
 	*/
-	bool AttemptHorizontalMovement(std::vector<ValidStartEndXPositionsPerRow> 
-		ValidPositionRanges, Vector2D ProposedTargetPosition);
-	bool AttemptVerticalMovement(std::vector<ValidStartEndXPositionsPerRow>
-		ValidPositionRanges, Vector2D ProposedTargetPosition);
+	Vector2D AttemptVerticalMovement(std::vector<ValidStartEndPositions>
+		ValidColumnPositionRanges, Vector2D ProposedTargetPosition, GameEntity* EntityAttemptingMovement);
 
 	/**
 		Description: For GameLevel to copy EnemyDoorEntities
@@ -261,5 +280,21 @@ public:
 		@Return: True if movement in the respective direction is possible.
 	*/
 	bool CheckTopSideCollision(GameEntity* ConsideredEntity);
+
+	/**
+		Description: Check if there is a blocking-GameEntity
+		at the intended position for these verticies.
+
+		@Params: int ColumnToCheck: The Column to check:
+
+		Vector2D TopLeftVertex: The position to check from
+
+		Vector2D TopRightVertex: The position to check to.
+
+		@Return: bool PositionOccupied: True if there is a
+		blocking GameEntity here.
+	*/
+	bool GameEntityIsAtColumnPosition(GameEntity* EntityAttemeptingMovement, int ColumnToCheck, Vector2D TopLeftVertex,
+		Vector2D TopRightVertex, EntityMovementDirection MovementDirection);
 };
 

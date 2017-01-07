@@ -18,7 +18,7 @@ GameCollisionSystem::~GameCollisionSystem()
 bool GameCollisionSystem::AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity* EntityMoving, Vector2D ProposedNewPoint1, 
 	Vector2D ProposedNewPoint2, EntityMovementDirection MovementDirection)
 {
-	if (GameEntityIsAtPosition(EntityMoving, GetEntityRowNumber(EntityMoving), ProposedNewPoint1, ProposedNewPoint2, MovementDirection))
+	if (GameEntityIsAtRowPosition(EntityMoving, GetEntityRowNumber(EntityMoving), ProposedNewPoint1, ProposedNewPoint2, MovementDirection))
 	{
 		return true;
 	}
@@ -31,7 +31,7 @@ bool GameCollisionSystem::AnotherGameEntityOccupiesRangeBetweenPoints(GameEntity
 	return false;
 }
 
-bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, 
+bool GameCollisionSystem::GameEntityIsAtRowPosition(GameEntity* EntityAttemeptingMovement, int RowToCheck, Vector2D StartingVertex, 
 	Vector2D EndingVertex, EntityMovementDirection MovementDirection)
 {
 	// The flag to return: 
@@ -39,9 +39,9 @@ bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMo
 
 	// (SIZE IS ABSOLUTE, SUBTRACT NOT FROM IT, OTHERWISE NOT ALL ENTITIES WILL GET CHECKED)
 	// Check all elements in this row:
-	for (int Iterator = 0; Iterator < GameEntities.at(RowToCheck).size(); Iterator++)
+	for (int Iterator = 0; Iterator < GameEntities[RowToCheck].size(); Iterator++)
 	{
-		GameEntity* EntityToCheck = GameEntities.at(RowToCheck).at(Iterator);
+		GameEntity* EntityToCheck = GameEntities[RowToCheck][Iterator];
 
 		// Only check for position-occupation; if the EntityToCheck is not the EntityAttemptingMovement:
 		if (EntityAttemeptingMovement != EntityToCheck)
@@ -72,8 +72,8 @@ bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMo
 					break;
 
 				case ED_UPWARDS:
-					if ((StartingVertex.YComponent >= EntityToCheck->GetEntityBottomLeftVertex().XComponent) &&
-						(StartingVertex.YComponent <= EntityToCheck->GetEntityTopLeftVertex().XComponent))
+					if ((StartingVertex.YComponent >= EntityToCheck->GetEntityBottomLeftVertex().YComponent) &&
+						(StartingVertex.YComponent <= EntityToCheck->GetEntityTopLeftVertex().YComponent))
 					{
 						EntityIsAtPosition = true;
 						return EntityIsAtPosition;
@@ -93,6 +93,51 @@ bool GameCollisionSystem::GameEntityIsAtPosition(GameEntity* EntityAttemeptingMo
 			return EntityIsAtPosition;
 		}
 		*/
+	}
+
+	// No Entity taking up that space if execution reaches this point:
+	return EntityIsAtPosition;
+}
+
+bool GameCollisionSystem::GameEntityIsAtColumnPosition(GameEntity* EntityAttemeptingMovement, int ColumnToCheck, Vector2D TopLeftVertex,
+	Vector2D TopRightVertex, EntityMovementDirection MovementDirection)
+{
+	// The flag to return: 
+	bool EntityIsAtPosition = false;
+
+	// (SIZE IS ABSOLUTE, SUBTRACT NOT FROM IT, OTHERWISE NOT ALL ENTITIES WILL GET CHECKED)
+	// Check all elements in this row:
+	for (int Iterator = 0; Iterator < GameEntities[Iterator].size(); Iterator++)
+	{
+		GameEntity* EntityToCheck = GameEntities[Iterator][ColumnToCheck];
+
+		// Only check for position-occupation; if the EntityToCheck is not the EntityAttemptingMovement:
+		if (EntityAttemeptingMovement != EntityToCheck)
+		{
+			if (EntityToCheck->GetIsBlockingEntity() &&
+				(((TopLeftVertex.YComponent >= EntityToCheck->GetEntityBottomLeftVertex().YComponent) 
+				&& (TopLeftVertex.YComponent <= EntityToCheck->GetEntityTopLeftVertex().YComponent)) || 
+				((TopRightVertex.YComponent >= EntityToCheck->GetEntityBottomRightVertex().YComponent)
+				&& (TopRightVertex.YComponent <= EntityToCheck->GetEntityTopRightVertex().YComponent))))
+			{
+				// Make sure the entity is close enough to block the Player:
+				switch (MovementDirection)
+				{
+					// Hence: Only return from this function if this is the case:
+				case ED_UPWARDS:
+					if ((TopLeftVertex.YComponent >= EntityToCheck->GetEntityBottomLeftVertex().YComponent) &&
+						(TopLeftVertex.YComponent <= EntityToCheck->GetEntityTopLeftVertex().YComponent))
+					{
+						EntityIsAtPosition = true;
+						return EntityIsAtPosition;
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
 	}
 
 	// No Entity taking up that space if execution reaches this point:
@@ -134,29 +179,88 @@ void GameCollisionSystem::AddGameEntityToCollection(GameEntity* EntityToAdd)
 	}	
 }
 
-bool GameCollisionSystem::AttemptHorizontalMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+Vector2D GameCollisionSystem::AttemptHorizontalMovement(std::vector<ValidStartEndPositions>
+	ValidRowPositionRanges, Vector2D ProposedTargetPosition)
 {
 	// Only check the range for a particular row:
 	int RowToCheck = ProposedTargetPosition.YComponent / BLOCK_DIMENSIONS.YComponent;
 	
-	// Get the lowest and highest points to check against (in this range of values)
-	int LowestXValue = ValidPositionRanges[RowToCheck].StartEndPositions.XComponent;
-	int HighestXValue = ValidPositionRanges[RowToCheck].StartEndPositions.YComponent;
+	// Get the lowest and highest points to check against (in this range of values):
+	int LowestXValue = ValidRowPositionRanges[RowToCheck].StartEndPositions.XComponent;
+	int HighestXValue = ValidRowPositionRanges[RowToCheck].StartEndPositions.YComponent;
 
-	if ((ProposedTargetPosition.XComponent >= LowestXValue) &&
-		(ProposedTargetPosition.XComponent <= HighestXValue))
+	// Validate the Target Position if it is out of range
+	// (binding it to the lowest or highest X-values):
+	if (ProposedTargetPosition.XComponent <= LowestXValue)
 	{
-		return true;
+		ProposedTargetPosition.XComponent = LowestXValue;
 	}
-	else
+	else if (ProposedTargetPosition.XComponent >= HighestXValue)
 	{
-		return false;
+		ProposedTargetPosition.XComponent = HighestXValue;
 	}
+
+	// Return this target position (whether validation was required or not):
+	return ProposedTargetPosition;
 }
 
-bool GameCollisionSystem::AttemptVerticalMovement(std::vector<ValidStartEndXPositionsPerRow> ValidPositionRanges, Vector2D ProposedTargetPosition)
+Vector2D GameCollisionSystem::AttemptVerticalMovement(std::vector<ValidStartEndPositions>
+	ValidColumnPositionRanges, Vector2D ProposedTargetPosition, GameEntity* EntityAttemptingMovement)
 {
-	return false;
+	// Only check within the range for a particular column:
+	int ColumnToCheck = ProposedTargetPosition.XComponent / BLOCK_DIMENSIONS.XComponent;
+
+	// Get the lowest and highest points to check against (in this range of values):
+	int LowestYValue = ValidColumnPositionRanges[ColumnToCheck].StartEndPositions.XComponent;
+	int HighestYValue = ValidColumnPositionRanges[ColumnToCheck].StartEndPositions.YComponent;
+
+	// Validate the Target Position if it is out of range
+	// (binding it to the lowest or highest X-values):
+	if (ProposedTargetPosition.YComponent <= LowestYValue)
+	{
+		ProposedTargetPosition.YComponent = LowestYValue;
+	}
+	else if (ProposedTargetPosition.YComponent >= HighestYValue)
+	{
+		ProposedTargetPosition.YComponent = HighestYValue;
+	}
+
+	/** 
+		If there is a wall block, or another blocking GameEntity
+		directly above EntityAttemptingMovement, when moving upwards,
+		or there is a blocking GameEntity below this GameEntity,
+		when falling, return the original position, otherwise; the 
+		ProposedTargetPosition is valid.
+	*/
+	int VerticalMovementDirection = ProposedTargetPosition.YComponent 
+		- EntityAttemptingMovement->GetEntityPosition().YComponent;
+
+	// Attempting to ascend to the row above EntityAttemptingMovement's current row :
+	if (VerticalMovementDirection < 0)
+	{
+		if (GameEntities[EntityAttemptingMovement->GetCurrentRow() - 1]
+			[EntityAttemptingMovement->GetCurrentColumn()]->GetIsBlockingEntity())
+		{
+			return EntityAttemptingMovement->GetEntityPosition();
+		}
+		else
+		{
+			return ProposedTargetPosition;
+		}
+	}
+	// Attempting to descend to the row below EntityAttemptingMovement's current row:
+	else
+	{
+		if (GameEntities[EntityAttemptingMovement->GetCurrentRow() + 1]
+			[EntityAttemptingMovement->GetCurrentColumn()]->GetIsBlockingEntity())
+		{
+			return EntityAttemptingMovement->GetEntityPosition();
+		}
+		else
+		{
+			return ProposedTargetPosition;
+		}
+	}	
 }
 
 // In effect; a set method: (with minor validation)
@@ -245,14 +349,14 @@ bool GameCollisionSystem::CheckRightSideCollision(GameEntity* ConsideredEntity)
 bool GameCollisionSystem::CheckTopSideCollision(GameEntity* ConsideredEntity)
 {
 	// For evauluating collision:
-	Vector2D ProposedBottomLeftVertex = Vector2D(ConsideredEntity->GetEntityBottomLeftVertex().XComponent +
-		ConsideredEntity->GetMovementSpeed() * 10, ConsideredEntity->GetEntityBottomLeftVertex().YComponent);
+	Vector2D ProposedTopLeftVertex = Vector2D(ConsideredEntity->GetEntityTopLeftVertex().XComponent -
+		ConsideredEntity->GetMovementSpeed(), ConsideredEntity->GetEntityTopLeftVertex().YComponent);
 
-	Vector2D ProposedBottomRightVertex = Vector2D(ConsideredEntity->GetEntityBottomRightVertex().XComponent +
-		ConsideredEntity->GetMovementSpeed() * 10, ConsideredEntity->GetEntityBottomRightVertex().YComponent);
+	Vector2D ProposedTopRightVertex = Vector2D(ConsideredEntity->GetEntityTopRightVertex().XComponent +
+		ConsideredEntity->GetMovementSpeed(), ConsideredEntity->GetEntityTopRightVertex().YComponent);
 
-	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, ProposedBottomLeftVertex,
-		ProposedBottomRightVertex, ED_UPWARDS))
+	if (!AnotherGameEntityOccupiesRangeBetweenPoints(ConsideredEntity, ProposedTopLeftVertex,
+		ProposedTopRightVertex, ED_UPWARDS))
 	{
 		return true;
 	}

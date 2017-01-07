@@ -1,8 +1,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
 #include "SDL.h"
 #include "GameCollisionSystem.h"
+
+// Forward declarations...
+struct ValidStartEndPositions;
 
 // Structures:
 
@@ -172,6 +177,19 @@ public:
 		and downwards movement, or negative for leftwards and
 		upwards movement, in the order of definition).
 	*/
-	void MoveBitmapHorizontally(int MovementSpeed);
-	void MoveBitmapVertically(int MovementSpeed);
+	void MoveBitmapHorizontally(int MovementSpeed, std::vector<ValidStartEndPositions> ValidXPositions);
+	void MoveBitmapVertically(int MovementSpeed, std::vector<ValidStartEndPositions> ValidYPositions);
+
+	/** 
+		Description: To validate this bitmap's position, keeping
+		its position's X-Component values, within the highest and 
+		lowest X values.
+
+		@Params: int LowestXValue: The lowest value in this range, 
+		to keep this bitmap's position's XComponent within.
+
+		int HighestXValue: The highest value in this range, to keep
+		this bitmap's position's XComponent within.
+	*/
+	void ValidateXPosition(int LowestXValue, int HighestXValue);
 };

@@ -1,30 +1,42 @@
 #include "GameEntity.h"
 #include <iostream> // For debugging
 
-struct ValidStartEndXPositionsPerRow;
+struct ValidStartEndPositions;
 
 // Standard constructor:
 GameEntity::GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
 	Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID, 
-	std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues, 
+	std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
+	std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues,
 	bool UsesTransparency)
 {
 	UniqueID = UniqueEntityID;
 	CurrentGameLevelBlockDimensions = ActiveBlockDimensions;
 	EntityRepresentation = new GameBitmap(RendererToUse, FileName, XPosition, YPosition, NewScreenDimensions, UsesTransparency);
-	ValidMobileEntityMovementValues = NewValidMobileEntityMovementValues;
+	
 
-	// Set BlockingEntity to the appropirate value:
+	// Set up this GameEntity with suitable values:
 	switch (UniqueEntityID)
 	{
+
+	// Both Enemy Door and Blank Blocks are not blocking GameEntities: 
 	case EI_BLANK_BLOCK:
 		BlockingEntity = false;
 		break;
 
 	case EI_ENEMY_DOOR:
 		BlockingEntity = false;
-	//		PatrolRouteCovered = false;
 		break;
+	
+	/** For the mobile-GameEntities in the level, the ValidMobileEntityMovementValue
+		properties (for rows and columns), should receive assignment from,
+		the appropriate parameter values:
+	*/
+	case EI_HIGHEST_ENEMY:
+	case EI_LOWEST_ENEMY:
+	case EI_PLAYER:
+		ValidMobileEntityRowMovementValues = NewValidMobileEntityRowMovementValues;
+		ValidMobileEntityColumnMovementValues = NewValidMobileEntityColumnMovementValues;
 
 	// Otherwise...
 	default:
@@ -136,9 +148,24 @@ int GameEntity::GetMovementSpeed()
 	return MOVEMENT_SPEED;
 }
 
-std::vector<ValidStartEndXPositionsPerRow> GameEntity::GetValidMobileEntityMovementValues()
+std::vector<ValidStartEndPositions> GameEntity::GetValidMobileEntityRowMovementValues()
 {
-	return ValidMobileEntityMovementValues;
+	return ValidMobileEntityRowMovementValues;
+}
+
+std::vector<ValidStartEndPositions> GameEntity::GetValidMobileEntityColumnMovementValues()
+{
+	return ValidMobileEntityColumnMovementValues;
+}
+
+int GameEntity::GetCurrentRow()
+{
+	return GetEntityPosition().YComponent / GetGameLevelBlockDimensions().YComponent;
+}
+
+int GameEntity::GetCurrentColumn()
+{
+	return GetEntityPosition().XComponent / GetGameLevelBlockDimensions().XComponent;
 }
 
 /**
@@ -191,11 +218,9 @@ Vector2D GameEntity::GetEntityBottomRightVertex()
 */
 
 // Handle attempts at movement:
-bool GameEntity::AttemptHorizontalMovement(EntityMovementDirection MovementDirection)
-{
-	// Return value:
-	bool MovementValid = false;
 
+void GameEntity::AttemptHorizontalMovement(EntityMovementDirection MovementDirection)
+{
 	// The intended movement target:
 	Vector2D TargetPosition;
 
@@ -219,32 +244,39 @@ bool GameEntity::AttemptHorizontalMovement(EntityMovementDirection MovementDirec
 		TargetPosition.XComponent += MOVEMENT_SPEED;
 	}
 	
-
-	if (GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
-		AttemptHorizontalMovement(ValidMobileEntityMovementValues, TargetPosition))
-	{
-		// Move left or right, accordingly:
-		if (MovementDirection == ED_LEFTWARDS)
-		{
-			TargetMovementSpeed = -(MOVEMENT_SPEED);
-			
-		}
-		else
-		{
-			TargetMovementSpeed = MOVEMENT_SPEED;
-		}
-
-		EntityRepresentation->MoveBitmapHorizontally(TargetMovementSpeed);
-
-		MovementValid = true;
-	}
-
-	return MovementValid;
+	// The Collision System validates movement automatically, so simply set the bitmap's position to the return value from
+	// the Collision System's AttemptHorizontalMovement() function:
+	EntityRepresentation->SetBitmapPosition(GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+		AttemptHorizontalMovement(ValidMobileEntityRowMovementValues, TargetPosition));
 }
 
-bool GameEntity::AttemptVerticalMovement(EntityMovementDirection MovementDirection)
+void GameEntity::AttemptVerticalMovement(EntityMovementDirection MovementDirection)
 {
-	return false;
+	// The intended movement target:
+	Vector2D TargetPosition;
+
+	TargetPosition = GetEntityPosition();
+
+	if (MovementDirection == ED_UPWARDS)
+	{
+		// Intended position is above the current position:		
+		TargetPosition.YComponent -= MOVEMENT_SPEED;
+	}
+	else
+	{
+		// Otherwise; this Entity is descending:
+		TargetPosition.YComponent += MOVEMENT_SPEED;
+	}
+
+	// The Collision System validates movement automatically, so simply set the bitmap's position to the return value from
+	// the Collision System's AttemptVerticalMovement() function:
+	if (!GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+		GameEntityIsAtColumnPosition(this, GetCurrentColumn(), GetEntityTopLeftVertex(), GetEntityTopRightVertex(), MovementDirection))
+	{
+		EntityRepresentation->SetBitmapPosition(GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+			AttemptVerticalMovement(ValidMobileEntityColumnMovementValues, TargetPosition, this));
+	}
+	
 }
 
 // Overlap checking:

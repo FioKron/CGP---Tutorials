@@ -2,19 +2,24 @@
 
 // Initialise this instance:
 Player::Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions, 
-	Vector2D NewScreenDimensions, std::vector<ValidStartEndXPositionsPerRow> NewValidMobileEntityMovementValues,
+	Vector2D NewScreenDimensions, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
+	std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues,
 	EntityID UniqueID, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, 
-		NewScreenDimensions, UniqueID, NewValidMobileEntityMovementValues, UsesTransparency)
+		NewScreenDimensions, UniqueID, NewValidMobileEntityRowMovementValues, 
+		NewValidMobileEntityColumnMovementValues, UsesTransparency)
 {
 	// Player starts with 3 lives (test value):
 	CurrentLives = 3;
 	HasKey = false;
-	IsAirborne = false;
-	HasJumped = false;
+	
+	/** VOID:
+	//IsAirborne = false;
+	//HasJumped = false;
 
 	// For jumping:
-	CurrentUpwardsMomentum = INITIAL_UPWARDS_MOMENTUM;
+	//CurrentUpwardsMomentum = INITIAL_UPWARDS_MOMENTUM;
+	*/
 }
 
 /**
@@ -30,6 +35,7 @@ int Player::GetCurrentLives()
 	return CurrentLives;
 }
 
+/**
 bool Player::GetIsAirborne()
 {
 	return IsAirborne;
@@ -40,16 +46,19 @@ bool Player::GetHasJumped()
 	return HasJumped;
 }
 
+
 // Attempt to jump:
 void Player::AttemptJump()
 {
 	// After initiating a jump; this is where the Player will attempt to move to:
 	Vector2D ProposedNewHigherPosition = Vector2D(GetEntityPosition().XComponent, 
-		GetEntityPosition().YComponent + (CurrentUpwardsMomentum / MOMENTUM_DIVISOR));
+		GetEntityPosition().YComponent - (GetResultantUpwardsMomentum()));
 
-	if ((GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
-		AttemptVerticalMovement(ValidMobileEntityMovementValues, ProposedNewHigherPosition)) && (!IsAirborne))
+	if (!IsAirborne)
 	{
+		GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions.YComponent).
+			AttemptVerticalMovement(ValidMobileEntityColumnMovementValues, ProposedNewHigherPosition, this);
+
 		// The HandleGravity method will handle Player movement now:
 		HasJumped = true;
 		IsAirborne = true;
@@ -80,13 +89,26 @@ void Player::HandleGravity()
 {
 	if (HasJumped)
 	{ 
-		EntityRepresentation->MoveBitmapVertically(GetResultantUpwardsMomentum());
+		// For the target position, above the Player:
+		Vector2D UpperTargetPosition = Vector2D(GetEntityPosition().XComponent, GetEntityPosition().YComponent +
+			GetResultantUpwardsMomentum());
+
+		EntityRepresentation->SetBitmapPosition(GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions
+			.XComponent).AttemptVerticalMovement(ValidMobileEntityColumnMovementValues, UpperTargetPosition, this));
 	}
 	else
 	{
 		CurrentUpwardsMomentum = -10;
-		EntityRepresentation->MoveBitmapVertically(GetResultantUpwardsMomentum());
+
+		// For the target position, but this time; as adding a negative value is the same as subtracting
+		// the absolute of that value...
+		Vector2D LowerTargetPosition = Vector2D(GetEntityPosition().XComponent, GetEntityPosition().YComponent +
+			GetResultantUpwardsMomentum());
+		
+		EntityRepresentation->SetBitmapPosition(GameCollisionSystem::GetCollisionSystem(CurrentGameLevelBlockDimensions
+			.XComponent).AttemptVerticalMovement(ValidMobileEntityColumnMovementValues, LowerTargetPosition, this));
 	}
 
 	CurrentUpwardsMomentum--;
 }
+*/

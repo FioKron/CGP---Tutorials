@@ -70,6 +70,7 @@ private:
 	// Handle Player movement:
 	void PlayerAttemptsLeftwardsMovement();
 	void PlayerAttemptsRightwardsMovement();
-	void PlayerAttemptsJump();
+	void PlayerAttemptsUpwardsMovement();
+	void PlayerAttemptsDownwardsMovement();
 };
 

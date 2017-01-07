@@ -127,31 +127,60 @@ Vector2D GameBitmap::GetBitmapWidthHeight()
 
 // (Validated) set methods:
 
+// For this method; The parameter's value is validated before this function is called
 void GameBitmap::SetBitmapPosition(Vector2D NewPosition)
 {
-	BitmapScreenPosition = NewPosition;
-
-	// Validation:
-	if (BitmapScreenPosition.XComponent > GameScreenDimensions.XComponent)
+	if (NewPosition != BitmapScreenPosition)
 	{
-		BitmapScreenPosition.XComponent = GameScreenDimensions.XComponent;
-	}
+		BitmapScreenPosition = NewPosition;
 
-	if (BitmapScreenPosition.YComponent > GameScreenDimensions.YComponent)
-	{
-		BitmapScreenPosition.YComponent = GameScreenDimensions.YComponent;
+		// Validation:
+		if (BitmapScreenPosition.XComponent > GameScreenDimensions.XComponent)
+		{
+			BitmapScreenPosition.XComponent = GameScreenDimensions.XComponent;
+		}
+
+		if (BitmapScreenPosition.YComponent > GameScreenDimensions.YComponent)
+		{
+			BitmapScreenPosition.YComponent = GameScreenDimensions.YComponent;
+		}
 	}
+	
 }
 
 // Movement of this bitmap as required:
-void GameBitmap::MoveBitmapHorizontally(int MovementSpeed)
+void GameBitmap::MoveBitmapHorizontally(int MovementSpeed, std::vector<ValidStartEndPositions> ValidXPositions)
 {
 	BitmapScreenPosition.XComponent += MovementSpeed;
+
+	// For this bitmap's current row:
+	int RowToCheck = BitmapScreenPosition.YComponent / BitmapWidthHeight.YComponent;
+
+	// Get the lowest and highest points for validation purposes (in this range of values):
+	int LowestXValue = ValidXPositions[RowToCheck].StartEndPositions.XComponent;
+	int HighestXValue = ValidXPositions[RowToCheck].StartEndPositions.YComponent;
+
+	// Then validate this bitmap's XPosition:
+	ValidateXPosition(LowestXValue, HighestXValue);
 }
 
-void GameBitmap::MoveBitmapVertically(int MovementSpeed)
+void GameBitmap::MoveBitmapVertically(int MovementSpeed, std::vector<ValidStartEndPositions> ValidYPositions)
 {
 	BitmapScreenPosition.YComponent += MovementSpeed;
+}
+
+void GameBitmap::ValidateXPosition(int LowestXValue, int HighestXValue)
+{
+	// Validate this Bitmap's screen-position if it is outside of 
+	// the range from LowestXValue to HighestXValue:
+	if (BitmapScreenPosition.XComponent <= LowestXValue)
+	{
+		BitmapScreenPosition.XComponent = LowestXValue;
+	}
+	else if (BitmapScreenPosition.XComponent >= HighestXValue)
+	{
+		BitmapScreenPosition.XComponent = HighestXValue;
+	}
 }
 
 // Drawing and clearing the renderer:

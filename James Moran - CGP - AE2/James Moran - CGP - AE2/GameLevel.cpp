@@ -35,16 +35,16 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 	LevelGrid.push_back((std::string)"WWWWWWWWWWWWWWWWWWWW");
 
 	// For initialisation of mobile GameEntities:
-	std::vector<ValidStartEndXPositionsPerRow> ValidMobileEntityMovementValues = GetValidXPositionsPerRow();
-
+	std::vector<ValidStartEndPositions> ValidMobileEntityRowMovementValues = GetValidXPositionsPerRow();
+	std::vector<ValidStartEndPositions> ValidMobileEntityColumnMovementValues = GetValidYPositionsPerColumn();
 
 	// Game Entities:
 	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, 
-		NewScreenDimensions, EI_LOWEST_ENEMY, ValidMobileEntityMovementValues);
+		NewScreenDimensions, EI_LOWEST_ENEMY, ValidMobileEntityRowMovementValues, ValidMobileEntityColumnMovementValues);
 	SecondEnemy = new Enemy(RendererToUse, Vector2D(100, 50), 600, 50, BlockDimensions, 
-		NewScreenDimensions, EI_HIGHEST_ENEMY, ValidMobileEntityMovementValues);
+		NewScreenDimensions, EI_HIGHEST_ENEMY, ValidMobileEntityRowMovementValues, ValidMobileEntityColumnMovementValues);
 	PlayerCharacter = new Player(RendererToUse, 900, 900, BlockDimensions, 
-		NewScreenDimensions, ValidMobileEntityMovementValues);
+		NewScreenDimensions, ValidMobileEntityRowMovementValues, ValidMobileEntityColumnMovementValues);
 }
 
 // Clean-up:
@@ -224,7 +224,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_BLANK:
 		ThisBlankBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/BlankBlockBitmap.bmp", BlockDimensions,
-			GameScreenDimensions, EI_BLANK_BLOCK, GetValidXPositionsPerRow());
+			GameScreenDimensions, EI_BLANK_BLOCK, GetValidXPositionsPerRow(), GetValidYPositionsPerColumn());
 		ThisBlankBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisBlankBlock);
 		break;
@@ -232,7 +232,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_WALL:
 		ThisWallBlock = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/WallBlockBitmap.bmp", BlockDimensions, 
-			GameScreenDimensions, EI_WALL_BLOCK, GetValidXPositionsPerRow());
+			GameScreenDimensions, EI_WALL_BLOCK, GetValidXPositionsPerRow(), GetValidYPositionsPerColumn());
 		ThisWallBlock->UpdateEntity();
 		AddEntityToCollisionSystem(ThisWallBlock);
 		break;
@@ -240,7 +240,7 @@ Vector2D GameLevel::DrawBlock(Vector2D CurrentRectanglePosition, SDL_Rect* Block
 	case BT_ENEMY_DOOR:
 		ThisEnemyDoor = new GameEntity(LevelRenderer, UpdatedRectanglePosition.XComponent,
 			UpdatedRectanglePosition.YComponent, "Bitmaps/EnemyDoorBitmap.bmp", BlockDimensions,
-			GameScreenDimensions, EI_ENEMY_DOOR, GetValidXPositionsPerRow());
+			GameScreenDimensions, EI_ENEMY_DOOR, GetValidXPositionsPerRow(), GetValidYPositionsPerColumn());
 		ThisEnemyDoor->UpdateEntity();
 		AddEntityToCollisionSystem(ThisEnemyDoor);
 
@@ -275,12 +275,13 @@ void GameLevel::UpdateRectangleGridPosition(Vector2D& PositionToUpdate)
 	}	
 }
 
-std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
+std::vector<ValidStartEndPositions> GameLevel::GetValidXPositionsPerRow()
 {
-	// Determine the area that is valid for the Player to move into:
+	// Determine the area within each row, 
+	// that is valid for the Player to move into:
 
 	// The valid XPosition for each row:
-	std::vector<ValidStartEndXPositionsPerRow> ValidPositions;
+	std::vector<ValidStartEndPositions> ValidPositions;
 
 	for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
 	{
@@ -298,7 +299,7 @@ std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
 					Vector2D InitialValidValues = Vector2D(ColumnCounter * BlockDimensions.XComponent,
 						ColumnCounter * BlockDimensions.XComponent);
 
-					ValidPositions.push_back(ValidStartEndXPositionsPerRow(InitialValidValues));
+					ValidPositions.push_back(ValidStartEndPositions(InitialValidValues));
 				}
 				// Then keep moving along the row till the end is reached:
 				else
@@ -315,5 +316,78 @@ std::vector<ValidStartEndXPositionsPerRow> GameLevel::GetValidXPositionsPerRow()
 	}
 
 	return ValidPositions;
+}
+
+/**
+	RESOLVE ISSUES WITH THIS FUNCTION, REQ. FOR JUMPING AND FALLING ETCD!3D!
+*/
+std::vector<ValidStartEndPositions> GameLevel::GetValidYPositionsPerColumn()
+{
+	// Determine the area within each column,
+	// that is valid for the Player to move into:
+
+	// The valid YPosition for each column:
+	std::vector<ValidStartEndPositions> ValidPositions;
+
+	// To refer to the previous type of block in this column:
+	char PreviousBlockType = ' ';
+
+	for (int ColumnCounter = 0; ColumnCounter <= GetWidth(); ColumnCounter++)
+	{
+		for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
+		{
+			switch (LevelGrid[RowCounter][ColumnCounter])
+			{
+
+			case '.':
+
+				ValidPositions = UpdateValidColumnPositions(ValidPositions, PreviousBlockType, ColumnCounter, RowCounter);
+
+				// Update the previous block type as well:
+				PreviousBlockType = '.';
+				break;
+
+			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
+		
+				ValidPositions = UpdateValidColumnPositions(ValidPositions, PreviousBlockType, ColumnCounter, RowCounter);
+				
+				// Update the previous block type as well:
+				PreviousBlockType = 'E';
+				break;
+
+			default: // Blank for now
+				break;
+
+			}
+		}
+	}
+
+	return ValidPositions;
+}
+
+std::vector<ValidStartEndPositions> GameLevel::UpdateValidColumnPositions(std::vector<ValidStartEndPositions> ValidColumnPositions,
+	char PreviousBlockType, int ColumnCounter, int RowCounter)
+{
+	// For the starting point of valid positions for this column:
+	if (ValidColumnPositions.size() < ColumnCounter + 1)
+	{
+		// For both beginning and end, initially:
+		Vector2D InitialValidValues = Vector2D(RowCounter * BlockDimensions.YComponent,
+			RowCounter * BlockDimensions.YComponent);
+
+		ValidColumnPositions.push_back(ValidStartEndPositions(InitialValidValues));
+	}
+	// Then keep moving along the column till the end is reached:
+	else
+	{
+		// But only if the previous type of block in this column, was also a Blank Space
+		// or Enemy Door:
+		if ((PreviousBlockType == '.') || (PreviousBlockType == 'E'))
+		{
+			ValidColumnPositions[ColumnCounter].StartEndPositions.YComponent += BlockDimensions.YComponent;
+		}
+	}
+
+	return ValidColumnPositions;
 }
 
