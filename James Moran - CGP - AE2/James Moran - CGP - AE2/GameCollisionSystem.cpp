@@ -1,4 +1,5 @@
 #include "GameCollisionSystem.h"
+#include <map>
 //#include "EnemyDoor.h"
 #include <iostream> // For debugging
 
@@ -223,62 +224,105 @@ Vector2D GameCollisionSystem::AttemptHorizontalMovement(std::vector<ValidStartEn
 Vector2D GameCollisionSystem::AttemptVerticalMovement(std::vector<std::vector<ValidStartEndPositions>>
 	ValidColumnPositionRanges, Vector2D ProposedTargetPosition, GameEntity* EntityAttemptingMovement)
 {
+	/**
+		Make sure to check only for as many vectors that are 
+		present in ValidColumnPositionRanges, for this column
+	*/
+	int PositionRangesCounter = 0;
+
+	// For validation, if the ProposedTargetPoistion is still not valid:
+	std::map<int, int> RangeProximityValues;
+	/** 
+		For whether they are closer to the lowest Y-Value, 
+		if the ProposedTargetPosition's YComponent's value 
+		is out of any of the range of values:
+	*/
+	std::vector<bool> CloserToLowestYValue; 
+
 	// Only check within the range for a particular column:
 	int ColumnToCheck = EntityAttemptingMovement->GetCurrentColumn();
-	// Then the row of this column:
-	int RowToCheck = ProposedTargetPosition.YComponent / BLOCK_DIMENSIONS.YComponent;
 
-	// Get the lowest and highest points to check against (in this range of values):
-	int LowestYValue = ValidColumnPositionRanges[ColumnToCheck][RowToCheck].StartEndPositions.XComponent;
-	int HighestYValue = ValidColumnPositionRanges[ColumnToCheck][RowToCheck].StartEndPositions.YComponent;
-
-	// Validate the Target Position if it is out of range
-	// (binding it to the lowest or highest X-values):
-	if (ProposedTargetPosition.YComponent <= LowestYValue)
+	for each (ValidStartEndPositions CurrentRange in ValidColumnPositionRanges[ColumnToCheck])
 	{
-		ProposedTargetPosition.YComponent = LowestYValue;
-	}
-	else if (ProposedTargetPosition.YComponent >= HighestYValue)
-	{
-		ProposedTargetPosition.YComponent = HighestYValue;
-	}
+		// Get the lowest and highest points to check against (in this range of values):
+		int ValidationCurrentLowestYValue = CurrentRange.StartEndPositions.XComponent;
+		int ValidationCurrentHighestYValue = CurrentRange.StartEndPositions.YComponent;
 
-	/** 
-		If there is a wall block, or another blocking GameEntity
-		directly above EntityAttemptingMovement, when moving upwards,
-		or there is a blocking GameEntity below this GameEntity,
-		when falling, return the original position, otherwise; the 
-		ProposedTargetPosition is valid.
-	*/
-	int VerticalMovementDirection = ProposedTargetPosition.YComponent 
-		- EntityAttemptingMovement->GetEntityPosition().YComponent;
-
-	// Attempting to ascend to the row above EntityAttemptingMovement's current row :
-	if (VerticalMovementDirection < 0)
-	{
-		if (GameEntities[EntityAttemptingMovement->GetCurrentRow() - 1]
-			[EntityAttemptingMovement->GetCurrentColumn()]->GetIsBlockingEntity())
-		{
-			return EntityAttemptingMovement->GetEntityPosition();
-		}
-		else
+		// Return ProposedTargetPosition if it is valid for this range:
+		if ((ProposedTargetPosition.YComponent >= ValidationCurrentLowestYValue) &&
+			(ProposedTargetPosition.YComponent <= ValidationCurrentHighestYValue))
 		{
 			return ProposedTargetPosition;
 		}
+
+		/** 
+			If ProposedTargetPosition's YComponent in still not within 
+			a valid range of values, fit it into the closest range:
+			THE PRC SHOULD EQUAL SIZE - 1 AT A POINT!
+		*/
+		if (PositionRangesCounter == ValidColumnPositionRanges[ColumnToCheck].size() - 1)
+		{
+			for (int Iterator = 0; Iterator < ValidColumnPositionRanges[ColumnToCheck].size(); Iterator++)
+			{
+				/** 
+					Add the lowest difference between YComponent and the validation values
+					(either YComponent and ValidationCurrentLowestYValue, or YComponent and
+					ValidationCurrentHighestYValue):
+				*/
+				if (ProposedTargetPosition.YComponent <= ValidationCurrentLowestYValue)
+				{
+					RangeProximityValues.insert(std::pair<int, int>(Iterator, ValidationCurrentLowestYValue 
+						- ProposedTargetPosition.YComponent));
+
+					// As they are closer to the lowest Y-value...
+					CloserToLowestYValue.push_back(true);
+				}
+				else if (ProposedTargetPosition.YComponent >= ValidationCurrentHighestYValue)
+				{
+					RangeProximityValues.insert(std::pair<int, int>(Iterator, ProposedTargetPosition.YComponent
+						- ValidationCurrentHighestYValue));
+					
+					// As they are closer to the highest Y-value...
+					CloserToLowestYValue.push_back(false);
+				}
+			}
+
+			int LowestValue = 0;
+
+			for (int Iterator = 0; Iterator < RangeProximityValues.size(); Iterator++)
+			{
+				// The first value is always the initial lowest value:
+				if (LowestValue == 0)
+				{
+					LowestValue = RangeProximityValues[Iterator];
+				}
+
+				if (LowestValue > RangeProximityValues[Iterator])
+				{
+					LowestValue = RangeProximityValues[Iterator];
+				}
+			}
+
+			for (int Iterator = 0; Iterator < RangeProximityValues.size(); Iterator++)
+			{
+				if (LowestValue == RangeProximityValues[Iterator])
+				{
+					if (CloserToLowestYValue[Iterator])
+					{
+						ProposedTargetPosition.YComponent = ValidColumnPositionRanges[ColumnToCheck][Iterator].StartEndPositions.XComponent;
+					}
+					else
+					{
+						ProposedTargetPosition.YComponent = ValidColumnPositionRanges[ColumnToCheck][Iterator].StartEndPositions.YComponent;
+					}				
+				}
+			}		
+		}
+		
+		PositionRangesCounter++;
 	}
-	// Attempting to descend to the row below EntityAttemptingMovement's current row:
-	else
-	{
-		if (GameEntities[EntityAttemptingMovement->GetCurrentRow() + 1]
-			[EntityAttemptingMovement->GetCurrentColumn()]->GetIsBlockingEntity())
-		{
-			return EntityAttemptingMovement->GetEntityPosition();
-		}
-		else
-		{
-			return ProposedTargetPosition;
-		}
-	}	
+
+	return ProposedTargetPosition;
 }
 
 // In effect; a set method: (with minor validation)
@@ -295,7 +339,7 @@ bool GameCollisionSystem::IsEnemyNearAnEnemyDoor(Enemy* ThisEnemyCharacter)
 {
 	// The return value(s):
 	bool EnemyIsNearADoor = false;
-	//EnemyDoor* DoorEnemyIsNear;
+	//EnemyDoor* DoorEnemyIsNear;a
 
 	for each (GameEntity* CurrentEnemyDoor in EnemyDoorEntities)
 	{
