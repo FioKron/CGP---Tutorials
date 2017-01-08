@@ -155,10 +155,10 @@ private:
 		any Enemies), for each Column (when moving upwards or downwards).
 
 		@Return: std::vector<ValidStartEndPosition> ValidPositions:
-		For any Entity's valid movement positions within the columns of the 
-		game level.
+		For any Entity's valid movement position ranges,
+		within the columns of the game level.
 	*/
-	std::vector<ValidStartEndPositions> GetValidYPositionsPerColumn();
+	std::vector<std::vector<ValidStartEndPositions>> GetValidYPositionsPerColumn();
 
 	/**
 		Description: Update ValidPositions (from the function above).
@@ -174,10 +174,11 @@ private:
 		for use in identifying the current position in this column, as well
 		as for calculations.
 
-		@Return: std::vector<ValidStartEndPosition> ValidColumnPositions:
-		The valid points within a column, the Player can move into.
+		@Return: std::vector<std::vector<ValidStartEndPositions>> ValidColumnPositions:
+		The valid point ranges within a column, the Player can move into.
 	*/
-	std::vector<ValidStartEndPositions> UpdateValidColumnPositions(std::vector<ValidStartEndPositions> ValidColumnPositions,
-		char PreviousBlockType, int ColumnCounter, int RowCounter);
+	std::vector<std::vector<ValidStartEndPositions>> 
+		UpdateValidColumnPositions(std::vector<std::vector<ValidStartEndPositions>> ValidColumnPositions,
+		char CurrentBlockType, char PreviousBlockType, int ColumnCounter, int RowCounter);
 };
 

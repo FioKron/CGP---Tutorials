@@ -6,7 +6,7 @@
 // Initialisation:
 Enemy::Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
 	Vector2D NewScreenDimensions, EntityID UniqueID, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
-	std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues, std::string FileName, bool UsesTransparency) :
+	std::vector<std::vector<ValidStartEndPositions>> NewValidMobileEntityColumnMovementValues, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, NewScreenDimensions,
 		UniqueID, NewValidMobileEntityRowMovementValues, NewValidMobileEntityColumnMovementValues, UsesTransparency)
 {

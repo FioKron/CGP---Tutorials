@@ -203,7 +203,7 @@ public:
 		@Return: bool: For whether movement to the intended
 		position is valid.
 	*/
-	Vector2D AttemptVerticalMovement(std::vector<ValidStartEndPositions>
+	Vector2D AttemptVerticalMovement(std::vector<std::vector<ValidStartEndPositions>>
 		ValidColumnPositionRanges, Vector2D ProposedTargetPosition, GameEntity* EntityAttemptingMovement);
 
 	/**

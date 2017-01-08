@@ -115,7 +115,7 @@ public:
 	/** Standard constructor */
 	Enemy(SDL_Renderer* RendererToUse, Vector2D NewPatrolEndPoint, int XPosition, int YPosition, Vector2D ActiveBlockDimensions,
 		Vector2D NewScreenDimensions, EntityID UniqueID, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
-		std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues,
+		std::vector<std::vector<ValidStartEndPositions>> NewValidMobileEntityColumnMovementValues,
 		std::string FileName = "Bitmaps/EnemyBitmap.bmp", bool UsesTransparency = true);
 
 	/** Update handler */

@@ -36,7 +36,7 @@ GameLevel::GameLevel(SDL_Renderer* RendererToUse, Vector2D NewBlockDimensions,
 
 	// For initialisation of mobile GameEntities:
 	std::vector<ValidStartEndPositions> ValidMobileEntityRowMovementValues = GetValidXPositionsPerRow();
-	std::vector<ValidStartEndPositions> ValidMobileEntityColumnMovementValues = GetValidYPositionsPerColumn();
+	std::vector<std::vector<ValidStartEndPositions>> ValidMobileEntityColumnMovementValues = GetValidYPositionsPerColumn();
 
 	// Game Entities:
 	FirstEnemy = new Enemy(RendererToUse, Vector2D(800, 800), 150, 800, BlockDimensions, 
@@ -320,73 +320,167 @@ std::vector<ValidStartEndPositions> GameLevel::GetValidXPositionsPerRow()
 
 /**
 	RESOLVE ISSUES WITH THIS FUNCTION, REQ. FOR JUMPING AND FALLING ETCD!3D!
+	ValidPositions = UpdateValidColumnPositions(ValidPositions, LevelGrid[RowCounter][ColumnCounter],
+	PreviousBlockType, ColumnCounter, RowCounter);
+
+	// For the starting point of valid positions for this column:
+	if (ValidColumnPositions[ColumnCounter].size() < ColumnCounter + 1)
+	{
+	// For both beginning and end, initially:
+	Vector2D InitialValidValues = Vector2D(RowCounter * BlockDimensions.YComponent,
+	RowCounter * BlockDimensions.YComponent);
+
+	ValidColumnPositions.push_back(ValidStartEndPositions(InitialValidValues));
+	}
+	// Then keep moving along the column till the end is reached:
+	else
+	{
+	// But only if the previous type of block in this column, was also a Blank Space
+	// or Enemy Door:
+	if ((PreviousBlockType == '.') || (PreviousBlockType == 'E'))
+	{
+	ValidColumnPositions[ColumnCounter].front().StartEndPositions.YComponent += BlockDimensions.YComponent;
+	}
+	}
 */
-std::vector<ValidStartEndPositions> GameLevel::GetValidYPositionsPerColumn()
+std::vector<std::vector<ValidStartEndPositions>> GameLevel::GetValidYPositionsPerColumn()
 {
 	// Determine the area within each column,
 	// that is valid for the Player to move into:
 
 	// The valid YPosition for each column:
-	std::vector<ValidStartEndPositions> ValidPositions;
+	std::vector<std::vector<ValidStartEndPositions>> ValidPositions;
+	std::vector<ValidStartEndPositions> CurrentColumn;
+	
+	// first column:
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(0, 0)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-	// To refer to the previous type of block in this column:
-	char PreviousBlockType = ' ';
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 850)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-	for (int ColumnCounter = 0; ColumnCounter <= GetWidth(); ColumnCounter++)
-	{
-		for (int RowCounter = 0; RowCounter < GetHeight(); RowCounter++)
-		{
-			switch (LevelGrid[RowCounter][ColumnCounter])
-			{
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-			case '.':
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-				ValidPositions = UpdateValidColumnPositions(ValidPositions, PreviousBlockType, ColumnCounter, RowCounter);
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-				// Update the previous block type as well:
-				PreviousBlockType = '.';
-				break;
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-			case 'E': // Enemy Doors or Blank Spaces are valid for the Player to move in:
-		
-				ValidPositions = UpdateValidColumnPositions(ValidPositions, PreviousBlockType, ColumnCounter, RowCounter);
-				
-				// Update the previous block type as well:
-				PreviousBlockType = 'E';
-				break;
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-			default: // Blank for now
-				break;
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
-			}
-		}
-	}
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
 
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 50)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 100)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(400, 500)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 150)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(350, 550)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 200)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(350, 450)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(550, 600)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(800, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 250)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(350, 400)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(550, 650)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(750, 800)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 400)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(550, 750)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(50, 300)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(550, 700)));
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(900, 900)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+
+	// Last column:
+	CurrentColumn.push_back(ValidStartEndPositions(Vector2D(0, 0)));
+	ValidPositions.push_back(CurrentColumn);
+	CurrentColumn.clear();
+	
 	return ValidPositions;
 }
 
-std::vector<ValidStartEndPositions> GameLevel::UpdateValidColumnPositions(std::vector<ValidStartEndPositions> ValidColumnPositions,
-	char PreviousBlockType, int ColumnCounter, int RowCounter)
+std::vector<std::vector<ValidStartEndPositions>> GameLevel::UpdateValidColumnPositions(std::vector<std::vector<ValidStartEndPositions>>
+	ValidColumnPositions, char CurrentBlockType, char PreviousBlockType, int ColumnCounter, int RowCounter)
 {
-	// For the starting point of valid positions for this column:
-	if (ValidColumnPositions.size() < ColumnCounter + 1)
-	{
-		// For both beginning and end, initially:
-		Vector2D InitialValidValues = Vector2D(RowCounter * BlockDimensions.YComponent,
-			RowCounter * BlockDimensions.YComponent);
-
-		ValidColumnPositions.push_back(ValidStartEndPositions(InitialValidValues));
-	}
-	// Then keep moving along the column till the end is reached:
-	else
-	{
-		// But only if the previous type of block in this column, was also a Blank Space
-		// or Enemy Door:
-		if ((PreviousBlockType == '.') || (PreviousBlockType == 'E'))
-		{
-			ValidColumnPositions[ColumnCounter].StartEndPositions.YComponent += BlockDimensions.YComponent;
-		}
-	}
+	
 
 	return ValidColumnPositions;
 }

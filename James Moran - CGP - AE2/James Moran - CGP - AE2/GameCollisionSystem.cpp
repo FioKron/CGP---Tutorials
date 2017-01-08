@@ -105,6 +105,22 @@ bool GameCollisionSystem::GameEntityIsAtColumnPosition(GameEntity* EntityAttemep
 	// The flag to return: 
 	bool EntityIsAtPosition = false;
 
+	for (int Iterator = 0; Iterator < GameEntities[Iterator].size(); Iterator++)
+	{
+		for each (GameEntity* CurrentEntity in GameEntities[Iterator])
+		{
+			if (CurrentEntity->GetCurrentColumn() == ColumnToCheck)
+			{
+				return (CurrentEntity->GetIsBlockingEntity() &&
+				(((TopLeftVertex.YComponent >= CurrentEntity->GetEntityBottomLeftVertex().YComponent) &&
+				(TopLeftVertex.YComponent <= CurrentEntity->GetEntityTopLeftVertex().YComponent)) ||
+				((TopRightVertex.YComponent >= CurrentEntity->GetEntityBottomRightVertex().YComponent) &&
+				(TopRightVertex.YComponent <= CurrentEntity->GetEntityTopRightVertex().YComponent))));
+			}
+		}
+	}
+
+	/**
 	// (SIZE IS ABSOLUTE, SUBTRACT NOT FROM IT, OTHERWISE NOT ALL ENTITIES WILL GET CHECKED)
 	// Check all elements in this row:
 	for (int Iterator = 0; Iterator < GameEntities[Iterator].size(); Iterator++)
@@ -139,9 +155,9 @@ bool GameCollisionSystem::GameEntityIsAtColumnPosition(GameEntity* EntityAttemep
 			}
 		}
 	}
-
+	*/
 	// No Entity taking up that space if execution reaches this point:
-	return EntityIsAtPosition;
+	return EntityIsAtPosition;	
 }
 
 // For the Entity's row (that is attempting movement):
@@ -204,15 +220,17 @@ Vector2D GameCollisionSystem::AttemptHorizontalMovement(std::vector<ValidStartEn
 	return ProposedTargetPosition;
 }
 
-Vector2D GameCollisionSystem::AttemptVerticalMovement(std::vector<ValidStartEndPositions>
+Vector2D GameCollisionSystem::AttemptVerticalMovement(std::vector<std::vector<ValidStartEndPositions>>
 	ValidColumnPositionRanges, Vector2D ProposedTargetPosition, GameEntity* EntityAttemptingMovement)
 {
 	// Only check within the range for a particular column:
-	int ColumnToCheck = ProposedTargetPosition.XComponent / BLOCK_DIMENSIONS.XComponent;
+	int ColumnToCheck = EntityAttemptingMovement->GetCurrentColumn();
+	// Then the row of this column:
+	int RowToCheck = ProposedTargetPosition.YComponent / BLOCK_DIMENSIONS.YComponent;
 
 	// Get the lowest and highest points to check against (in this range of values):
-	int LowestYValue = ValidColumnPositionRanges[ColumnToCheck].StartEndPositions.XComponent;
-	int HighestYValue = ValidColumnPositionRanges[ColumnToCheck].StartEndPositions.YComponent;
+	int LowestYValue = ValidColumnPositionRanges[ColumnToCheck][RowToCheck].StartEndPositions.XComponent;
+	int HighestYValue = ValidColumnPositionRanges[ColumnToCheck][RowToCheck].StartEndPositions.YComponent;
 
 	// Validate the Target Position if it is out of range
 	// (binding it to the lowest or highest X-values):

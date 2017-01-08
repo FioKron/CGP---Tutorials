@@ -3,7 +3,7 @@
 // Initialise this instance:
 Player::Player(SDL_Renderer* RendererToUse, int XPosition, int YPosition, Vector2D ActiveBlockDimensions, 
 	Vector2D NewScreenDimensions, std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
-	std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues,
+	std::vector<std::vector<ValidStartEndPositions>> NewValidMobileEntityColumnMovementValues,
 	EntityID UniqueID, std::string FileName, bool UsesTransparency) :
 	GameEntity(RendererToUse, XPosition, YPosition, FileName, ActiveBlockDimensions, 
 		NewScreenDimensions, UniqueID, NewValidMobileEntityRowMovementValues, 

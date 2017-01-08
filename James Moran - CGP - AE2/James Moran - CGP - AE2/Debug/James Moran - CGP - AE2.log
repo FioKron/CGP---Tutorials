@@ -1,7 +1,7 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (James Moran Tutorial 03 Exercise 03.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  GameCollisionSystem.cpp
-c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamecollisionsystem.cpp(42): warning C4018: '<': signed/unsigned mismatch
-c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamecollisionsystem.cpp(110): warning C4018: '<': signed/unsigned mismatch
-c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamecollisionsystem.cpp(169): warning C4018: '<': signed/unsigned mismatch
+  GameLevel.cpp
+c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(53): warning C4018: '<': signed/unsigned mismatch
+c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(296): warning C4018: '<': signed/unsigned mismatch
+c:\users\james moran\desktop\cgp---tutorials-master\cgp---tutorials-master\james moran - cgp - ae2\james moran - cgp - ae2\gamelevel.cpp(191): warning C4715: 'GameLevel::GetPlayerCharacterReference': not all control paths return a value
   James Moran - CGP - AE2.vcxproj -> C:\Users\James Moran\Desktop\CGP---Tutorials-master\CGP---Tutorials-master\James Moran - CGP - AE2\Debug\James Moran - CGP - AE2.exe
   James Moran - CGP - AE2.vcxproj -> C:\Users\James Moran\Desktop\CGP---Tutorials-master\CGP---Tutorials-master\James Moran - CGP - AE2\Debug\James Moran - CGP - AE2.pdb (Full PDB)

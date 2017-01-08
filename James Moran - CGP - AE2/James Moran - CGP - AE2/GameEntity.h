@@ -152,7 +152,7 @@ public:
 	GameEntity(SDL_Renderer* RendererToUse, int XPosition, int YPosition, std::string FileName, 
 		Vector2D ActiveBlockDimensions, Vector2D NewScreenDimensions, EntityID UniqueEntityID,
 		std::vector<ValidStartEndPositions> NewValidMobileEntityRowMovementValues,
-		std::vector<ValidStartEndPositions> NewValidMobileEntityColumnMovementValues, bool UsesTransparency = false);
+		std::vector<std::vector<ValidStartEndPositions>> NewValidMobileEntityColumnMovementValues, bool UsesTransparency = false);
 
 	/** Default constructor (for 'empty' initialisation) */
 	GameEntity();
@@ -204,7 +204,7 @@ public:
 
 	/** For movement in general and movement validation */
 	std::vector<ValidStartEndPositions> GetValidMobileEntityRowMovementValues();
-	std::vector<ValidStartEndPositions> GetValidMobileEntityColumnMovementValues();
+	std::vector<std::vector<ValidStartEndPositions>> GetValidMobileEntityColumnMovementValues();
 
 	/** For reference to the row and column of this GameEntity */
 	int GetCurrentRow();
@@ -283,6 +283,6 @@ protected:
 		(for both the rows and the columns)
 	*/
 	std::vector<ValidStartEndPositions> ValidMobileEntityRowMovementValues;
-	std::vector<ValidStartEndPositions> ValidMobileEntityColumnMovementValues;
+	std::vector<std::vector<ValidStartEndPositions>> ValidMobileEntityColumnMovementValues;
 };
 #endif
